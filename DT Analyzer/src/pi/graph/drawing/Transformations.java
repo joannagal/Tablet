@@ -41,6 +41,18 @@ public class Transformations
 		p.y = this.size.height - p.y;
 	}
 	
+	public void transformToCanvas(Rectangle R)
+	{
+		Point A = new Point();
+		Point B = new Point();
+		this.transformToCanvas(R.x, R.y, A);
+		this.transformToCanvas(R.x + R.width, R.y + R.height, B);
+		R.x = A.x;
+		R.y = A.y;
+		R.width = B.x - R.x;
+		R.height = R.y - B.y;
+	}
+	
 	public void transformAnglePointer(double azimuth, double altitude, Point p)
 	{
 		double r = this.radius * Math.cos(altitude * this.degToRad);

@@ -1,10 +1,54 @@
-package pi.inputs.drawing;
+package pi.inputs.drawing.autofinder;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import pi.inputs.drawing.Drawing;
+import pi.inputs.drawing.Figure;
+import pi.inputs.drawing.PacketData;
+import pi.inputs.drawing.Segment;
+
 public class Linearize
 {
+	public void linearize(Drawing drawing)
+	{
+		ArrayList <Figure> figure = drawing.getFigure();
+		Iterator <Figure> itFig = figure.iterator();
+		Iterator <Segment> itSeg;
+		Figure fig;
+		Segment seg;
+		
+		ArrayList <PacketData> packet;
+		int size;
+		
+		while (itFig.hasNext())
+		{
+			fig = itFig.next();
+			if (fig.getSegment() == null) continue;
+			
+			itSeg = fig.getSegment().iterator();
+			
+			while (itSeg.hasNext())
+			{
+				seg = itSeg.next();
+				packet = seg.getPacket();
+				if ((packet == null) || (packet.size() < 2)) continue;
+				
+				size = packet.size();
+				ArrayList <PacketData> linear = new ArrayList <PacketData> (size);
+				
+				for (int i = 0; i < size; i++)
+				{
+					linear.add(packet.get(i).getCopy());
+				}
+				
+				this.linearizeVectorDynamic(linear, 10);
+				seg.setLinearized(linear);
+			}		
+		}
+	}
+	
+	
 	public void linearizeVectorDynamic(ArrayList <PacketData> input, int steps)
 	{
 		int size = input.size();
@@ -80,49 +124,7 @@ public class Linearize
 		
 	}
 	
-	public void linearize(Drawing drawing)
-	{
-		ArrayList <Figure> figure = drawing.getFigure();
-		Iterator <Figure> it = figure.iterator();
-		Figure fig;
-		
-		ArrayList <PacketData> packet;
-		int size;
-		
-		while (it.hasNext())
-		{
-			fig = it.next();
-			packet = fig.getPacket();
-			size = packet.size();
-			ArrayList <PacketData> linear = new ArrayList <PacketData> (size);
-			
-			for (int i = 0; i < size; i++)
-			{
-				linear.add(packet.get(i).getCopy());
-			}
-			
-			this.linearizeVectorDynamic(linear, 10);
-			
-			fig.setLinearized(linear);
-		}
-		
-		
-		
-		
-		/*ArrayList <PacketData> packet = drawing.getPacket();
-		int size = packet.size();
-		ArrayList <PacketData> linear = new ArrayList <PacketData> (size);
-		
-		for (int i = 0; i < size; i++)
-		{
-			linear.add(packet.get(i).getCopy());
-		}
-	
-		this.linearizeVectorDynamic(linear, 10, drawing.getBreakFigureDistance());*/
-	
-		
-		//drawing.setLinearized(linear);
-	}
+
 	
 	public double difAngles(double A, double B)
 	{

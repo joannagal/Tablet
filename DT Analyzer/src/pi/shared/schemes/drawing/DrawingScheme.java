@@ -10,6 +10,7 @@ public class DrawingScheme
 	private Color drawingColor;
 	private Color angleColor;
 	private Color linearizedColor;
+	private Color figureColor;
 	
 	public Color getBorderColor()
 	{
@@ -60,6 +61,16 @@ public class DrawingScheme
 	public void setLinearizedColor(Color linearizedColor)
 	{
 		this.linearizedColor = linearizedColor;
+	}
+
+	public Color getFigureColor()
+	{
+		return figureColor;
+	}
+
+	public void setFigureColor(Color figureColor)
+	{
+		this.figureColor = figureColor;
 	}
 	
 }

@@ -35,6 +35,7 @@ public class SharedController
 		drawing.setDrawingColor(new Color(0, 0, 0, 255));
 		drawing.setAngleColor(new Color(0,0,255,255));
 		drawing.setLinearizedColor(new Color(255, 0, 0, 255));
+		drawing.setFigureColor(new Color(0, 255, 0, 255));
 	}
 
 	public Scheme getScheme()

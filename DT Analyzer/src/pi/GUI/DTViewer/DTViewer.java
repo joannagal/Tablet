@@ -33,15 +33,15 @@ public class DTViewer extends JPanel
 		
 		// --- TIME PANEL
 		
-		this.timeline = new Timeline(new Dimension((int)this.margin.getLeft() - 10, 90), graph);
+		this.timeline = new Timeline(new Dimension((int)this.margin.getLeft() - 10, 80), graph);
 		this.timeline.setLocation(5, (int)this.margin.getTop());
 		this.add(timeline);
 		
-		this.pressure = new Pressure(new Dimension((int)this.margin.getLeft() - 10, 60), graph);
-		this.pressure.setLocation(5, (int)this.margin.getTop() + 100);
+		this.pressure = new Pressure(new Dimension((int)this.margin.getLeft() - 10, 70), graph);
+		this.pressure.setLocation(5, (int)this.margin.getTop() + 90);
 		this.add(pressure);
 		
-		this.voptions = new ViewOptions(new Dimension((int)this.margin.getLeft() - 10, 150), graph);
+		this.voptions = new ViewOptions(new Dimension((int)this.margin.getLeft() - 10, 180), graph);
 		this.voptions.setLocation(5, (int)this.margin.getTop() + 170);
 		this.add(voptions);
 

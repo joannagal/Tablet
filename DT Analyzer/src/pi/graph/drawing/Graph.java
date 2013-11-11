@@ -86,7 +86,6 @@ public class Graph extends JPanel
 		this.adapter.setLinearizedShow(value);
 	}
 	
-	
 	public void setDrawingAngleShow(boolean value)
 	{
 		this.adapter.setDrawingAngle(value);
@@ -95,6 +94,11 @@ public class Graph extends JPanel
 	public void setThicknessShow(boolean value)
 	{
 		this.adapter.setThickness(value);
+	}
+
+	public void setSignalShow(boolean value)
+	{
+		this.adapter.setSignalShow(value);
 	}
 
 

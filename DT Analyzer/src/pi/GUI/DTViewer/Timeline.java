@@ -22,9 +22,6 @@ public class Timeline extends JPanel
 	private JSlider timeSlider;
 	private JLabel currentTime;
 	
-	private JButton playButton;
-	private JButton stopButton;
-	
 	private Graph graph;
 	
 	public Timeline(Dimension size, Graph graph)
@@ -49,33 +46,9 @@ public class Timeline extends JPanel
 		this.add(this.timeSlider);
 		
 		this.currentTime = new JLabel();
-		this.currentTime.setLocation(15, 55);
+		this.currentTime.setLocation(15, 45);
 		this.currentTime.setSize(new Dimension(size.width, 20));
 		this.add(this.currentTime);
-		
-		this.playButton = new JButton("P");
-		this.playButton.setLocation(size.width - 100, 55);
-		this.playButton.setSize(new Dimension(43, 20));
-		this.playButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent evt)
-			{
-	
-			}
-		});
-		this.add(this.playButton);
-		
-		this.stopButton = new JButton("S");
-		this.stopButton.setLocation(size.width - 50, 55);
-		this.stopButton.setSize(new Dimension(43, 20));
-		this.stopButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent evt)
-			{
-	
-			}
-		});
-		this.add(this.stopButton);
 		
 		this.rebuild(graph.getDrawing());
 	}
@@ -101,7 +74,7 @@ public class Timeline extends JPanel
 
 	public void applyNewLabel()
 	{
-		this.currentTime.setText(String.format("%d/%d", this.timeSlider.getValue(), this.timeSlider.getMaximum()));
+		this.currentTime.setText(String.format("Time %d/%d", this.timeSlider.getValue(), this.timeSlider.getMaximum()));
 	}
 
 	public Graph getGraph()

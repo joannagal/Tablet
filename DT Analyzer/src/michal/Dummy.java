@@ -26,7 +26,6 @@ public class Dummy
 		this.viewer.setLocation(0, 0);
 		
 		frame.add(this.viewer);
-	
 		
 		frame.setVisible(true);
 	}
