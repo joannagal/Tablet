@@ -99,10 +99,10 @@ public class DrawingAdapter
 				this.drawSegment(graphics, seg.getPacket(), time, false);		
 			}
 			
-			if (this.isLinearizedShow()) 
+			/*if (this.isLinearizedShow()) 
 			{ 
 				this.drawSegment(graphics, seg.getLinearized(), time, true);
-			}
+			}*/
 		}
 	}
 
@@ -170,103 +170,6 @@ public class DrawingAdapter
 			A.x = B.x;
 			A.y = B.y;
 		}
-
-	}
-
-	/*
-	 * public void drawFigure(Graphics graphics, Figure figure, int time) {
-	 * Transformations transform = graph.getTranform();
-	 * 
-	 * ArrayList <PacketData> packet = figure.getPacket(); PacketData pck; int
-	 * size = packet.size();
-	 * 
-	 * if (size == 0) return;
-	 * 
-	 * Graphics2D tools = (Graphics2D) graphics;
-	 * 
-	 * Color figureColor = scheme.getFigureColor();
-	 * graphics.setColor(figureColor); tools.setStroke(stroke[0]); Rectangle
-	 * bounds = figure.getBounds(); Rectangle tBounds = new Rectangle(bounds.x,
-	 * bounds.y, bounds.width, bounds.height);
-	 * transform.transformToCanvas(tBounds); graphics.drawRect(tBounds.x,
-	 * tBounds.y, tBounds.width, tBounds.height);
-	 * 
-	 * Color drawColor = scheme.getDrawingColor(); Color angleColor =
-	 * scheme.getAngleColor(); pck = packet.get(0);
-	 * 
-	 * Point A = new Point(); Point B = new Point(); Point C = new Point();
-	 * 
-	 * boolean firstDraw = true;
-	 * 
-	 * for (int i = 0; i < size; i++) { pck = packet.get(i); if (pck.getPkTime()
-	 * > time) break;
-	 * 
-	 * if ((firstDraw) && (pck.isBroken())) continue;
-	 * 
-	 * if (firstDraw) { firstDraw = false;
-	 * transform.transformToCanvas(pck.getPkX(), pck.getPkY(), A); continue; }
-	 * 
-	 * if (pck.isBroken()) { firstDraw = true; }
-	 * 
-	 * transform.transformToCanvas(pck.getPkX(), pck.getPkY(), B);
-	 * 
-	 * if (this.thicknessShow)
-	 * tools.setStroke(stroke[transform.transformToPressure
-	 * (pck.getPkPressure())]); else tools.setStroke(stroke[0]);
-	 * 
-	 * graphics.setColor(drawColor); graphics.drawLine(A.x, A.y, B.x, B.y);
-	 * 
-	 * if (this.drawingAngleShow) { tools.setStroke(stroke[0]);
-	 * graphics.setColor(angleColor);
-	 * transform.transformAnglePointer(pck.getPkAzimuth(), pck.getPkAltitude(),
-	 * C); graphics.drawLine(B.x, B.y, B.x + C.x, B.y - C.y); }
-	 * 
-	 * A.x = B.x; A.y = B.y; }
-	 * 
-	 * if (this.isLinearizedShow()) { this.drawLinearized(graphics, figure,
-	 * time); }
-	 * 
-	 * }
-	 */
-
-	public void drawLinearized(Graphics graphics, Figure figure, int time)
-	{
-		/*
-		 * if (figure.getLinearized() == null) return;
-		 * 
-		 * Transformations transform = graph.getTranform();
-		 * 
-		 * ArrayList <PacketData> packet = figure.getLinearized(); PacketData
-		 * pck; int size = packet.size();
-		 * 
-		 * if (size == 0) return;
-		 * 
-		 * Graphics2D tools = (Graphics2D) graphics;
-		 * 
-		 * Color drawColor = scheme.getLinearizedColor(); pck = packet.get(0);
-		 * 
-		 * Point A = new Point(); Point B = new Point();
-		 * 
-		 * boolean firstDraw = true;
-		 * 
-		 * tools.setStroke(stroke[0]); graphics.setColor(drawColor);
-		 * 
-		 * for (int i = 0; i < size; i++) { pck = packet.get(i); if
-		 * (pck.getPkTime() > time) break;
-		 * 
-		 * if ((firstDraw) && (pck.isBroken())) continue;
-		 * 
-		 * if (firstDraw) { firstDraw = false;
-		 * transform.transformToCanvas(pck.getPkX(), pck.getPkY(), A); continue;
-		 * }
-		 * 
-		 * if (pck.isBroken()) { firstDraw = true; }
-		 * 
-		 * transform.transformToCanvas(pck.getPkX(), pck.getPkY(), B);
-		 * graphics.drawLine(A.x, A.y, B.x, B.y);
-		 * 
-		 * A.x = B.x; A.y = B.y; }
-		 */
 
 	}
 

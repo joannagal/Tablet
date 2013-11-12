@@ -22,11 +22,10 @@ public class Graph extends JPanel
 	
 	private int currentTime;
 	
-	public Graph(Dimension size, Drawing drawing)
+	public Graph(Dimension size)
 	{
 		this.controller = SharedController.getInstance();
 		this.setSize(size);
-		this.setDrawing(drawing);
 		this.tranform = new Transformations(this);
 		this.adapter = new DrawingAdapter(this);
 	}
@@ -39,6 +38,7 @@ public class Graph extends JPanel
 		this.drawBorder(graphics);
 		if (this.drawing != null) 
 		{
+			if (this.drawing.getFigure() == null) return;
 			this.adapter.draw(graphics, this.currentTime);
 		}
 	}
@@ -75,6 +75,7 @@ public class Graph extends JPanel
 		
 		if (this.drawing != null)
 		{
+			if (this.drawing.getFigure() == null) return;
 			this.tranform.recalculate();
 			this.adapter.recalculate();	
 		}

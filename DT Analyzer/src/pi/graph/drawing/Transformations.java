@@ -27,6 +27,11 @@ public class Transformations
 		this.size = this.graph.getSize();
 		this.content = this.graph.getDrawing().getContent();
 		
+		if (content == null)
+		{
+			content = new Rectangle (0, 0, 15000, 15000);
+		}
+		
 		this.t_width = (double)(content.getWidth());
 		this.t_height = (double)(content.getHeight());
 		

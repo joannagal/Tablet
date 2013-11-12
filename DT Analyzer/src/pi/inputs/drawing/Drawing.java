@@ -1,22 +1,16 @@
 package pi.inputs.drawing;
 
 import java.awt.Rectangle;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 import pi.inputs.drawing.autofinder.FigureExtractor;
 import pi.inputs.drawing.autofinder.FigureInterpreter;
-import pi.inputs.drawing.autofinder.Linearize;
+
 
 public class Drawing
 {
@@ -34,31 +28,29 @@ public class Drawing
 	private Figure spiralOut;
 	private Figure spiralIn;
 
-	private int pressureAvoid = 0;
+	private int pressureAvoid = 128;
 	private int maxPressure = 1024;
 	private int totalTime = 0;
 	private int breakFigureDistance = 128;
 
+	FigureExtractor extractor = new FigureExtractor();
+	FigureInterpreter interpreter = new FigureInterpreter();
+	
 	public Drawing(String path)
-	{
+	{	
 		this.createFromFile(path);
 		this.calculateBreakFigureDistance();
-
 		this.recalculate();
 	}
 
+	
 	public void recalculate()
 	{
-		FigureExtractor extractor = new FigureExtractor();
+		this.clearStuff();
+		
 		extractor.extract(this);
-
 		this.calculateBounds();
-
-		Linearize linearize = new Linearize();
-		linearize.linearize(this);
-
-		// FigureInterpreter interpreter = new FigureInterpreter();
-		// interpreter.interprate(this);
+		interpreter.interprate(this);
 	}
 
 	public void createFromFile(String path)
@@ -121,7 +113,9 @@ public class Drawing
 			int numPackages = this.getInt(data, shift);
 			shift += 4;
 
-			this.setPressureAvoid(0);
+			System.out.printf("PACKAGES:  %d\n", numPackages);
+			
+			this.setPressureAvoid(128);
 			this.setMaxPressure(1024);
 
 			this.packet = new ArrayList<PacketData>(numPackages);
@@ -156,9 +150,8 @@ public class Drawing
 
 	public void calculateBounds()
 	{
-		Iterator<Figure> itFig = this.figure.iterator();
-		Figure fig;
-
+		if (this.figure == null) return;
+		
 		int min_x = 1000000;
 		int max_x = -1000000;
 		int min_y = 1000000;
@@ -167,11 +160,10 @@ public class Drawing
 		int height = 0;
 		int prop;
 
-		while (itFig.hasNext())
+		for (int i = 0; i < this.figure.size(); i++)
 		{
-			fig = itFig.next();
 
-			Iterator<Segment> itSeg = fig.getSegment().iterator();
+			Iterator<Segment> itSeg = this.figure.get(i).getSegment().iterator();
 			Segment seg;
 
 			while (itSeg.hasNext())
@@ -181,20 +173,21 @@ public class Drawing
 				ArrayList<PacketData> packet = seg.getPacket();
 				int size = packet.size();
 
-				for (int i = 0; i < size; i++)
+				for (int j = 0; j < size; j++)
 				{
-					if (packet.get(i).getPkX() > max_x)
-						max_x = packet.get(i).getPkX();
-					if (packet.get(i).getPkX() < min_x)
-						min_x = packet.get(i).getPkX();
+					if (packet.get(j).getPkX() > max_x)
+						max_x = packet.get(j).getPkX();
+					if (packet.get(j).getPkX() < min_x)
+						min_x = packet.get(j).getPkX();
 
-					if (packet.get(i).getPkY() > max_y)
-						max_y = packet.get(i).getPkY();
-					if (packet.get(i).getPkY() < min_y)
-						min_y = packet.get(i).getPkY();
+					if (packet.get(j).getPkY() > max_y)
+						max_y = packet.get(j).getPkY();
+					if (packet.get(j).getPkY() < min_y)
+						min_y = packet.get(j).getPkY();
 				}
 			}
 		}
+		
 		width = max_x - min_x;
 		height = max_y - min_y;
 		prop = width / 30;
@@ -230,6 +223,33 @@ public class Drawing
 		four[1] = data[position + 2];
 		four[0] = data[position + 3];
 		return java.nio.ByteBuffer.wrap(four).getInt();
+	}
+	
+	public void clearStuff()
+	{
+		if (figure == null) return;
+		int size = this.figure.size();
+		for (int i = 0; i < size; i++)
+		{
+			if (this.figure.get(i).getSegment() == null) continue;
+			Iterator <Segment> segment = this.figure.get(i).getSegment().iterator();
+			Segment seg;
+			
+			while (segment.hasNext())
+			{
+				seg = segment.next();
+				if (seg.getPacket() != null)
+				{
+					seg.getPacket().clear();
+					seg.setPacket(null);
+				}
+			}
+			
+			this.figure.get(i).getSegment().clear();
+			this.figure.get(i).setSegment(null);
+		}
+		this.figure.clear();
+		this.figure = null;
 	}
 
 	public Rectangle getContent()

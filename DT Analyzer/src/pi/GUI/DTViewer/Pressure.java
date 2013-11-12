@@ -22,7 +22,7 @@ public class Pressure extends JPanel
 	
 	public Pressure(Dimension size, Graph graph)
 	{
-		this.setGraph(graph);
+		this.graph = graph;
 
 		this.setSize(size);
 		this.setLayout(null);
@@ -40,24 +40,33 @@ public class Pressure extends JPanel
 		{
 			public void stateChanged(ChangeEvent e)
 			{
-				getGraph().getDrawing().setPressureAvoid(pressureSlider.getValue());
-				getGraph().getDrawing().recalculate();
-				getGraph().recalculate();
-				getGraph().draw();
-				pressureLabel.setText(String.format("Pressure %d/1024", pressureSlider.getValue()));
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().getDrawing().setPressureAvoid(pressureSlider.getValue());
+					getGraph().getDrawing().recalculate();
+					getGraph().recalculate();
+					getGraph().draw();
+					pressureLabel.setText(String.format("Pressure %d/1024", pressureSlider.getValue()));
+				}
 			}
 		});
 		this.add(this.pressureSlider);
-	
-		this.rebuild(graph.getDrawing());
+		
+		this.pressureSlider.setMinimum(1);
+		this.pressureSlider.setMaximum(1024);
+		this.pressureSlider.setValue(128);
 	}
 	
 	public void rebuild(Drawing drawing)
 	{
-		this.pressureSlider.setMinimum(1);
-		this.pressureSlider.setMaximum(1024);
-		this.pressureSlider.setValue(drawing.getPressureAvoid());
+		if (drawing != null)
+		{
+			this.pressureSlider.setValue(graph.getDrawing().getPressureAvoid());	
+			pressureLabel.setText(String.format("Pressure %d/1024", pressureSlider.getValue()));
+			System.out.printf("ASDASDAS %d\n", graph.getDrawing().getPressureAvoid());
+		}
 	}
+	
 
 	public Graph getGraph()
 	{

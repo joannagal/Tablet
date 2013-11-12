@@ -30,39 +30,45 @@ public class ViewOptions extends JPanel
 	
 	public ViewOptions(Dimension size, Graph graph)
 	{
-		this.setGraph(graph);
+		this.graph = graph;
 		
 		this.setSize(size);
 		this.setLayout(null);
 		this.setBorder(BorderFactory.createTitledBorder("View Options"));
 		
-		this.thickOn = new JButton("Signal ON");
-		this.thickOn.setSize(new Dimension(90, 30));
-		this.thickOn.setLocation(5, 20);
-		this.thickOn.addActionListener(new ActionListener()
+		this.signalOn = new JButton("Signal ON");
+		this.signalOn.setSize(new Dimension(90, 30));
+		this.signalOn.setLocation(5, 20);
+		this.signalOn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent evt)
 			{
-				getGraph().setSignalShow(true);
-				getGraph().recalculate();
-				getGraph().draw();
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().setSignalShow(true);
+					getGraph().recalculate();
+					getGraph().draw();	
+				}
 			}
 		});
-		this.add(thickOn);
+		this.add(signalOn);
 		
-		this.thickOff = new JButton("Signal Off");
-		this.thickOff.setSize(new Dimension(90, 30));
-		this.thickOff.setLocation(95, 20);
-		thickOff.addActionListener(new ActionListener()
+		this.signalOff = new JButton("Signal Off");
+		this.signalOff.setSize(new Dimension(90, 30));
+		this.signalOff.setLocation(95, 20);
+		signalOff.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent evt)
 			{
-				getGraph().setSignalShow(false);
-				getGraph().recalculate();
-				getGraph().draw();
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().setSignalShow(false);
+					getGraph().recalculate();
+					getGraph().draw();		
+				}
 			}
 		});
-		this.add(thickOff);
+		this.add(signalOff);
 		
 		this.linearOn = new JButton("Linear On");
 		this.linearOn.setSize(new Dimension(90, 30));
@@ -71,9 +77,12 @@ public class ViewOptions extends JPanel
 		{
 			public void actionPerformed(ActionEvent evt)
 			{
-				getGraph().setLinearShow(true);
-				getGraph().recalculate();
-				getGraph().draw();
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().setLinearShow(true);
+					getGraph().recalculate();
+					getGraph().draw();
+				}
 			}
 		});
 		this.add(linearOn);
@@ -85,9 +94,12 @@ public class ViewOptions extends JPanel
 		{
 			public void actionPerformed(ActionEvent evt)
 			{
-				getGraph().setLinearShow(false);
-				getGraph().recalculate();
-				getGraph().draw();
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().setLinearShow(false);
+					getGraph().recalculate();
+					getGraph().draw();
+				}
 			}
 		});
 		this.add(linearOff);
@@ -99,9 +111,12 @@ public class ViewOptions extends JPanel
 		{
 			public void actionPerformed(ActionEvent evt)
 			{
-				getGraph().setThicknessShow(true);
-				getGraph().recalculate();
-				getGraph().draw();
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().setThicknessShow(true);
+					getGraph().recalculate();
+					getGraph().draw();
+				}
 			}
 		});
 		this.add(thickOn);
@@ -113,9 +128,12 @@ public class ViewOptions extends JPanel
 		{
 			public void actionPerformed(ActionEvent evt)
 			{
-				getGraph().setThicknessShow(false);
-				getGraph().recalculate();
-				getGraph().draw();
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().setThicknessShow(false);
+					getGraph().recalculate();
+					getGraph().draw();
+				}
 			}
 		});
 		this.add(thickOff);
@@ -127,9 +145,12 @@ public class ViewOptions extends JPanel
 		{
 			public void actionPerformed(ActionEvent evt)
 			{
-				getGraph().setDrawingAngleShow(true);
-				getGraph().recalculate();
-				getGraph().draw();
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().setDrawingAngleShow(true);
+					getGraph().recalculate();
+					getGraph().draw();
+				}
 			}
 		});
 		this.add(angleOn);
@@ -141,9 +162,12 @@ public class ViewOptions extends JPanel
 		{
 			public void actionPerformed(ActionEvent evt)
 			{
-				getGraph().setDrawingAngleShow(false);
-				getGraph().recalculate();
-				getGraph().draw();
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().setDrawingAngleShow(false);
+					getGraph().recalculate();
+					getGraph().draw();
+				}
 			}
 		});
 		this.add(angleOff);

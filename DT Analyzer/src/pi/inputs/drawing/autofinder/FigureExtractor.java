@@ -16,6 +16,7 @@ public class FigureExtractor
 	{
 		ArrayList <PacketData> packet = drawing.getPacket();
 		int size = packet.size();
+		int pressureAvoid = drawing.getPressureAvoid();
 		
 		LinkedList <Range> range = new LinkedList <Range> ();
 		double maxDist = drawing.getBreakFigureDistance();
@@ -23,13 +24,16 @@ public class FigureExtractor
 		int pointer = 0;
 		int last = 0;
 		
-		for (int i = 1; i < size - 1; i++)
+		
+		packet.get(0).setBroken(false);
+		for (int i = 1; i < size; i++)
 		{
-			if ((i != size - 2) && (packet.get(i).getPkPressure() < drawing.getPressureAvoid()))
+			packet.get(i).setBroken(false);
+			if ((i != size - 1) && (packet.get(i).getPkPressure() < pressureAvoid))
 				continue;
 
 			if ((this.getDistance(packet.get(last), packet.get(i)) > maxDist)
-					|| (i == size - 2))
+					|| (i == size - 1))
 			{
 				range.add(new Range(pointer, last));
 				pointer = i;
@@ -58,13 +62,13 @@ public class FigureExtractor
 			for (int i = value.getLeft(); i <= value.getRight(); i++)
 			{
 				
-				if ((i < value.getRight()) && (packet.get(i).getPkPressure() >= drawing.getPressureAvoid())
-						&& (packet.get(i + 1).getPkPressure() < drawing.getPressureAvoid()) )
+				if ((i < value.getRight()) && (packet.get(i).getPkPressure() >= pressureAvoid)
+						&& (packet.get(i + 1).getPkPressure() < pressureAvoid) )
 				{
 					packet.get(i).setBroken(true);
 				}
 				
-				if (packet.get(i).getPkPressure() < drawing.getPressureAvoid()) continue;
+				if (packet.get(i).getPkPressure() < pressureAvoid) continue;
 				
 				if (firstAccept)
 				{

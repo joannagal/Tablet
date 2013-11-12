@@ -1,11 +1,8 @@
 package pi.GUI.DTViewer;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -26,7 +23,7 @@ public class Timeline extends JPanel
 	
 	public Timeline(Dimension size, Graph graph)
 	{
-		this.setGraph(graph);
+		this.graph = graph;
 		
 		this.setSize(size);
 		this.setLayout(null);
@@ -39,8 +36,11 @@ public class Timeline extends JPanel
 		{
 			public void stateChanged(ChangeEvent e)
 			{
-				applyNewLabel();
-				getGraph().setCurrentTime(timeSlider.getValue());
+				if (getGraph().getDrawing() != null)
+				{
+					applyNewLabel();
+					getGraph().setCurrentTime(timeSlider.getValue());
+				}
 			}
 		});
 		this.add(this.timeSlider);

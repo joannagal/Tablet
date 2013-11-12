@@ -19,18 +19,13 @@ public class DTViewer extends JPanel
 	private Pressure pressure;
 	private ViewOptions voptions;
 
-	public DTViewer(Dimension size, Drawing drawing)
+	public DTViewer(Dimension size)
 	{
 		this.setLayout(null);
 		
-		this.graph = new Graph(new Dimension(0, 0), drawing);
+		this.graph = new Graph(new Dimension(0, 0));
 		this.graph.setLocation((int) margin.getLeft(), (int) margin.getTop());
-		
-		if (drawing != null)
-		{
-			this.graph.setCurrentTime(drawing.getTotalTime());
-		}
-		
+
 		// --- TIME PANEL
 		
 		this.timeline = new Timeline(new Dimension((int)this.margin.getLeft() - 10, 80), graph);
@@ -40,6 +35,7 @@ public class DTViewer extends JPanel
 		this.pressure = new Pressure(new Dimension((int)this.margin.getLeft() - 10, 70), graph);
 		this.pressure.setLocation(5, (int)this.margin.getTop() + 90);
 		this.add(pressure);
+		
 		
 		this.voptions = new ViewOptions(new Dimension((int)this.margin.getLeft() - 10, 180), graph);
 		this.voptions.setLocation(5, (int)this.margin.getTop() + 170);
@@ -88,7 +84,11 @@ public class DTViewer extends JPanel
 		if (drawing != null)
 		{
 			this.graph.setDrawing(drawing);
+			this.pressure.rebuild(drawing);
+			this.timeline.rebuild(drawing);
+			this.graph.recalculate();
 			this.graph.setCurrentTime(drawing.getTotalTime());
+			this.graph.draw();
 		}
 	}
 
