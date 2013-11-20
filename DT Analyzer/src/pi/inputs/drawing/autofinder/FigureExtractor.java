@@ -12,6 +12,61 @@ import pi.utilities.Range;
 
 public class FigureExtractor
 {
+	public Figure getFigure(Drawing drawing, Range range)
+	{
+		ArrayList <PacketData> packet = drawing.getPacket();
+		int pressureAvoid = drawing.getPressureAvoid();
+		
+		Figure newFigure = new Figure();
+		LinkedList <Segment> segment = new LinkedList <Segment> ();
+		newFigure.setSegment(segment);
+		
+		
+		int left = 0;
+		boolean firstAccept = true;
+		
+		for (int i = range.getLeft(); i <= range.getRight(); i++)
+		{
+			
+			if ((i < range.getRight()) && (packet.get(i).getPkPressure() >= pressureAvoid)
+					&& (packet.get(i + 1).getPkPressure() < pressureAvoid) )
+			{
+				packet.get(i).setBroken(true);
+			}
+			
+			if (packet.get(i).getPkPressure() < pressureAvoid) continue;
+			
+			if (firstAccept)
+			{
+				firstAccept = false;
+				left = i;
+			}
+			
+			if ((packet.get(i).isBroken()) || (i == range.getRight()))
+			{
+				firstAccept = true;
+				if (i - left + 1 != 0)
+				{
+					Segment newSegment = new Segment();
+					ArrayList <PacketData> copyPacket = new ArrayList <PacketData> (i - left + 1);
+					for (int j = left; j <= i; j++)
+					{
+						copyPacket.add(packet.get(j).getCopy());
+					}
+					if (copyPacket.size() > 2)
+					{
+						newSegment.setPacket(copyPacket);
+						segment.add(newSegment);	
+					}
+				}
+
+			}
+		}
+		
+		newFigure.calculateBounds();
+		return newFigure;
+	}
+	
 	public void extract(Drawing drawing)
 	{
 		ArrayList <PacketData> packet = drawing.getPacket();
@@ -50,55 +105,8 @@ public class FigureExtractor
 		
 		while (it.hasNext())
 		{
-			Figure newFigure = new Figure();
-			LinkedList <Segment> segment = new LinkedList <Segment> ();
-			newFigure.setSegment(segment);
-			
 			value = it.next();
-			
-			int left = 0;
-			boolean firstAccept = true;
-			
-			for (int i = value.getLeft(); i <= value.getRight(); i++)
-			{
-				
-				if ((i < value.getRight()) && (packet.get(i).getPkPressure() >= pressureAvoid)
-						&& (packet.get(i + 1).getPkPressure() < pressureAvoid) )
-				{
-					packet.get(i).setBroken(true);
-				}
-				
-				if (packet.get(i).getPkPressure() < pressureAvoid) continue;
-				
-				if (firstAccept)
-				{
-					firstAccept = false;
-					left = i;
-				}
-				
-				if ((packet.get(i).isBroken()) || (i == value.getRight()))
-				{
-					firstAccept = true;
-					if (i - left + 1 != 0)
-					{
-						Segment newSegment = new Segment();
-						ArrayList <PacketData> copyPacket = new ArrayList <PacketData> (i - left + 1);
-						for (int j = left; j <= i; j++)
-						{
-							copyPacket.add(packet.get(j).getCopy());
-						}
-						if (copyPacket.size() > 2)
-						{
-							newSegment.setPacket(copyPacket);
-							segment.add(newSegment);	
-						}
-					}
-
-				}
-			}
-			
-			newFigure.calculateBounds();
-			figure.add(newFigure);			
+			figure.add(this.getFigure(drawing, value));
 		}
 		
 	}

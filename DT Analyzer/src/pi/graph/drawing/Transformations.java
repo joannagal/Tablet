@@ -46,6 +46,13 @@ public class Transformations
 		p.y = this.size.height - p.y;
 	}
 	
+	public void transformToRealPoint(double x, double y, Point p)
+	{  
+		y = this.size.height - y;
+		p.x = (int) ((x * (this.t_width / (double)this.size.width)) + content.getX());
+		p.y = (int) ((y * (this.t_height / (double)this.size.height)) + content.getY());
+	}
+	
 	public void transformToCanvas(Rectangle R)
 	{
 		Point A = new Point();
@@ -56,6 +63,17 @@ public class Transformations
 		R.y = A.y;
 		R.width = B.x - R.x;
 		R.height = R.y - B.y;
+	}
+	
+	public boolean isInside(Rectangle rect, Point p)
+	{
+		if (
+				(p.x >= rect.x) &&
+				(p.y >= rect.y - rect.height) &&
+				(p.x <= rect.x + rect.width) &&
+				(p.y <= rect.y)
+				) return true;
+		return false;
 	}
 	
 	public void transformAnglePointer(double azimuth, double altitude, Point p)

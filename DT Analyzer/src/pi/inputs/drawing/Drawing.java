@@ -3,6 +3,7 @@ package pi.inputs.drawing;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,23 +11,18 @@ import java.util.Iterator;
 
 import pi.inputs.drawing.autofinder.FigureExtractor;
 import pi.inputs.drawing.autofinder.FigureInterpreter;
-
+import pi.utilities.Range;
 
 public class Drawing
 {
+	private String label = "";
+	
 	private Rectangle content;
 
 	private ArrayList<PacketData> packet;
 	private ArrayList<Figure> figure;
 
-	private Figure zigZag;
-	private Figure circleUp;
-	private Figure circleDown;
-	private Figure firstLine;
-	private Figure secondLine;
-	private Figure brokenLine;
-	private Figure spiralOut;
-	private Figure spiralIn;
+	private boolean withExtract = false;
 
 	private int pressureAvoid = 128;
 	private int maxPressure = 1024;
@@ -35,123 +31,165 @@ public class Drawing
 
 	FigureExtractor extractor = new FigureExtractor();
 	FigureInterpreter interpreter = new FigureInterpreter();
-	
-	public Drawing(String path)
-	{	
+
+	public Drawing(String path) throws Exception
+	{
 		this.createFromFile(path);
 		this.calculateBreakFigureDistance();
-		this.recalculate();
+		this.recalculate(true);
 	}
 
-	
-	public void recalculate()
+	public void flipHorizontal()
 	{
+		int mirror = this.content.height / 2 + this.content.y;
+
+		for (int i = 0; i < this.figure.size(); i++)
+		{
+			Iterator<Segment> itSeg = this.figure.get(i).getSegment()
+					.iterator();
+			Segment seg;
+
+			while (itSeg.hasNext())
+			{
+				seg = itSeg.next();
+				ArrayList<PacketData> packet = seg.getPacket();
+				int size = packet.size();
+
+				for (int j = 0; j < size; j++)
+				{
+					packet.get(j).setPkY(2 * mirror - packet.get(j).getPkY());
+				}
+			}
+		}
+	}
+
+	public void recalculate(boolean bounds)
+	{
+		if ((!bounds) && (!this.isWithExtract()))
+			return;
 		this.clearStuff();
-		
 		extractor.extract(this);
-		this.calculateBounds();
+
+		if (bounds)
+			this.calculateBounds();
+
+		// this.flipHorizontal();
+
 		interpreter.interprate(this);
 	}
 
-	public void createFromFile(String path)
+	public void createFigure(Range inTime, int type)
 	{
-		try
+		int left = -1, right = -1;
+		int size = this.packet.size();
+
+		for (int i = 0; i < size; i++)
 		{
-			File file = new File(path);
-			InputStream insputStream = new FileInputStream(file);
-			long size = file.length();
-			byte[] data = new byte[(int) size];
-
-			insputStream.read(data);
-			insputStream.close();
-
-			int shift = 0;
-			int fileNameLength = this.getInt(data, shift);
-
-			if (fileNameLength > 0)
-			{
-				shift += 4;
-				byte[] fileName = new byte[fileNameLength];
-				for (int i = 0; i < fileNameLength; i++)
-					fileName[i] = data[shift + i];
-				shift += fileNameLength;
-			} else
-				shift++;
-
-			int dateLength = this.getInt(data, shift);
-			if (dateLength > 0)
-			{
-				shift += 4;
-
-				byte[] date = new byte[dateLength];
-				for (int i = 0; i < dateLength; i++)
-					date[i] = data[shift + i];
-				shift += dateLength;
-			} else
-				shift++;
-
-			int memoLength = this.getInt(data, shift);
-			if (memoLength > 0)
-			{
-				shift += 4;
-				byte[] memo = new byte[memoLength];
-				for (int i = 0; i < memoLength; i++)
-					memo[i] = data[shift + i];
-				shift += memoLength;
-			} else
-				shift++;
-
-			// long outOrgX = this.getInt(data, shift);
-			shift += 4;
-			// long outOrgY =this.getInt(data, shift);
-			shift += 4;
-			// long outExtX = this.getInt(data, shift);
-			shift += 4;
-			// long outExtY = this.getInt(data, shift);
-			shift += 4;
-
-			int numPackages = this.getInt(data, shift);
-			shift += 4;
-
-			System.out.printf("PACKAGES:  %d\n", numPackages);
-			
-			this.setPressureAvoid(128);
-			this.setMaxPressure(1024);
-
-			this.packet = new ArrayList<PacketData>(numPackages);
-			PacketData temp;
-
-			int maxTime = 0;
-			int cnt = 0;
-
-			while (cnt < numPackages)
-			{
-				cnt++;
-				temp = new PacketData();
-				if (this.getInt(data, shift) > maxTime)
-					maxTime = this.getInt(data, shift);
-				temp.setPkTime(this.getInt(data, shift));
-				temp.setPkX(this.getInt(data, shift + 4));
-				temp.setPkY(this.getInt(data, shift + 8));
-				temp.setPkPressure(this.getInt(data, shift + 12));
-				temp.setPkAzimuth(this.getInt(data, shift + 16));
-				temp.setPkAltitude(this.getInt(data, shift + 20));
-				packet.add(temp);
-				shift += 24;
-			}
-			this.setTotalTime(maxTime);
-
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if ((left == -1) && (packet.get(i).getPkTime() >= inTime.getLeft()))
+				left = i;
+			if ((right == -1)
+					&& (packet.get(i).getPkTime() >= inTime.getRight()))
+				right = i;
 		}
+
+		Figure newFigure = extractor.getFigure(this, new Range(left, right));
+		newFigure.setType(type);
+		this.figure.add(newFigure);
+	}
+
+	public void createFromFile(String path) throws Exception
+	{
+
+		File file = new File(path);
+		InputStream insputStream = new FileInputStream(file);
+		long size = file.length();
+		byte[] data = new byte[(int) size];
+
+		insputStream.read(data);
+		insputStream.close();
+
+		int shift = 0;
+		int fileNameLength = this.getInt(data, shift);
+
+		if (fileNameLength > 0)
+		{
+			shift += 4;
+			byte[] fileName = new byte[fileNameLength];
+			for (int i = 0; i < fileNameLength; i++)
+				fileName[i] = data[shift + i];
+			shift += fileNameLength;
+		} else
+			shift++;
+
+		int dateLength = this.getInt(data, shift);
+		if (dateLength > 0)
+		{
+			shift += 4;
+
+			byte[] date = new byte[dateLength];
+			for (int i = 0; i < dateLength; i++)
+				date[i] = data[shift + i];
+			shift += dateLength;
+		} else
+			shift++;
+
+		int memoLength = this.getInt(data, shift);
+		if (memoLength > 0)
+		{
+			shift += 4;
+			byte[] memo = new byte[memoLength];
+			for (int i = 0; i < memoLength; i++)
+				memo[i] = data[shift + i];
+			shift += memoLength;
+		} else
+			shift++;
+
+		// long outOrgX = this.getInt(data, shift);
+		shift += 4;
+		// long outOrgY =this.getInt(data, shift);
+		shift += 4;
+		// long outExtX = this.getInt(data, shift);
+		shift += 4;
+		// long outExtY = this.getInt(data, shift);
+		shift += 4;
+
+		int numPackages = this.getInt(data, shift);
+		shift += 4;
+
+		System.out.printf("PACKAGES:  %d\n", numPackages);
+
+		this.setPressureAvoid(128);
+		this.setMaxPressure(1024);
+
+		this.packet = new ArrayList<PacketData>(numPackages);
+		PacketData temp;
+
+		int maxTime = 0;
+		int cnt = 0;
+
+		while (cnt < numPackages)
+		{
+			cnt++;
+			temp = new PacketData();
+			if (this.getInt(data, shift) > maxTime)
+				maxTime = this.getInt(data, shift);
+			temp.setPkTime(this.getInt(data, shift));
+			temp.setPkX(this.getInt(data, shift + 4));
+			temp.setPkY(this.getInt(data, shift + 8));
+			temp.setPkPressure(this.getInt(data, shift + 12));
+			temp.setPkAzimuth(this.getInt(data, shift + 16));
+			temp.setPkAltitude(this.getInt(data, shift + 20));
+			packet.add(temp);
+			shift += 24;
+		}
+		this.setTotalTime(maxTime);
 	}
 
 	public void calculateBounds()
 	{
-		if (this.figure == null) return;
-		
+		if (this.figure == null)
+			return;
+
 		int min_x = 1000000;
 		int max_x = -1000000;
 		int min_y = 1000000;
@@ -163,7 +201,8 @@ public class Drawing
 		for (int i = 0; i < this.figure.size(); i++)
 		{
 
-			Iterator<Segment> itSeg = this.figure.get(i).getSegment().iterator();
+			Iterator<Segment> itSeg = this.figure.get(i).getSegment()
+					.iterator();
 			Segment seg;
 
 			while (itSeg.hasNext())
@@ -187,7 +226,7 @@ public class Drawing
 				}
 			}
 		}
-		
+
 		width = max_x - min_x;
 		height = max_y - min_y;
 		prop = width / 30;
@@ -224,17 +263,20 @@ public class Drawing
 		four[0] = data[position + 3];
 		return java.nio.ByteBuffer.wrap(four).getInt();
 	}
-	
+
 	public void clearStuff()
 	{
-		if (figure == null) return;
+		if (figure == null)
+			return;
 		int size = this.figure.size();
 		for (int i = 0; i < size; i++)
 		{
-			if (this.figure.get(i).getSegment() == null) continue;
-			Iterator <Segment> segment = this.figure.get(i).getSegment().iterator();
+			if (this.figure.get(i).getSegment() == null)
+				continue;
+			Iterator<Segment> segment = this.figure.get(i).getSegment()
+					.iterator();
 			Segment seg;
-			
+
 			while (segment.hasNext())
 			{
 				seg = segment.next();
@@ -244,7 +286,7 @@ public class Drawing
 					seg.setPacket(null);
 				}
 			}
-			
+
 			this.figure.get(i).getSegment().clear();
 			this.figure.get(i).setSegment(null);
 		}
@@ -322,83 +364,23 @@ public class Drawing
 		this.figure = figure;
 	}
 
-	public Figure getZigZag()
+	public boolean isWithExtract()
 	{
-		return zigZag;
+		return withExtract;
 	}
 
-	public void setZigZag(Figure zigZag)
+	public void setWithExtract(boolean withExtract)
 	{
-		this.zigZag = zigZag;
+		this.withExtract = withExtract;
 	}
 
-	public Figure getCircleUp()
+	public String getLabel()
 	{
-		return circleUp;
+		return label;
 	}
 
-	public void setCircleUp(Figure circleUp)
+	public void setLabel(String label)
 	{
-		this.circleUp = circleUp;
-	}
-
-	public Figure getCircleDown()
-	{
-		return circleDown;
-	}
-
-	public void setCircleDown(Figure circleDown)
-	{
-		this.circleDown = circleDown;
-	}
-
-	public Figure getFirstLine()
-	{
-		return firstLine;
-	}
-
-	public void setFirstLine(Figure firstLine)
-	{
-		this.firstLine = firstLine;
-	}
-
-	public Figure getSecondLine()
-	{
-		return secondLine;
-	}
-
-	public void setSecondLine(Figure secondLine)
-	{
-		this.secondLine = secondLine;
-	}
-
-	public Figure getBrokenLine()
-	{
-		return brokenLine;
-	}
-
-	public void setBrokenLine(Figure brokenLine)
-	{
-		this.brokenLine = brokenLine;
-	}
-
-	public Figure getSpiralOut()
-	{
-		return spiralOut;
-	}
-
-	public void setSpiralOut(Figure spiralOut)
-	{
-		this.spiralOut = spiralOut;
-	}
-
-	public Figure getSpiralIn()
-	{
-		return spiralIn;
-	}
-
-	public void setSpiralIn(Figure spiralIn)
-	{
-		this.spiralIn = spiralIn;
+		this.label = label;
 	}
 }

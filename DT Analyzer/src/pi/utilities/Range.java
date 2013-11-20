@@ -28,7 +28,7 @@ public class Range
 	private void recalculate()
 	{
 		if ( (this.right < this.left) ||
-			(this.left < 0) || (this.right < 0) )
+			(this.left < -100) || (this.right < -100) )
 		{
 			throw new IllegalArgumentException();
 		}

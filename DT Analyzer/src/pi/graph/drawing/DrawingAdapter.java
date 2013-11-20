@@ -14,6 +14,7 @@ import pi.inputs.drawing.Figure;
 import pi.inputs.drawing.PacketData;
 import pi.inputs.drawing.Segment;
 import pi.shared.schemes.drawing.DrawingScheme;
+import pi.utilities.Range;
 
 public class DrawingAdapter
 {
@@ -22,8 +23,8 @@ public class DrawingAdapter
 
 	private boolean thicknessShow = false;
 	private boolean drawingAngleShow = false;
-	private boolean linearizedShow = true;
-	private boolean signalShow = true;
+	private boolean linearizedShow = false;
+	private boolean signalShow = false;
 
 	BasicStroke stroke[] = new BasicStroke[5];
 
@@ -43,6 +44,11 @@ public class DrawingAdapter
 		int size = figure.size();
 
 		if (size == 1) return;
+		
+		if (this.signalShow)
+		{
+			this.drawSegment(graphics, graph.getDrawing().getPacket(), time, true);	
+		}
 		
 		for (int i = 0; i < size; i++)
 		{
@@ -87,27 +93,21 @@ public class DrawingAdapter
 			case Figure.SPIRALOUT: figString = "SPIRAL-OUT"; break;
 		}
 		
-		graphics.drawString(figString, tBounds.x, tBounds.y - 15);
+		graphics.drawString(figString, tBounds.x, tBounds.y - 5);
 		
 		
 		while (it.hasNext())
 		{
 			seg = it.next();
 			
-			if (this.isSignalShow())
-			{
-				this.drawSegment(graphics, seg.getPacket(), time, false);		
-			}
+			this.drawSegment(graphics, seg.getPacket(), time, false);		
 			
-			/*if (this.isLinearizedShow()) 
-			{ 
-				this.drawSegment(graphics, seg.getLinearized(), time, true);
-			}*/
+			
 		}
 	}
 
 	public void drawSegment(Graphics graphics, ArrayList<PacketData> packet,
-			int time, boolean isLinearized)
+			int time, boolean isAll)
 	{
 		Transformations transform = graph.getTranform();
 		PacketData pck;
@@ -128,9 +128,9 @@ public class DrawingAdapter
 
 		transform.transformToCanvas(pck.getPkX(), pck.getPkY(), A);
 		
-		if (isLinearized)
+		if (isAll)
 		{
-			graphics.setColor(scheme.getLinearizedColor());
+			graphics.setColor(scheme.getAllColor());
 			tools.setStroke(stroke[0]);
 		}
 
@@ -142,7 +142,7 @@ public class DrawingAdapter
 
 			transform.transformToCanvas(pck.getPkX(), pck.getPkY(), B);
 
-			if (!isLinearized)
+			if (!isAll)
 			{
 				if (this.thicknessShow)
 					tools.setStroke(stroke[transform.transformToPressure(pck
@@ -152,10 +152,19 @@ public class DrawingAdapter
 
 				graphics.setColor(drawColor);
 			}
+			else
+			{
+				Range selection = graph.getSelection();
+				if ( (pck.getPkTime() >= selection.getLeft()) && (pck.getPkTime() <= selection.getRight()) )
+				{
+					graphics.setColor(scheme.getSelectionColor());
+				}
+				else graphics.setColor(scheme.getAllColor());
+			}
 
 			graphics.drawLine(A.x, A.y, B.x, B.y);
 
-			if (!isLinearized)
+			if (!isAll)
 			{
 				if (this.drawingAngleShow)
 				{

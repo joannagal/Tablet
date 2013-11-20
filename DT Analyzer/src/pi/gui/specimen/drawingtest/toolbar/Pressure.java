@@ -1,8 +1,14 @@
-package pi.GUI.DTViewer;
+package pi.gui.specimen.drawingtest.toolbar;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -17,25 +23,19 @@ public class Pressure extends JPanel
 	private static final long serialVersionUID = 1L;
 	
 	private JSlider pressureSlider;
-	private JLabel pressureLabel;
+	private JCheckBox figureExtract = new JCheckBox("Extract");
 	private Graph graph;
 	
-	public Pressure(Dimension size, Graph graph)
+	public Pressure(Graph graph)
 	{
 		this.graph = graph;
 
-		this.setSize(size);
-		this.setLayout(null);
+		this.setLayout(new FlowLayout(FlowLayout.LEADING));
+		this.setMinimumSize(new Dimension(50, 50));
+		
 		this.setBorder(BorderFactory.createTitledBorder("Pressure Ignore"));
-		
-		this.pressureLabel = new JLabel();
-		this.pressureLabel.setSize(new Dimension(size.width - 20, 30));
-		this.pressureLabel.setLocation(10, 40);
-		this.add(pressureLabel);
-		
+
 		this.pressureSlider = new JSlider();
-		this.pressureSlider.setSize(new Dimension(size.width - 20, 30));
-		this.pressureSlider.setLocation(10, 20);
 		this.pressureSlider.addChangeListener(new ChangeListener()
 		{
 			public void stateChanged(ChangeEvent e)
@@ -43,10 +43,10 @@ public class Pressure extends JPanel
 				if (getGraph().getDrawing() != null)
 				{
 					getGraph().getDrawing().setPressureAvoid(pressureSlider.getValue());
-					getGraph().getDrawing().recalculate();
+					getGraph().getDrawing().recalculate(false);
 					getGraph().recalculate();
 					getGraph().draw();
-					pressureLabel.setText(String.format("Pressure %d/1024", pressureSlider.getValue()));
+					setBorder(BorderFactory.createTitledBorder(String.format("Pressure %d/1024", pressureSlider.getValue())));
 				}
 			}
 		});
@@ -55,6 +55,20 @@ public class Pressure extends JPanel
 		this.pressureSlider.setMinimum(1);
 		this.pressureSlider.setMaximum(1024);
 		this.pressureSlider.setValue(128);
+
+		this.add(this.figureExtract);
+		this.figureExtract.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if (getGraph().getDrawing() != null)
+				{
+					getGraph().getDrawing().setWithExtract(figureExtract.isSelected());
+				}
+			}
+		});
+		
+
 	}
 	
 	public void rebuild(Drawing drawing)
@@ -62,8 +76,7 @@ public class Pressure extends JPanel
 		if (drawing != null)
 		{
 			this.pressureSlider.setValue(graph.getDrawing().getPressureAvoid());	
-			pressureLabel.setText(String.format("Pressure %d/1024", pressureSlider.getValue()));
-			System.out.printf("ASDASDAS %d\n", graph.getDrawing().getPressureAvoid());
+			this.setBorder(BorderFactory.createTitledBorder(String.format("Pressure %d/1024", pressureSlider.getValue())));
 		}
 	}
 	

@@ -21,7 +21,7 @@ public class Figure
 	public static final int BROKENLINE = 5;
 	public static final int SPIRALIN = 6;
 	public static final int SPIRALOUT = 7;
-	
+
 	public void calculateBounds()
 	{
 		if ((getSegment() == null) || (getSegment().size() == 0))
@@ -58,6 +58,7 @@ public class Figure
 				(max_y - min_y)));
 	}
 
+
 	public int getType()
 	{
 		return type;
@@ -88,5 +89,4 @@ public class Figure
 		this.segment = segment;
 	}
 
-	
 }

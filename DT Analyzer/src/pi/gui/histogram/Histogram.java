@@ -1,0 +1,223 @@
+package pi.gui.histogram;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+
+import javax.swing.JPanel;
+
+public class Histogram extends JPanel
+{
+	private static final long serialVersionUID = 1L;
+
+	private ArrayList<ArrayList<Double>> data = null;
+	private ArrayList<ArrayList<Integer>> counter = null;
+
+	private final Color backgroundColor = new Color(255, 255, 255, 255);
+	private final Color borderColor = new Color(0, 0, 0, 255);
+	private final Color gridColor = new Color(170, 170, 170, 255);
+
+	private final Color[] drawColor =
+	{ new Color(255, 0, 0, 255), new Color(0, 255, 0, 255),
+			new Color(0, 0, 255, 255), new Color(255, 0, 255, 255),
+			new Color(255, 255, 0, 255), new Color(0, 255, 255, 255), };
+
+	private int maxCounter = 0;
+	private int ranges = 5;
+
+	private final double innerScale = 0.9d;
+	private final double margin = 30.0d;
+	private final double marginLeft = 60.0d;
+	private int divider = 0;
+
+	public void recalculate()
+	{
+		if (getData() == null)
+			return;
+
+		counter = new ArrayList<ArrayList<Integer>>(ranges);
+		for (int i = 0; i < data.size(); i++)
+		{
+			counter.add(new ArrayList<Integer>(data.size()));
+		}
+
+		double minValue = 1000000.0d;
+		double maxValue = -1000000.0d;
+
+		for (int i = 0; i < data.size(); i++)
+		{
+			int size = data.get(i).size();
+			ArrayList<Integer> tmp = counter.get(i);
+			for (int j = 0; j < size; j++)
+			{
+				tmp.add(0);
+
+				if (getData().get(i).get(j) > maxValue)
+					maxValue = getData().get(i).get(j);
+				if (getData().get(i).get(j) < minValue)
+					minValue = getData().get(i).get(j);
+			}
+		}
+
+		double range = (double) (maxValue - minValue) / (double) ranges;
+
+		for (int i = 0; i < data.size(); i++)
+		{
+			int size = data.get(i).size();
+			double value = 0.0d;
+			ArrayList<Integer> cnt = counter.get(i);
+
+			for (int j = 0; j < size; j++)
+			{
+				value = getData().get(i).get(j);
+				for (int k = 1; k <= ranges; k++)
+				{
+					if ((value < minValue + (double) k * range)
+							|| (k == ranges))
+					{
+						int tmp = cnt.get(k - 1);
+						tmp++;
+						if (tmp > maxCounter)
+							maxCounter = tmp;
+						cnt.set(k - 1, tmp);
+						break;
+					}
+				}
+			}
+		}
+
+		if (maxCounter <= 3)
+			divider = maxCounter;
+		else if (maxCounter <= 100)
+		{
+			int max = -1;
+			int half = maxCounter / 2 + 1;
+			for (int i = 3; i <= half; i++)
+			{
+				if (maxCounter % i == 0)
+				{
+					if (i > max)
+						max = i;
+				}
+			}
+
+			if (max == -1)
+				divider = 2;
+			else
+				divider = max;
+		} else
+			divider = 10;
+
+	}
+
+	@Override
+	public void paintComponent(Graphics graphics)
+	{
+		
+		
+		this.drawBackground(graphics);
+		this.drawBorder(graphics);
+		
+		if (data == null) return;
+		
+		this.drawGrid(graphics);
+
+		double left = marginLeft;
+		double bottom = this.getSize().height - margin;
+		double width =  (this.getSize().width - margin - marginLeft)
+				/ (double) ranges;
+		double height = (this.getSize().height - 2 * margin);
+
+		double innerShift = width * (1.0d - this.innerScale) * 0.5d;
+
+		double smallWidth = width / data.size();
+		double posX, posY, prop;
+
+		for (int i = 0; i < data.size(); i++)
+		{
+			ArrayList<Integer> cnt = counter.get(i);
+			for (int j = 0; j < ranges; j++)
+			{
+				posX = 0.5d + left + innerShift + (width)
+						* (double) j;
+				posX += i * smallWidth * this.innerScale;
+
+				prop = (double) (cnt.get(j)) / (double) (this.maxCounter);
+				prop *= (double) height;
+				posY = bottom - prop;
+
+				graphics.setColor(this.drawColor[i]);
+				graphics.fillRect((int) posX, (int) (posY), (int) (smallWidth * this.innerScale + 0.5d),
+						(int) prop);
+
+			}
+		}
+
+	}
+
+	public void drawGrid(Graphics graphics)
+	{
+		double left = marginLeft;
+		double bottom = this.getSize().height - margin;
+		double width = (this.getSize().width - margin - marginLeft);
+		double height = (this.getSize().height - 2 * margin) / (double) divider;
+		double posY = 0.0d;
+
+		graphics.setColor(this.gridColor);
+
+		for (int i = 1; i <= divider; i++)
+		{
+			posY = bottom - i * height;
+			graphics.drawLine((int) left, (int) posY, (int) (left + width),
+					(int) posY);
+		}
+
+	}
+
+	public void draw()
+	{
+		if (getData() == null)
+			return;
+		this.repaint();
+	}
+
+	// ------------------------------------------
+	// SIMPLE DRAWING BORDER
+	public void drawBorder(Graphics graphics)
+	{
+		Rectangle frame = this.getBounds();
+		graphics.setColor(this.borderColor);
+		graphics.drawRect(0, 0, frame.width - 1, frame.height - 1);
+	}
+
+	// ------------------------------------------
+	// SIMPLE DRAWING BACKGROUND
+	public void drawBackground(Graphics graphics)
+	{
+		Rectangle frame = this.getBounds();
+		graphics.setColor(this.backgroundColor);
+		graphics.fillRect(0, 0, frame.width - 1, frame.height - 1);
+	}
+
+	public int getRanges()
+	{
+		return ranges;
+	}
+
+	public void setRanges(int ranges)
+	{
+		this.ranges = ranges;
+	}
+
+	public ArrayList<ArrayList<Double>> getData()
+	{
+		return data;
+	}
+
+	public void setData(ArrayList<ArrayList<Double>> data)
+	{
+		this.data = data;
+	}
+
+}

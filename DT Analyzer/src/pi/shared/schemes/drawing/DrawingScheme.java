@@ -11,6 +11,9 @@ public class DrawingScheme
 	private Color angleColor;
 	private Color linearizedColor;
 	private Color figureColor;
+	private Color allColor;
+	private Color selectionColor;
+	private Color labelColor;
 	
 	public Color getBorderColor()
 	{
@@ -71,6 +74,36 @@ public class DrawingScheme
 	public void setFigureColor(Color figureColor)
 	{
 		this.figureColor = figureColor;
+	}
+
+	public Color getAllColor()
+	{
+		return allColor;
+	}
+
+	public void setAllColor(Color allColor)
+	{
+		this.allColor = allColor;
+	}
+
+	public Color getSelectionColor()
+	{
+		return selectionColor;
+	}
+
+	public void setSelectionColor(Color selectionColor)
+	{
+		this.selectionColor = selectionColor;
+	}
+
+	public Color getLabelColor()
+	{
+		return labelColor;
+	}
+
+	public void setLabelColor(Color labelColor)
+	{
+		this.labelColor = labelColor;
 	}
 	
 }
