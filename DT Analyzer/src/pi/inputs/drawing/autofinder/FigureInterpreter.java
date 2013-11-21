@@ -140,7 +140,7 @@ public class FigureInterpreter
 		}
 		
 		double result = (double)accept / (double)(total);
-		System.out.printf("ZIG: %f\n", result);
+		//System.out.printf("ZIG: %f\n", result);
 		
 		if (result > accPercent)
 		{

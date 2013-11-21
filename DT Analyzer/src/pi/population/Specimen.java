@@ -28,8 +28,14 @@ public class Specimen
 	private Drawing before = null;
 	private Drawing after = null;
 	
-	private  SpecimenResult result = null;
+	private SpecimenResult result = null;
 
+	public void calculateStatistic()
+	{
+		result = new SpecimenResult(this);
+		result.calculateResult();
+	}
+	
 	public String getName()
 	{
 		return name;

@@ -70,6 +70,11 @@ public class DrawingTestView extends JPanel
 		}
 	}
 
+	public void redraw()
+	{
+		this.graph.recalculate();
+		this.graph.draw();
+	}
 	
 	public Drawing getDrawing()
 	{

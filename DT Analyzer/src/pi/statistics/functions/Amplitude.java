@@ -1,33 +1,34 @@
 package pi.statistics.functions;
 
-import pi.statistics.logic.Function;
+import java.util.ArrayList;
+
 import pi.statistics.logic.StatisticResult;
 
-public class Amplitude extends Function {
-    
-    public Amplitude() {
-	super("Amplitude");
-    }
+public class Amplitude
+{
 
-    @Override
-    public void countResult(StatisticResult statResult) {
-	//TODO null?
-	double min = statResult.getValue().get("Min").doubleValue();
-	double max = statResult.getValue().get("Max").doubleValue();
-	double amplitude = max - min;
-	
-	statResult.addValue(this.getName(), amplitude);
-    }
-
-    @Override
-    public void iterate(double value) {
-
-    }
-
-    @Override
-    public void backToBegin() {
+	static StatisticResult result;
 	
 	
-    }
-
+	static public void init(StatisticResult input)
+	{
+		result = input;
+		input.setValue(new ArrayList <Double> (3));
+		input.getValue().add(2000000.0d);
+		input.getValue().add(1000000.0d);
+		input.getValue().add(-1000000.0d);
+	}
+	
+	static public void iterate(Double value)
+	{
+		if (value < result.getValue().get(1))	
+			result.getValue().set(1, value);
+		
+		if (value > result.getValue().get(2))	
+			result.getValue().set(2, value);
+		
+		double res = result.getValue().get(2) - result.getValue().get(1);
+		result.getValue().set(0, res);
+	}
 }
+

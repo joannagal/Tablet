@@ -1,41 +1,34 @@
 package pi.statistics.functions;
 
-import pi.statistics.logic.Function;
+import java.util.ArrayList;
+
 import pi.statistics.logic.StatisticResult;
 
-public class Average extends Function {
+public class Average
+{
 
-    public Average() {
-	super("Average");
-    }
+	static StatisticResult result;
 
-    private double sum = 0;
-    private int denominator = 0;
-
-    public void countResult(StatisticResult statResult) {
-	double avg;
-	if (denominator != 0) {
-	   avg = (sum / denominator);
-	} else {
-	    avg = 0;
-	    // TODO Co jeœli mianownik (liczba próbek) jest zerem
+	static public void init(StatisticResult input)
+	{
+		result = input;
+		input.setValue(new ArrayList<Double>(2));
+		input.getValue().add(0.0d);
+		input.getValue().add(0.0d);
 	}
-	statResult.addValue(this.getName(), avg);
 
-    }
+	static public void iterate(Double value)
+	{
+		double tmp = result.getValue().get(0) + value;
+		result.getValue().set(0, tmp);
 
-    public void iterate(double value) {
-	sum += value;
-	denominator++;
+		tmp = result.getValue().get(1) + 1.0d;
+		result.getValue().set(1, tmp);
+	}
 
-    }
-
-    @Override
-    public void backToBegin() {
-	sum = 0;
-	denominator = 0;
-	
-    }
-
-
+	static public void finish()
+	{
+		double res = result.getValue().get(0) / result.getValue().get(1);
+		result.getValue().set(0, res);
+	}
 }

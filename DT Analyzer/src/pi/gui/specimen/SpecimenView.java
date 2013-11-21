@@ -77,6 +77,15 @@ public class SpecimenView extends JPanel
 			this.splitPane.setDividerLocation(0.5d);
 	}
 
+	public void redraw()
+	{
+		this.before.redraw();
+		if (this.after != null)
+		{
+			this.after.redraw();
+		}
+	}
+	
 	public JSplitPane getSplitPane()
 	{
 		return this.splitPane;

@@ -1,108 +1,46 @@
 package pi.statistics.logic;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import pi.population.Specimen;
+
 public class SpecimenResult
 {
-	//private ChannelResult after;
-	//private ChannelResult before;
-
+	public Specimen specimen;
+	private Map<String, DrawingResult> value = new HashMap <String, DrawingResult>();
+	
+	public SpecimenResult(Specimen specimen)
+	{
+		this.specimen = specimen;
+	}
+	
 	public void calculateResult()
 	{
-		System.out.println("START");
-		/*for (String name : before.getValue().keySet())
-		{// PO CHANNELACH
-			for (String waveName : before.getValue().get(name).getValue()
-					.keySet())
-			{// PO WAVE
-				for (String statName : before.getValue().get(name).getValue()
-						.get(waveName).getValue().keySet())
-				{// PO STATYSTYKACH
-					double varBefore = before.getValue().get(name).getValue()
-							.get(waveName).getValue().get(statName);
-
-					for (String nameAfter : after.getValue().keySet())
-					{
-
-						if (name.equals(nameAfter))
-						{
-							for (String waveNameAfter : after.getValue()
-									.get(nameAfter).getValue().keySet())
-							{
-								if (waveName.equals(waveNameAfter))
-								{
-									for (String statNameAfter : after
-											.getValue().get(nameAfter)
-											.getValue().get(waveNameAfter)
-											.getValue().keySet())
-									{
-										if (statName.equals(statNameAfter))
-										{
-
-											double varAfter = after.getValue()
-													.get(nameAfter).getValue()
-													.get(waveNameAfter)
-													.getValue()
-													.get(statNameAfter);
-
-											if (varBefore > varAfter)
-											{
-												System.out
-														.println("Przed wiêksze, kanal: "
-																+ name
-																+ ", wave: "
-																+ waveName
-																+ ", statystyka: "
-																+ statName);
-												// TODO wniosek do raportu
-											} else if (varBefore < varAfter)
-											{
-												System.out
-														.println("Po wiêksze, kanal: "
-																+ name
-																+ ", wave: "
-																+ waveName
-																+ ", statystyka: "
-																+ statName);
-												// TODO wniosek do raportu
-											} else
-											{
-												System.out
-														.println("Rowne, kanal: "
-																+ name
-																+ ", wave: "
-																+ waveName
-																+ ", statystyka: "
-																+ statName);
-												// TODO wniosek do raportu
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}*/
+		
+		DrawingResult before = new DrawingResult(this.specimen.getBefore());
+		before.calculateResult();
+		getValue().put("Before", before);
+		
+		
+		if (this.specimen.getAfter() != null)
+		{
+			DrawingResult after = new DrawingResult(this.specimen.getAfter());
+			after.calculateResult();
+			getValue().put("After", after);
+		}
+	
 	}
 
-	//public void addToVectors(VectorsToTests vectors, ChannelResult result)
-	//{
+	public Map<String, DrawingResult> getValue()
+	{
+		return value;
+	}
 
-		/*for (String name : result.getValue().keySet())
-		{// PO CHANNELACH
-			for (String waveName : result.getValue().get(name).getValue()
-					.keySet())
-			{// PO WAVE
-				for (String statName : result.getValue().get(name).getValue()
-						.get(waveName).getValue().keySet())
-				{// PO STATYSTYKACH
-					double value = result.getValue().get(name).getValue()
-							.get(waveName).getValue().get(statName);
-					vectors.addVector(waveName, statName, value);
-				}
-			}
-		}*/
-	//}
+	public void setValue(Map<String, DrawingResult> value)
+	{
+		this.value = value;
+	}
 
 	
 }

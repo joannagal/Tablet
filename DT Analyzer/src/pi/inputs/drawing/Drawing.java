@@ -3,8 +3,6 @@ package pi.inputs.drawing;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,11 +14,15 @@ import pi.utilities.Range;
 public class Drawing
 {
 	private String label = "";
-	
+
 	private Rectangle content;
 
 	private ArrayList<PacketData> packet;
 	private ArrayList<Figure> figure;
+
+	private Figure[] completeFigure = new Figure[8];
+
+	private boolean status = false;
 
 	private boolean withExtract = false;
 
@@ -39,30 +41,6 @@ public class Drawing
 		this.recalculate(true);
 	}
 
-	public void flipHorizontal()
-	{
-		int mirror = this.content.height / 2 + this.content.y;
-
-		for (int i = 0; i < this.figure.size(); i++)
-		{
-			Iterator<Segment> itSeg = this.figure.get(i).getSegment()
-					.iterator();
-			Segment seg;
-
-			while (itSeg.hasNext())
-			{
-				seg = itSeg.next();
-				ArrayList<PacketData> packet = seg.getPacket();
-				int size = packet.size();
-
-				for (int j = 0; j < size; j++)
-				{
-					packet.get(j).setPkY(2 * mirror - packet.get(j).getPkY());
-				}
-			}
-		}
-	}
-
 	public void recalculate(boolean bounds)
 	{
 		if ((!bounds) && (!this.isWithExtract()))
@@ -73,9 +51,46 @@ public class Drawing
 		if (bounds)
 			this.calculateBounds();
 
-		// this.flipHorizontal();
-
 		interpreter.interprate(this);
+		this.createStatus();
+	}
+
+	public void createStatus()
+	{
+		if (this.figure == null)
+			return;
+		int size = this.figure.size();
+
+		int[] tab = new int[9];
+		this.status = true;
+
+		for (int i = 0; i < 8; i++)
+			this.getCompleteFigure()[i] = null;
+
+		for (int i = 0; i < size; i++)
+		{
+			int fig = this.figure.get(i).getType();
+			if (fig == -1)
+				tab[8]++;
+			else
+			{
+				tab[fig]++;
+				this.getCompleteFigure()[fig] = this.figure.get(i);
+			}
+				
+		}
+
+		for (int i = 0; i < 8; i++)
+		{
+			if (tab[i] != 1)
+			{
+				this.status = false;
+				break;
+			}
+		}
+
+		if (tab[8] != 0)
+			this.status = false;
 	}
 
 	public void createFigure(Range inTime, int type)
@@ -95,6 +110,8 @@ public class Drawing
 		Figure newFigure = extractor.getFigure(this, new Range(left, right));
 		newFigure.setType(type);
 		this.figure.add(newFigure);
+		
+		this.createStatus();
 	}
 
 	public void createFromFile(String path) throws Exception
@@ -382,5 +399,25 @@ public class Drawing
 	public void setLabel(String label)
 	{
 		this.label = label;
+	}
+
+	public boolean isStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(boolean status)
+	{
+		this.status = status;
+	}
+
+	public Figure[] getCompleteFigure()
+	{
+		return completeFigure;
+	}
+
+	public void setCompleteFigure(Figure[] completeFigure)
+	{
+		this.completeFigure = completeFigure;
 	}
 }

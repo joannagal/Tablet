@@ -1,31 +1,21 @@
 package pi.statistics.logic;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class StatisticResult {
 	
-		private Map<String, Double> value = new HashMap<String, Double>();
+		private ArrayList <Double> value = new ArrayList <Double>();
 
-		public Map<String, Double> getValue() {
+		public ArrayList <Double> getValue()
+		{
 			return value;
 		}
 
-		public void addValue(String name, Double result ) {
-			value.put(name, result);
+		public void setValue(ArrayList <Double> value)
+		{
+			this.value = value;
 		}
+
 		
-		public void clearValues(){
-			value.clear();
-		}
-		
-		public void printValues(String waveName){
-		    System.out.println(waveName + "\n");
-		    for (String string : value.keySet()){
-			System.out.println(string + ": \n");
-			System.out.println(value.get(string) + "\n");
-			
-		    }
-		}
 		
 }

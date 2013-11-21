@@ -1,31 +1,26 @@
 package pi.statistics.functions;
 
-import pi.statistics.logic.Function;
+import java.util.ArrayList;
+
 import pi.statistics.logic.StatisticResult;
 
-public class Max extends Function {
+public class Max
+{
 
-    private double max = -999999;
-    
-    public Max() {
-	super("Max");
-    }
-
-    @Override
-    public void countResult(StatisticResult statResult) {
-	statResult.addValue(this.getName(), max);
+	static StatisticResult result;
 	
-    }
-
-    @Override
-    public void iterate(double value) {
-	if (value > max) max = value;
-    }
-
-    @Override
-    public void backToBegin() {
-	max = -999999;
 	
-    }
+	static public void init(StatisticResult input)
+	{
+		result = input;
+		input.setValue(new ArrayList <Double> (1));
+		input.getValue().add(-1000000.0d);
+	}
+	
+	static public void iterate(Double value)
+	{
+		if (value > result.getValue().get(0))	
+			result.getValue().set(0, value);
+	}
 
 }

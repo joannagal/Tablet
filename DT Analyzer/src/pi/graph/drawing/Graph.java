@@ -78,7 +78,7 @@ public class Graph extends JPanel implements MouseMotionListener
 		graphics.setColor(getScheme().getLabelColor());
 		graphics.drawString(this.drawing.getLabel(), 5, 15);
 	}
-	
+
 	// ------------------------------------------
 	// SIMPLE DRAWING BORDER
 	public void drawBorder(Graphics graphics)
@@ -135,7 +135,7 @@ public class Graph extends JPanel implements MouseMotionListener
 	// RECALCULATE ALL GRAPH
 	public void recalculate()
 	{
-		this.setScheme(this.controller.getScheme().getDrawingScheme());
+		this.setScheme(this.controller.getCurrentScheme().getDrawingScheme());
 
 		if (this.drawing != null)
 		{

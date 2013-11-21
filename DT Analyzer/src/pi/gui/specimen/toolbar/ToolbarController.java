@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JSplitPane;
 
 import pi.gui.specimen.SpecimenView;
+import pi.shared.SharedController;
 
 public class ToolbarController implements ActionListener
 {
@@ -23,7 +24,7 @@ public class ToolbarController implements ActionListener
 	{
 		String action = e.getActionCommand();
 
-		if (action.equals("CHANGE_VIEW"))
+		if (action.equals("CHANGE_SPLIT"))
 		{
 			int current = this.specimenView.getSplitPane().getOrientation();
 			if (current == JSplitPane.HORIZONTAL_SPLIT)
@@ -35,7 +36,14 @@ public class ToolbarController implements ActionListener
 
 			this.specimenView.getSplitPane().setDividerLocation(0.5d);
 		}
-		
+
+		if (action.equals("CHANGE_VIEW"))
+		{
+			SharedController.getInstance().switchScheme();
+			this.specimenView.redraw();
+
+		}
+
 		if (action.equals("PERSONAL"))
 		{
 			this.toolbarView.getInformationsView().showWithData();
@@ -43,9 +51,10 @@ public class ToolbarController implements ActionListener
 
 		if (action.equals("COMPARATOR"))
 		{
-			this.toolbarView.getComparator().showWithData();
+			this.toolbarView.getComparator().showWithData(
+					this.specimenView.getSpecimen(), null);
 		}
-		
+
 	}
 
 }
