@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import pi.utilities.Range;
+
 public class Figure
 {
+	private Drawing parent;
 	private LinkedList<Segment> segment;
 	private Rectangle bounds;
 
@@ -21,6 +24,11 @@ public class Figure
 	public static final int BROKENLINE = 5;
 	public static final int SPIRALIN = 6;
 	public static final int SPIRALOUT = 7;
+	
+	public Figure(Drawing parent)
+	{
+		this.parent = parent;
+	}
 
 	public void calculateBounds()
 	{
@@ -38,10 +46,10 @@ public class Figure
 		while (it.hasNext())
 		{
 			seg = it.next();
-			ArrayList<PacketData> packet = seg.getPacket();
+			ArrayList<PacketData> packet = this.parent.getPacket();
+			Range range = seg.getRange();
 
-			int size = packet.size();
-			for (int i = 0; i < size; i++)
+			for (int i = range.getLeft(); i <= range.getRight(); i++)
 			{
 				if (packet.get(i).getPkX() > max_x)
 					max_x = packet.get(i).getPkX();
@@ -87,6 +95,16 @@ public class Figure
 	public void setSegment(LinkedList<Segment> segment)
 	{
 		this.segment = segment;
+	}
+
+	public Drawing getParent()
+	{
+		return parent;
+	}
+
+	public void setParent(Drawing parent)
+	{
+		this.parent = parent;
 	}
 
 }

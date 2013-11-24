@@ -2,13 +2,9 @@ package pi.gui.specimen.drawingtest.toolbar;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import pi.graph.drawing.Graph;
 import pi.gui.specimen.drawingtest.DrawingTestView;
 import pi.inputs.drawing.Drawing;
 

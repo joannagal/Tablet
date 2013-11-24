@@ -10,7 +10,6 @@ import javax.swing.JSplitPane;
 
 import pi.gui.specimen.drawingtest.DrawingTestView;
 import pi.gui.specimen.toolbar.ToolbarView;
-import pi.inputs.drawing.Drawing;
 import pi.population.Specimen;
 
 public class SpecimenView extends JPanel

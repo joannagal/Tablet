@@ -17,7 +17,7 @@ public class FigureExtractor
 		ArrayList <PacketData> packet = drawing.getPacket();
 		int pressureAvoid = drawing.getPressureAvoid();
 		
-		Figure newFigure = new Figure();
+		Figure newFigure = new Figure(drawing);
 		LinkedList <Segment> segment = new LinkedList <Segment> ();
 		newFigure.setSegment(segment);
 		
@@ -48,7 +48,10 @@ public class FigureExtractor
 				if (i - left + 1 != 0)
 				{
 					Segment newSegment = new Segment();
-					ArrayList <PacketData> copyPacket = new ArrayList <PacketData> (i - left + 1);
+					newSegment.setRange(new Range(left, i));
+					segment.add(newSegment);	
+					
+					/*ArrayList <PacketData> copyPacket = new ArrayList <PacketData> (i - left + 1);
 					for (int j = left; j <= i; j++)
 					{
 						copyPacket.add(packet.get(j).getCopy());
@@ -57,7 +60,8 @@ public class FigureExtractor
 					{
 						newSegment.setPacket(copyPacket);
 						segment.add(newSegment);	
-					}
+					}*/
+					
 				}
 
 			}

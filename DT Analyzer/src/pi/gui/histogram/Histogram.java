@@ -17,6 +17,7 @@ public class Histogram extends JPanel
 	private final Color backgroundColor = new Color(255, 255, 255, 255);
 	private final Color borderColor = new Color(0, 0, 0, 255);
 	private final Color gridColor = new Color(170, 170, 170, 255);
+	private final Color fontColor = new Color(0, 0, 0, 255);
 
 	private final Color[] drawColor =
 	{ new Color(255, 0, 0, 255), new Color(0, 255, 0, 255),
@@ -31,6 +32,9 @@ public class Histogram extends JPanel
 	private final double marginLeft = 60.0d;
 	private int divider = 0;
 
+	private double minValue = 0.0d;
+	private double maxValue = 0.0d;
+
 	public void recalculate()
 	{
 		if (getData() == null)
@@ -42,9 +46,10 @@ public class Histogram extends JPanel
 			counter.add(new ArrayList<Integer>(data.size()));
 		}
 
-		double minValue = 1000000.0d;
-		double maxValue = -1000000.0d;
-
+		this.minValue = 1000000.0d;
+		this.maxValue = -1000000.0d;
+		this.maxCounter = 0;
+		
 		for (int i = 0; i < data.size(); i++)
 		{
 			int size = data.get(i).size();
@@ -59,6 +64,7 @@ public class Histogram extends JPanel
 					minValue = getData().get(i).get(j);
 			}
 		}
+
 
 		double range = (double) (maxValue - minValue) / (double) ranges;
 
@@ -114,18 +120,18 @@ public class Histogram extends JPanel
 	@Override
 	public void paintComponent(Graphics graphics)
 	{
-		
-		
+
 		this.drawBackground(graphics);
 		this.drawBorder(graphics);
-		
-		if (data == null) return;
-		
+
+		if (data == null)
+			return;
+
 		this.drawGrid(graphics);
 
 		double left = marginLeft;
 		double bottom = this.getSize().height - margin;
-		double width =  (this.getSize().width - margin - marginLeft)
+		double width = (this.getSize().width - margin - marginLeft)
 				/ (double) ranges;
 		double height = (this.getSize().height - 2 * margin);
 
@@ -134,13 +140,14 @@ public class Histogram extends JPanel
 		double smallWidth = width / data.size();
 		double posX, posY, prop;
 
+		double dV = (this.maxValue - this.minValue) / (double) this.ranges;
+
 		for (int i = 0; i < data.size(); i++)
 		{
 			ArrayList<Integer> cnt = counter.get(i);
 			for (int j = 0; j < ranges; j++)
 			{
-				posX = 0.5d + left + innerShift + (width)
-						* (double) j;
+				posX = 0.5d + left + innerShift + (width) * (double) j;
 				posX += i * smallWidth * this.innerScale;
 
 				prop = (double) (cnt.get(j)) / (double) (this.maxCounter);
@@ -148,10 +155,33 @@ public class Histogram extends JPanel
 				posY = bottom - prop;
 
 				graphics.setColor(this.drawColor[i]);
-				graphics.fillRect((int) posX, (int) (posY), (int) (smallWidth * this.innerScale + 0.5d),
-						(int) prop);
+				graphics.fillRect((int) posX, (int) (posY), (int) (smallWidth
+						* this.innerScale + 0.5d), (int) prop);
+
+				graphics.setColor(this.fontColor);
+				graphics.drawString(String.format("%d", cnt.get(j)),
+						(int) posX, (int) (posY - 6));
+
+				if (i == 0)
+				{
+					graphics.setColor(this.fontColor);
+					graphics.drawString(
+							String.format("%f", minValue + (double) j * dV),
+							(int) posX, (int) (bottom + 10 + 10 * (j % 2)));
+
+					if (j == ranges - 1)
+					{
+						posX += width;
+
+						graphics.drawString(
+								String.format("%f", minValue + (double) (j + 1)
+										* dV), (int) posX,
+								(int) (bottom + 10 + 10 * ((j + 1) % 2)));
+					}
+				}
 
 			}
+
 		}
 
 	}

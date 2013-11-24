@@ -39,6 +39,7 @@ public class DrawingResult
 			figResult.calculateResult();
 			value.put(label, figResult);
 		}
+		
 	}
 	
 	public Map<String, FigureResult> getValue()

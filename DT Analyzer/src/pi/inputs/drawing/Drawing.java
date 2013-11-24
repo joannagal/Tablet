@@ -225,11 +225,9 @@ public class Drawing
 			while (itSeg.hasNext())
 			{
 				seg = itSeg.next();
+				Range range = seg.getRange();
 
-				ArrayList<PacketData> packet = seg.getPacket();
-				int size = packet.size();
-
-				for (int j = 0; j < size; j++)
+				for (int j = range.getLeft(); j <= range.getRight(); j++)
 				{
 					if (packet.get(j).getPkX() > max_x)
 						max_x = packet.get(j).getPkX();
@@ -297,11 +295,7 @@ public class Drawing
 			while (segment.hasNext())
 			{
 				seg = segment.next();
-				if (seg.getPacket() != null)
-				{
-					seg.getPacket().clear();
-					seg.setPacket(null);
-				}
+				seg.setRange(null);
 			}
 
 			this.figure.get(i).getSegment().clear();

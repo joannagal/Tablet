@@ -1,30 +1,18 @@
 package pi.inputs.drawing;
 
-import java.util.ArrayList;
+import pi.utilities.Range;
 
 public class Segment
 {
-	private ArrayList<PacketData> packet;
-	private ArrayList<PacketData> linearized;
+	private Range range;
 
-	public ArrayList<PacketData> getPacket()
+	public Range getRange()
 	{
-		return packet;
+		return range;
 	}
 
-	public void setPacket(ArrayList<PacketData> packet)
+	public void setRange(Range range)
 	{
-		this.packet = packet;
+		this.range = range;
 	}
-
-	public ArrayList<PacketData> getLinearized()
-	{
-		return linearized;
-	}
-
-	public void setLinearized(ArrayList<PacketData> linearized)
-	{
-		this.linearized = linearized;
-	}
-
 }

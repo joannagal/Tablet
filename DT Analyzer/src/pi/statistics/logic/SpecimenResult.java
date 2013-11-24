@@ -22,7 +22,6 @@ public class SpecimenResult
 		before.calculateResult();
 		getValue().put("Before", before);
 		
-		
 		if (this.specimen.getAfter() != null)
 		{
 			DrawingResult after = new DrawingResult(this.specimen.getAfter());

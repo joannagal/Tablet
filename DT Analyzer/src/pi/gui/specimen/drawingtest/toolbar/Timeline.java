@@ -2,15 +2,12 @@ package pi.gui.specimen.drawingtest.toolbar;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -34,7 +31,7 @@ public class Timeline extends JPanel
 	{ "ZigZag", "Circle-Left", "Circle-Right", "First Line", "Second Line",
 			"Broken Line", "Spiral-In", "Spiral-Out" };
 
-	JComboBox figuresCombo = new JComboBox(figures);
+	JComboBox <String> figuresCombo = new JComboBox <String> (figures);
 
 	// petList.setSelectedIndex(0);
 	// petList.addActionListener(this);

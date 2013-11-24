@@ -17,12 +17,13 @@ import pi.statistics.functions.Variance;
 import pi.statistics.logic.AttributeResult;
 import pi.statistics.logic.StatisticResult;
 
-public class PressureResult extends AttributeResult
+public class Acceleration extends AttributeResult
 {
-	private ArrayList <PacketData> packet;
+	private ArrayList<PacketData> packet;
 	private LinkedList<Segment> segment;
-	
-	public PressureResult(ArrayList <PacketData> packet, LinkedList<Segment> segment)
+
+	public Acceleration(ArrayList<PacketData> packet,
+			LinkedList<Segment> segment)
 	{
 		this.packet = packet;
 		this.segment = segment;
@@ -42,61 +43,103 @@ public class PressureResult extends AttributeResult
 		Max.init(maxResult);
 		Amplitude.init(amplitudeResult);
 		Average.init(avgResult);
-		
+
 		int size = 0;
-		
-		Iterator <Segment> it = this.segment.iterator();
+
+		Iterator<Segment> it = this.segment.iterator();
 		Segment seg;
-		double value;
+		double value, distA, distB, time;
 		while (it.hasNext())
 		{
 			seg = it.next();
-			for (int i = seg.getRange().getLeft(); i <= seg.getRange().getRight(); i++)
+			for (int i = seg.getRange().getLeft() + 1; i < seg.getRange()
+					.getRight(); i++)
 			{
-				value = (double) packet.get(i).getPkPressure();
+				distA = this.getDistance(this.packet.get(i),
+						this.packet.get(i - 1));
+				
+				time = this.packet.get(i).getPkTime()
+						- this.packet.get(i - 1).getPkTime();
+				
+				distA /= time;
+
+				distB = this.getDistance(this.packet.get(i + 1),
+						this.packet.get(i));
+				
+				time = this.packet.get(i + 1).getPkTime()
+						- this.packet.get(i).getPkTime();
+				distB /= time;
+
+				time = this.packet.get(i).getPkTime()
+						- this.packet.get(i - 1).getPkTime();
+				
+				value = (distB - distA) / (time);
+
 				Min.iterate(value);
 				Max.iterate(value);
 				Amplitude.iterate(value);
 				Average.iterate(value);
 			}
-			size += seg.getRange().getInterval() + 1;
+
+			if (seg.getRange().getInterval() - 1 > 0)
+				size += seg.getRange().getInterval() - 1;
 		}
-		
-		DependencyCollector.init(dCollectorResult, size * 2);
+
 		Collector.init(collectorResult, size);
+		DependencyCollector.init(dCollectorResult, size * 2);
 		
 		Average.finish();
 		StatisticResult varianceResult = new StatisticResult();
 		Variance.init(varianceResult, avgResult.getValue().get(0));
-		
-		it = this.segment.iterator();
-		
+
 		boolean first = true;
 		double baseTime = 0.0d;
 		
+		
+		it = this.segment.iterator();
 		while (it.hasNext())
 		{
 			seg = it.next();
-			for (int i = seg.getRange().getLeft(); i <= seg.getRange().getRight(); i++)
+			for (int i = seg.getRange().getLeft() + 1; i < seg.getRange()
+					.getRight(); i++)
 			{
+				distA = this.getDistance(this.packet.get(i),
+						this.packet.get(i - 1));
+				
+				time = this.packet.get(i).getPkTime()
+						- this.packet.get(i - 1).getPkTime();
+				
+				distA /= time;
+
+				distB = this.getDistance(this.packet.get(i + 1),
+						this.packet.get(i));
+				
+				time = this.packet.get(i + 1).getPkTime()
+						- this.packet.get(i).getPkTime();
+				distB /= time;
+
+				time = this.packet.get(i).getPkTime()
+						- this.packet.get(i - 1).getPkTime();
+				
+				value = (distB - distA) / (time);
+				
 				if (first)
 				{
 					first = false;
 					baseTime = packet.get(i).getPkTime();
 				}
 				
-				value = (double) packet.get(i).getPkPressure();
-				Collector.iterate(value);
 				DependencyCollector.iterate( packet.get(i).getPkTime() - baseTime, value);
+				Collector.iterate(value);
 				Variance.iterate(value);
 			}
 		}
-		
+
 		Variance.finish();
-		
+
 		StatisticResult standardDevResult = new StatisticResult();
 		StandardDev.init(standardDevResult, varianceResult.getValue().get(0));
-		
+
 		this.value.put("Collector", collectorResult);
 		this.value.put("Dependency Collector", dCollectorResult);
 		this.value.put("Min", minResult);
@@ -106,4 +149,17 @@ public class PressureResult extends AttributeResult
 		this.value.put("Variance", varianceResult);
 		this.value.put("StandardDev", standardDevResult);
 	}
+
+	public double getDistance(PacketData A, PacketData B)
+	{
+		double dx = A.getPkX() - B.getPkX();
+		dx *= dx;
+
+		double dy = A.getPkY() - B.getPkY();
+		dy *= dy;
+
+		double result = Math.sqrt(dx + dy);
+		return result;
+	}
+
 }

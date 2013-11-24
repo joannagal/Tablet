@@ -3,7 +3,6 @@ package pi.gui.specimen.toolbar.informations;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JSplitPane;
 
 import pi.population.Specimen;
 

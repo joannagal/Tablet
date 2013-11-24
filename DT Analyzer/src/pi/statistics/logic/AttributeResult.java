@@ -1,10 +1,8 @@
 package pi.statistics.logic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import pi.inputs.drawing.PacketData;
 
 public class AttributeResult {
 	

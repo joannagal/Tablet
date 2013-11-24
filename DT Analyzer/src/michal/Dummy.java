@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import pi.gui.specimen.SpecimenView;
-import pi.gui.specimen.drawingtest.DrawingTestView;
 import pi.inputs.drawing.Drawing;
 import pi.population.Specimen;
 
@@ -40,7 +39,7 @@ public class Dummy
 			before = new Drawing("src/michal/test6.mtb");
 			before.setLabel("ABC: Before");
 			
-			after = new Drawing("src/michal/test5.mtb");
+			after = new Drawing("src/michal/test.mtb");
 			after.setLabel("ABC: After");
 			
 			Specimen spec = new Specimen();

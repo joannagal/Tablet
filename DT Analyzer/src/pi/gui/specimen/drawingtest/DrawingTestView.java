@@ -11,13 +11,11 @@ import javax.swing.JPanel;
 import pi.graph.drawing.Graph;
 import pi.gui.specimen.drawingtest.toolbar.ToolbarView;
 import pi.inputs.drawing.Drawing;
-import pi.utilities.Margin;
 
 public class DrawingTestView extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
-	private Margin margin = new Margin(200.0d, 20.0d, 20.0d, 20.0d);
 	private Graph graph;
 	
 	private ToolbarView toolbarView;

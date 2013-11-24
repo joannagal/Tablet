@@ -1,18 +1,15 @@
 package pi.inputs.drawing.autofinder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import pi.inputs.drawing.Drawing;
-import pi.inputs.drawing.Figure;
 import pi.inputs.drawing.PacketData;
-import pi.inputs.drawing.Segment;
 
 public class Linearize
 {
 	public void linearize(Drawing drawing)
 	{
-		ArrayList <Figure> figure = drawing.getFigure();
+		/*ArrayList <Figure> figure = drawing.getFigure();
 		Iterator <Figure> itFig = figure.iterator();
 		Iterator <Segment> itSeg;
 		Figure fig;
@@ -45,13 +42,13 @@ public class Linearize
 				this.linearizeVectorDynamic(linear, 10);
 				seg.setLinearized(linear);
 			}		
-		}
+		}*/
 	}
 	
 	
 	public void linearizeVectorDynamic(ArrayList <PacketData> input, int steps)
 	{
-		int size = input.size();
+		/*int size = input.size();
 		PacketData pckg = null;
 		int div = steps;
 		
@@ -119,7 +116,7 @@ public class Linearize
 			}
 
 		
-		}
+		}*/
 		
 		
 	}

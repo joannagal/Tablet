@@ -9,7 +9,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import pi.inputs.drawing.Drawing;
 import pi.inputs.drawing.Figure;
 import pi.inputs.drawing.PacketData;
 import pi.inputs.drawing.Segment;
@@ -43,13 +42,16 @@ public class DrawingAdapter
 		ArrayList<Figure> figure = this.graph.getDrawing().getFigure();
 		int size = figure.size();
 
-		if (size == 1) return;
-		
+		if (size == 1)
+			return;
+
 		if (this.signalShow)
 		{
-			this.drawSegment(graphics, graph.getDrawing().getPacket(), time, true);	
+			this.drawSegment(graphics, graph.getDrawing().getPacket(),
+					new Range(0, graph.getDrawing().getPacket().size() - 1),
+					time, true);
 		}
-		
+
 		for (int i = 0; i < size; i++)
 		{
 			this.drawFigure(graphics, figure.get(i), time);
@@ -58,7 +60,7 @@ public class DrawingAdapter
 
 	public void drawFigure(Graphics graphics, Figure figure, int time)
 	{
-		
+
 		if ((figure.getBounds() == null) || (figure.getSegment() == null)
 				|| (figure.getSegment().size() == 0))
 			return;
@@ -79,35 +81,52 @@ public class DrawingAdapter
 		graphics.drawRect(tBounds.x, tBounds.y, tBounds.width, tBounds.height);
 
 		String figString = "";
-		
+
 		switch (figure.getType())
 		{
-			case Figure.DEFAULT: figString = "UNKNOWN";	break;
-			case Figure.ZIGZAG: figString = "ZIGZAG"; break;
-			case Figure.CIRCLELEFT: figString = "CIRCLE-LEFT"; break;
-			case Figure.CIRCLERIGHT: figString = "CIRCLE-RIGHT"; break;
-			case Figure.FIRSTLINE: figString = "FIRST-LINE"; break;
-			case Figure.SECONDLINE: figString = "SECOND-LINE"; break;
-			case Figure.BROKENLINE: figString = "BROKEN-LINE"; break;
-			case Figure.SPIRALIN: figString = "SPIRAL-IN"; break;
-			case Figure.SPIRALOUT: figString = "SPIRAL-OUT"; break;
+		case Figure.DEFAULT:
+			figString = "UNKNOWN";
+			break;
+		case Figure.ZIGZAG:
+			figString = "ZIGZAG";
+			break;
+		case Figure.CIRCLELEFT:
+			figString = "CIRCLE-LEFT";
+			break;
+		case Figure.CIRCLERIGHT:
+			figString = "CIRCLE-RIGHT";
+			break;
+		case Figure.FIRSTLINE:
+			figString = "FIRST-LINE";
+			break;
+		case Figure.SECONDLINE:
+			figString = "SECOND-LINE";
+			break;
+		case Figure.BROKENLINE:
+			figString = "BROKEN-LINE";
+			break;
+		case Figure.SPIRALIN:
+			figString = "SPIRAL-IN";
+			break;
+		case Figure.SPIRALOUT:
+			figString = "SPIRAL-OUT";
+			break;
 		}
-		
+
 		graphics.drawString(figString, tBounds.x, tBounds.y - 5);
-		
-		
+
 		while (it.hasNext())
 		{
 			seg = it.next();
-			
-			this.drawSegment(graphics, seg.getPacket(), time, false);		
-			
-			
+
+			this.drawSegment(graphics, figure.getParent().getPacket(),
+					seg.getRange(), time, false);
+
 		}
 	}
 
 	public void drawSegment(Graphics graphics, ArrayList<PacketData> packet,
-			int time, boolean isAll)
+			Range range, int time, boolean isAll)
 	{
 		Transformations transform = graph.getTranform();
 		PacketData pck;
@@ -120,21 +139,21 @@ public class DrawingAdapter
 
 		Color drawColor = scheme.getDrawingColor();
 		Color angleColor = scheme.getAngleColor();
-		pck = packet.get(0);
+		pck = packet.get(range.getLeft());
 
 		Point A = new Point();
 		Point B = new Point();
 		Point C = new Point();
 
 		transform.transformToCanvas(pck.getPkX(), pck.getPkY(), A);
-		
+
 		if (isAll)
 		{
 			graphics.setColor(scheme.getAllColor());
 			tools.setStroke(stroke[0]);
 		}
 
-		for (int i = 1; i < size; i++)
+		for (int i = range.getLeft() + 1; i <= range.getRight(); i++)
 		{
 			pck = packet.get(i);
 			if (pck.getPkTime() > time)
@@ -151,15 +170,15 @@ public class DrawingAdapter
 					tools.setStroke(stroke[0]);
 
 				graphics.setColor(drawColor);
-			}
-			else
+			} else
 			{
 				Range selection = graph.getSelection();
-				if ( (pck.getPkTime() >= selection.getLeft()) && (pck.getPkTime() <= selection.getRight()) )
+				if ((pck.getPkTime() >= selection.getLeft())
+						&& (pck.getPkTime() <= selection.getRight()))
 				{
 					graphics.setColor(scheme.getSelectionColor());
-				}
-				else graphics.setColor(scheme.getAllColor());
+				} else
+					graphics.setColor(scheme.getAllColor());
 			}
 
 			graphics.drawLine(A.x, A.y, B.x, B.y);
