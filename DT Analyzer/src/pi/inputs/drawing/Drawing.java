@@ -14,6 +14,7 @@ import pi.utilities.Range;
 public class Drawing
 {
 	private String label = "";
+	private String name = "";
 
 	private Rectangle content;
 
@@ -39,6 +40,15 @@ public class Drawing
 		this.createFromFile(path);
 		this.calculateBreakFigureDistance();
 		this.recalculate(true);
+	}
+	
+	public Drawing()
+	{
+		//TODO Poni¿sze metody s¹ zbêdne?
+		/*
+		this.calculateBreakFigureDistance();
+		this.recalculate(true);
+		*/
 	}
 
 	public void recalculate(boolean bounds)
@@ -413,5 +423,13 @@ public class Drawing
 	public void setCompleteFigure(Figure[] completeFigure)
 	{
 		this.completeFigure = completeFigure;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

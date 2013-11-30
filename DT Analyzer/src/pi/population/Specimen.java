@@ -21,11 +21,13 @@ public class Specimen
 	private String name = null;
 	private String surname = null;
 	
-	private Integer pesel = null;
+	private String pesel = null;
 	private Boolean sex = null; // true - male
 	private Boolean hand = null; // true - right
 	private Boolean brain = null; // true - right
 	private Boolean operationType = null; // true - P
+	private int age;
+
 	
 	private Integer firstOperation = null;
 	private Integer secondOperation = null;
@@ -106,12 +108,12 @@ public class Specimen
 		this.result = result;
 	}
 
-	public Integer getPesel()
+	public String getPesel()
 	{
 		return pesel;
 	}
 
-	public void setPesel(Integer pesel)
+	public void setPesel(String pesel)
 	{
 		this.pesel = pesel;
 	}
@@ -175,6 +177,16 @@ public class Specimen
 	{
 		this.secondOperation = secondOperation;
 	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+
 
 	
 }
