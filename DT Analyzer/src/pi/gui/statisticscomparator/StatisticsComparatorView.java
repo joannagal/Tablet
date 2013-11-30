@@ -108,6 +108,7 @@ public class StatisticsComparatorView extends JFrame
 		this.histogram.recalculate();
 		this.histogram.draw();
 		
+		this.dGraph.setType(DependGraph.MIXED);
 		this.dGraph.recalculate();
 		this.dGraph.draw();
 		

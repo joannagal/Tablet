@@ -23,6 +23,17 @@ public class DependGraph extends JPanel
 			new Color(0, 0, 255, 255), new Color(255, 0, 255, 255),
 			new Color(255, 255, 0, 255), new Color(0, 255, 255, 255), };
 
+	private final Color[] mixedColor =
+	{ new Color(255, 200, 200, 255), new Color(200, 255, 200, 255),
+			new Color(200, 200, 255, 255), new Color(255, 200, 255, 255),
+			new Color(255, 255, 200, 255), new Color(200, 255, 255, 255), };
+	
+	public final static int LINE = 0;
+	public final static int POINT = 1;
+	public final static int MIXED = 2;
+	
+	private int type = DependGraph.LINE;
+
 	private final double margin = 30.0d;
 	private final double marginLeft = 60.0d;
 
@@ -100,10 +111,32 @@ public class DependGraph extends JPanel
 				prop = (tmp - this.minValue) / (this.maxValue - this.minValue);
 				posY = bottom - height * prop;
 
-				if (j != 0)
+				if (this.type == DependGraph.LINE)
 				{
-					graphics.drawLine((int) prevX, (int) prevY, (int) posX,
-							(int) posY);
+					if (j != 0)
+					{
+						graphics.drawLine((int) prevX, (int) prevY, (int) posX,
+								(int) posY);
+					}
+				} else if (type == DependGraph.MIXED)
+				{
+					if (j != 0)
+					{
+						graphics.setColor(this.mixedColor[i]);
+						graphics.drawLine((int) (prevX), (int) (prevY - 1),
+								(int) (posX), (int) (posY + 1));
+					}
+					
+					graphics.setColor(this.drawColor[i]);
+					graphics.fillOval((int)(posX - 3), (int)(posY - 3), 5, 5);
+
+				}
+				else 
+				{
+					graphics.drawLine((int) (posX - 1), (int) (posY),
+							(int) (posX + 1), (int) (posY));
+					graphics.drawLine((int) (posX), (int) (posY - 1),
+							(int) (posX), (int) (posY + 1));
 				}
 
 				prevX = posX;
@@ -116,7 +149,7 @@ public class DependGraph extends JPanel
 
 	public void drawGrid(Graphics graphics)
 	{
-		int divider = 5;
+		int divider = 10;
 
 		double left = marginLeft;
 		double bottom = this.getSize().height - margin;
@@ -133,7 +166,7 @@ public class DependGraph extends JPanel
 		for (int i = 0; i <= divider; i++)
 		{
 			graphics.setColor(this.gridColor);
-			
+
 			posX = left + i * divX;
 			graphics.drawLine((int) posX, (int) bottom, (int) posX,
 					(int) (bottom - height));
@@ -141,18 +174,16 @@ public class DependGraph extends JPanel
 			posY = bottom - i * divY;
 			graphics.drawLine((int) left, (int) posY, (int) (left + width),
 					(int) posY);
-			
+
 			graphics.setColor(this.fontColor);
 			graphics.drawString(
 					String.format("%f", this.minValue + (double) i * dV),
 					(int) 5, (int) (posY));
-			
+
 			graphics.drawString(
 					String.format("%f", this.minTime + (double) i * dT),
 					(int) posX, (int) (bottom + 12 + 12 * (i % 2)));
 		}
-		
-	
 
 	}
 
@@ -189,6 +220,16 @@ public class DependGraph extends JPanel
 	public void setData(ArrayList<ArrayList<Double>> data)
 	{
 		this.data = data;
+	}
+
+	public int getType()
+	{
+		return type;
+	}
+
+	public void setType(int type)
+	{
+		this.type = type;
 	}
 
 }

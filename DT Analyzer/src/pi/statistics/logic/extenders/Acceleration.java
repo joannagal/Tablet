@@ -10,6 +10,7 @@ import pi.statistics.functions.Amplitude;
 import pi.statistics.functions.Average;
 import pi.statistics.functions.Collector;
 import pi.statistics.functions.DependencyCollector;
+import pi.statistics.functions.FFT;
 import pi.statistics.functions.Max;
 import pi.statistics.functions.Min;
 import pi.statistics.functions.StandardDev;
@@ -19,14 +20,11 @@ import pi.statistics.logic.StatisticResult;
 
 public class Acceleration extends AttributeResult
 {
-	private ArrayList<PacketData> packet;
-	private LinkedList<Segment> segment;
+	private ArrayList<ArrayList <Double> > velocity;
 
-	public Acceleration(ArrayList<PacketData> packet,
-			LinkedList<Segment> segment)
+	public Acceleration(ArrayList<ArrayList <Double> > velocity)
 	{
-		this.packet = packet;
-		this.segment = segment;
+		this.velocity = velocity;
 	}
 
 	@Override
@@ -38,6 +36,7 @@ public class Acceleration extends AttributeResult
 		StatisticResult maxResult = new StatisticResult();
 		StatisticResult amplitudeResult = new StatisticResult();
 		StatisticResult avgResult = new StatisticResult();
+		StatisticResult fft = new StatisticResult();
 
 		Min.init(minResult);
 		Max.init(maxResult);
@@ -45,103 +44,64 @@ public class Acceleration extends AttributeResult
 		Average.init(avgResult);
 
 		int size = 0;
-
-		Iterator<Segment> it = this.segment.iterator();
-		Segment seg;
-		double value, distA, distB, time;
-		while (it.hasNext())
+		double freq = 10.0d;
+		
+		for (int i = 0; i < this.velocity.size(); i++)
 		{
-			seg = it.next();
-			for (int i = seg.getRange().getLeft() + 1; i < seg.getRange()
-					.getRight(); i++)
+			ArrayList <Double> data = this.velocity.get(i);
+			double dv, dt, a;
+			for (int j = 2; j < data.size() - 1; j += 2)
 			{
-				distA = this.getDistance(this.packet.get(i),
-						this.packet.get(i - 1));
-				
-				time = this.packet.get(i).getPkTime()
-						- this.packet.get(i - 1).getPkTime();
-				
-				distA /= time;
-
-				distB = this.getDistance(this.packet.get(i + 1),
-						this.packet.get(i));
-				
-				time = this.packet.get(i + 1).getPkTime()
-						- this.packet.get(i).getPkTime();
-				distB /= time;
-
-				time = this.packet.get(i).getPkTime()
-						- this.packet.get(i - 1).getPkTime();
-				
-				value = (distB - distA) / (time);
-
-				Min.iterate(value);
-				Max.iterate(value);
-				Amplitude.iterate(value);
-				Average.iterate(value);
+				dt = data.get(j) - data.get(j - 2);
+				dv = data.get(j + 1) - data.get(j - 1);
+				a = dv / dt;
+				Min.iterate(a);
+				Max.iterate(a);
+				Amplitude.iterate(a);
+				Average.iterate(a);
+				size++;
 			}
-
-			if (seg.getRange().getInterval() - 1 > 0)
-				size += seg.getRange().getInterval() - 1;
 		}
-
+		
+		Average.finish();
+		
 		Collector.init(collectorResult, size);
 		DependencyCollector.init(dCollectorResult, size * 2);
 		
-		Average.finish();
 		StatisticResult varianceResult = new StatisticResult();
 		Variance.init(varianceResult, avgResult.getValue().get(0));
+		
 
-		boolean first = true;
-		double baseTime = 0.0d;
+		DependencyCollector.iterate( 0.0d , 0.0d );
 		
-		
-		it = this.segment.iterator();
-		while (it.hasNext())
+		for (int i = 0; i < this.velocity.size(); i++)
 		{
-			seg = it.next();
-			for (int i = seg.getRange().getLeft() + 1; i < seg.getRange()
-					.getRight(); i++)
+			ArrayList <Double> data = this.velocity.get(i);
+			double dv, dt, a;
+
+			for (int j = 2; j < data.size() - 1; j += 2)
 			{
-				distA = this.getDistance(this.packet.get(i),
-						this.packet.get(i - 1));
-				
-				time = this.packet.get(i).getPkTime()
-						- this.packet.get(i - 1).getPkTime();
-				
-				distA /= time;
-
-				distB = this.getDistance(this.packet.get(i + 1),
-						this.packet.get(i));
-				
-				time = this.packet.get(i + 1).getPkTime()
-						- this.packet.get(i).getPkTime();
-				distB /= time;
-
-				time = this.packet.get(i).getPkTime()
-						- this.packet.get(i - 1).getPkTime();
-				
-				value = (distB - distA) / (time);
-				
-				if (first)
-				{
-					first = false;
-					baseTime = packet.get(i).getPkTime();
-				}
-				
-				DependencyCollector.iterate( packet.get(i).getPkTime() - baseTime, value);
-				Collector.iterate(value);
-				Variance.iterate(value);
+				dt = data.get(j) - data.get(j - 2);
+				dv = data.get(j + 1) - data.get(j - 1);
+				a = dv / dt;
+				Collector.iterate(a);
+				DependencyCollector.iterate( data.get(j), a);
+				Variance.iterate(a);
+				size++;
 			}
 		}
-
+		
 		Variance.finish();
-
+		
 		StatisticResult standardDevResult = new StatisticResult();
 		StandardDev.init(standardDevResult, varianceResult.getValue().get(0));
-
+		
+		freq = 1000.0d / freq;
+		FFT.init(fft, collectorResult.getValue(), freq);
+		
 		this.value.put("Collector", collectorResult);
 		this.value.put("Dependency Collector", dCollectorResult);
+		this.value.put("FFT", fft);
 		this.value.put("Min", minResult);
 		this.value.put("Max", maxResult);
 		this.value.put("Amplitude", amplitudeResult);
@@ -150,16 +110,6 @@ public class Acceleration extends AttributeResult
 		this.value.put("StandardDev", standardDevResult);
 	}
 
-	public double getDistance(PacketData A, PacketData B)
-	{
-		double dx = A.getPkX() - B.getPkX();
-		dx *= dx;
 
-		double dy = A.getPkY() - B.getPkY();
-		dy *= dy;
-
-		double result = Math.sqrt(dx + dy);
-		return result;
-	}
 
 }

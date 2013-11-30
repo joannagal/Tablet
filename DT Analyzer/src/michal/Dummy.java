@@ -36,10 +36,10 @@ public class Dummy
 		Drawing before, after;
 		try
 		{
-			before = new Drawing("src/michal/test6.mtb");
+			before = new Drawing("src/michal/przed3.mtb");
 			before.setLabel("ABC: Before");
 			
-			after = new Drawing("src/michal/test.mtb");
+			after = new Drawing("src/michal/po3.mtb");
 			after.setLabel("ABC: After");
 			
 			Specimen spec = new Specimen();

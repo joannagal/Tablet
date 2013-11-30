@@ -78,10 +78,13 @@ public class Transformations
 	
 	public void transformAnglePointer(double azimuth, double altitude, Point p)
 	{
-		double r = this.radius * Math.cos(altitude * this.degToRad);
-		p.x = (int) (r * Math.sin((azimuth + 0.0d) * this.degToRad));
-		p.y = (int) (r * Math.cos((azimuth + 0.0d) * this.degToRad));
-		
+		altitude = (altitude / 1024.0d) * (Math.PI / 2.0d);
+		azimuth = (azimuth / 1024.0d) * (Math.PI * 2.0d);	
+	
+		double r = this.radius * Math.cos((double)altitude);
+		p.x = (int) (r * Math.sin((double)azimuth));
+		p.y = (int) (r * Math.cos((double)azimuth));
+			
 		double prop = size.width / size.height;
 		
 		p.x *= prop;

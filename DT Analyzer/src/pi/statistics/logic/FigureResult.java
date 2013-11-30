@@ -34,7 +34,7 @@ public class FigureResult
 		mSpeed.calculateResult();
 		this.value.put("Momentary Speed", mSpeed);
 		
-		Acceleration acceleration = new Acceleration(this.figure.getParent().getPacket(), this.figure.getSegment());
+		Acceleration acceleration = new Acceleration(mSpeed.getForAcceleration());
 		acceleration.calculateResult();
 		this.value.put("Acceleration", acceleration);
 		

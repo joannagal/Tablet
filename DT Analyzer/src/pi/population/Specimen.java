@@ -1,6 +1,7 @@
 package pi.population;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import pi.inputs.drawing.Drawing;
 import pi.statistics.logic.SpecimenResult;
@@ -20,10 +21,19 @@ public class Specimen
 	private String name = null;
 	private String surname = null;
 	
+	private Integer pesel = null;
+	private Boolean sex = null; // true - male
+	private Boolean hand = null; // true - right
+	private Boolean brain = null; // true - right
+	private Boolean operationType = null; // true - P
+	
+	private Integer firstOperation = null;
+	private Integer secondOperation = null;
+	
+	
 	// DATA URODZENIA
 	private Date birth = null;
-	// WIEK OSOBNIKA
-	private Integer age = null;
+
 	
 	private Drawing before = null;
 	private Drawing after = null;
@@ -61,19 +71,9 @@ public class Specimen
 		return birth;
 	}
 
-	public void setBirth(Date birth)
+	public void setBirth(Date date)
 	{
-		this.birth = birth;
-	}
-
-	public Integer getAge()
-	{
-		return age;
-	}
-
-	public void setAge(Integer age)
-	{
-		this.age = age;
+		this.birth = date;
 	}
 
 	public Drawing getBefore()
@@ -104,6 +104,76 @@ public class Specimen
 	public void setResult(SpecimenResult result)
 	{
 		this.result = result;
+	}
+
+	public Integer getPesel()
+	{
+		return pesel;
+	}
+
+	public void setPesel(Integer pesel)
+	{
+		this.pesel = pesel;
+	}
+
+	public Boolean getSex()
+	{
+		return sex;
+	}
+
+	public void setSex(Boolean sex)
+	{
+		this.sex = sex;
+	}
+
+	public Boolean getHand()
+	{
+		return hand;
+	}
+
+	public void setHand(Boolean hand)
+	{
+		this.hand = hand;
+	}
+
+	public Boolean getBrain()
+	{
+		return brain;
+	}
+
+	public void setBrain(Boolean brain)
+	{
+		this.brain = brain;
+	}
+
+	public Boolean getOperationType()
+	{
+		return operationType;
+	}
+
+	public void setOperationType(Boolean operationType)
+	{
+		this.operationType = operationType;
+	}
+
+	public Integer getFirstOperation()
+	{
+		return firstOperation;
+	}
+
+	public void setFirstOperation(Integer firstOperation)
+	{
+		this.firstOperation = firstOperation;
+	}
+
+	public Integer getSecondOperation()
+	{
+		return secondOperation;
+	}
+
+	public void setSecondOperation(Integer secondOperation)
+	{
+		this.secondOperation = secondOperation;
 	}
 
 	

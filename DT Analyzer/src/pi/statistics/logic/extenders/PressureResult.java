@@ -10,6 +10,7 @@ import pi.statistics.functions.Amplitude;
 import pi.statistics.functions.Average;
 import pi.statistics.functions.Collector;
 import pi.statistics.functions.DependencyCollector;
+import pi.statistics.functions.FFT;
 import pi.statistics.functions.Max;
 import pi.statistics.functions.Min;
 import pi.statistics.functions.StandardDev;
@@ -37,11 +38,13 @@ public class PressureResult extends AttributeResult
 		StatisticResult maxResult = new StatisticResult();
 		StatisticResult amplitudeResult = new StatisticResult();
 		StatisticResult avgResult = new StatisticResult();
+		StatisticResult fft = new StatisticResult();
 
 		Min.init(minResult);
 		Max.init(maxResult);
 		Amplitude.init(amplitudeResult);
 		Average.init(avgResult);
+		
 		
 		int size = 0;
 		
@@ -73,6 +76,7 @@ public class PressureResult extends AttributeResult
 		
 		boolean first = true;
 		double baseTime = 0.0d;
+		double freq = 0.010d;
 		
 		while (it.hasNext())
 		{
@@ -83,14 +87,29 @@ public class PressureResult extends AttributeResult
 				{
 					first = false;
 					baseTime = packet.get(i).getPkTime();
+					
+					if (i < seg.getRange().getRight())
+					{
+						freq = packet.get(i + 1).getPkTime() - baseTime;
+					}
+					
 				}
-				
+
 				value = (double) packet.get(i).getPkPressure();
 				Collector.iterate(value);
 				DependencyCollector.iterate( packet.get(i).getPkTime() - baseTime, value);
 				Variance.iterate(value);
 			}
 		}
+		
+		/*ArrayList <Double> dummy = new ArrayList <Double> (36);
+		for (int i = 0; i < 36; i++)
+		dummy.add(Math.sin((double)i * 20 * (Math.PI / 180.0d))) ;*/
+		
+		freq = freq / 1000;
+		freq = 1.0d / freq;
+		
+		FFT.init(fft, collectorResult.getValue(), freq);
 		
 		Variance.finish();
 		
@@ -99,6 +118,7 @@ public class PressureResult extends AttributeResult
 		
 		this.value.put("Collector", collectorResult);
 		this.value.put("Dependency Collector", dCollectorResult);
+		this.value.put("FFT", fft);
 		this.value.put("Min", minResult);
 		this.value.put("Max", maxResult);
 		this.value.put("Amplitude", amplitudeResult);
