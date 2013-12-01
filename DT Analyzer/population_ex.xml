@@ -1,0 +1,25 @@
+<PROJECT name="myProject" path="myPath" date="" type="0">
+
+	<POPUL id="1" specimens="1">
+		<SPECIMEN name="Jan" surname="Kowalski" birth_date=""
+			sex="true" hand="true" brain="true" operation="" inputs_number="">
+
+			<INPUT id="0" figures="" presure_avoid="" content="1 2 3 4"
+				operation="">
+				<RAW_DATA packets="">1 2 3 4 5 6 7 8 9 10 11 12 13</RAW_DATA>
+				<FIGURE type="" segments="" bounds="1 2 3 4">
+
+
+					<SEGMENT range="1 2">
+						moj przykladowy cykl 1!
+					</SEGMENT>
+					<SEGMENT range="3 4">
+						moj przykladowy cykl 2!
+					</SEGMENT>
+
+				</FIGURE>
+			</INPUT>
+		</SPECIMEN>
+
+	</POPUL>
+</PROJECT>

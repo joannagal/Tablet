@@ -1,5 +1,6 @@
 package pi.project.saver;
 
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,10 +13,10 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import pi.inputs.signal.Channel;
-import pi.inputs.signal.Cycle;
-import pi.inputs.signal.ECG;
-import pi.inputs.signal.Probe;
+import pi.inputs.drawing.Drawing;
+import pi.inputs.drawing.Figure;
+import pi.inputs.drawing.PacketData;
+import pi.inputs.drawing.Segment;
 import pi.population.Population;
 import pi.population.Specimen;
 import pi.project.Project;
@@ -85,22 +86,20 @@ public class PopSaver {
 		out.writeStartElement("SPECIMEN");
 		if (s.getName() != null)
 			out.writeAttribute("name", s.getName());
-		out.writeAttribute("surname", s.getSurname());
+		if (s.getSurname() != null)
+			out.writeAttribute("surname", s.getSurname());
 		if (s.getBirth() != null) {
-			out.writeAttribute("birth_date", s.getBirth());
+			out.writeAttribute("birth_date", s.getBirth().toString());
 		} else {
 			out.writeAttribute("birth_date", "");
 		}
-		out.writeAttribute("age", String.valueOf(s.getAge()));
-		out.writeAttribute("weight", String.valueOf(s.getWeight()));
-		out.writeAttribute("activity_duration",
-				String.valueOf(s.getActivityDuration()));
-		out.writeAttribute("hiv", String.valueOf(s.getHiv()));
-		out.writeAttribute("metadon", String.valueOf(s.getMetadon()));
-		out.writeAttribute("metadon_time_application",
-				String.valueOf(s.getMetadonTimeApplication()));
-		out.writeAttribute("good_mood_duration",
-				String.valueOf(s.getTimeToGoodMood()));
+		out.writeAttribute("sex", String.valueOf(s.getSex()));
+		out.writeAttribute("hand", String.valueOf(s.getHand()));
+		out.writeAttribute("brain", String.valueOf(s.getBrain()));
+		if (s.getOperationType() != null) {
+			out.writeAttribute("operation",
+					String.valueOf(s.getOperationType()));
+		}
 		if (s.getAfter() != null) {
 			out.writeAttribute("inputs_number", "2");
 		} else {
@@ -108,102 +107,97 @@ public class PopSaver {
 		}
 
 		if (s.getBefore() != null) {
-			saveECG((ECG) s.getBefore());
+			saveDrawing((Drawing) s.getBefore());
 		}
 
 		if (s.getAfter() != null) {
-			saveECG((ECG) s.getAfter());
+			saveDrawing((Drawing) s.getAfter());
 		}
 
 		out.writeEndElement();
 	}
 
-	private void saveECG(ECG ecg) throws XMLStreamException {
+	private void saveDrawing(Drawing drawing) throws XMLStreamException {
 		out.writeStartElement("INPUT");
-		if (ecg.getName() != null)
-			out.writeAttribute("id", ecg.getName());
-		out.writeAttribute("channels", String.valueOf(ecg.getChannel().size()));
-
-		for (Channel ch : ecg.getChannel()) {
-			saveChannel(ch);
-		}
-
-		out.writeEndElement();
-
-	}
-
-	private void saveChannel(Channel ch) throws XMLStreamException {
-		out.writeStartElement("CHANNEL");
-		if (ch.getName() != null)
-			out.writeAttribute("name", ch.getName());
-		if (ch.getInterval() != null) {
-			out.writeAttribute("interval", String.valueOf(ch.getInterval()));
-		} else {
-			out.writeAttribute("interval", "");
-		}
-		if (ch.getProbe() != null) {
-			out.writeAttribute("samples", String.valueOf(ch.getProbe().size()));
-		} else {
-			out.writeAttribute("samples", "");
-		}
-		out.writeAttribute("translations", String.valueOf(ch.getTranslation()));
+		if (drawing.getName() != null)
+			out.writeAttribute("id", drawing.getName());
+		out.writeAttribute("figures",
+				String.valueOf(drawing.getFigure().size()));
+		out.writeAttribute("pressure_avoid",
+				String.valueOf(drawing.getPressureAvoid()));
+		out.writeAttribute("content", rectangleToString(drawing.getContent()));
 
 		out.writeStartElement("RAW_DATA");
-		if (ch.getProbe() != null) {
-			for (Probe p : ch.getProbe()) {
-				out.writeCharacters(p.getValue() + " ");
+		if (drawing.getPacket() != null) {
+			for (PacketData p : drawing.getPacket()) {
+				out.writeCharacters(p.getPkX() + " ");
+				out.writeCharacters(p.getPkY() + " ");
+				out.writeCharacters(p.getPkPressure() + " ");
+				out.writeCharacters(p.getPkTime() + " ");
+				out.writeCharacters(p.getPkAzimuth() + " ");
+				out.writeCharacters(p.getPkAltitude() + " ");
 			}
 		}
 		out.writeEndElement();
 
-		out.writeStartElement("CYCLES");
-		out.writeAttribute("number", String.valueOf(ch.getCycle().size()));
-		for (Cycle c : ch.getCycle()) {
-			saveCycle(c);
+		for (Figure ch : drawing.getFigure()) {
+			saveFigure(ch);
 		}
 
 		out.writeEndElement();
+
+	}
+
+	private String rectangleToString(Rectangle r) {
+		// TODO ??????
+		String content = "";
+		if (r != null) {
+			content += r.getMinX();
+			content += " " + r.getMaxX();
+			content += " " + r.getMinY();
+			content += " " + r.getMaxY();
+		} else {
+			content = "1 2 3 4 ERR";
+		}
+		return content;
+	}
+
+	private void saveFigure(Figure fig) throws XMLStreamException {
+		out.writeStartElement("FIGURE");
+		out.writeAttribute("type", String.valueOf(fig.getType()));
+
+		if (fig.getSegment() != null) {
+			out.writeAttribute("segments",
+					String.valueOf(fig.getSegment().size()));
+		} else {
+			out.writeAttribute("segments", "");
+		}
+
+		if (fig.getBounds() != null) {
+			out.writeAttribute("bounds", rectangleToString(fig.getBounds()));
+		} else {
+			out.writeAttribute("bounds", "");
+		}
+
+		// out.writeStartElement("CYCLES");
+		// out.writeAttribute("number", String.valueOf(fig.getCycle().size()));
+		for (Segment s : fig.getSegment()) {
+			saveSegment(s);
+		}
+
+		// out.writeEndElement();
 
 		out.writeEndElement();
 	}
 
-	private void saveCycle(Cycle c) throws XMLStreamException {
-		out.writeStartElement("CYCLE");
+	private void saveSegment(Segment c) throws XMLStreamException {
+		out.writeStartElement("SEGMENT");
 		if (c.getRange() != null) {
-			out.writeAttribute("range", c.getRange().toString());
+			String range = c.getRange().getLeft() + " "
+					+ c.getRange().getRight();
+			out.writeAttribute("range", range);
 		} else {
 			out.writeAttribute("range", "");
-		}
-		if (c.getP_wave() != null) {
-			out.writeAttribute("p_wave", c.getP_wave().toString());
-		} else {
-			out.writeAttribute("p_wave", "");
-		}
-		if (c.getPr_segment() != null) {
-			out.writeAttribute("pr_segment", c.getPr_segment().toString());
-		} else {
-			out.writeAttribute("pr_segment", "");
-		}
-		if (c.getQrs_complex() != null) {
-			out.writeAttribute("qrs_complex", c.getQrs_complex().toString());
-		} else {
-			out.writeAttribute("qrs_complex", "");
-		}
-
-		if (c.getT_wave() != null) {
-			out.writeAttribute("t_wave", c.getT_wave().toString());
-		} else {
-			out.writeAttribute("t_wave", "");
-		}
-		if (c.getU_wave() != null) {
-			out.writeAttribute("u_wave", c.getU_wave().toString());
-		} else {
-			out.writeAttribute("u_wave", "");
-		}
-		if (c.getMarkered() != null) {
-			out.writeAttribute("markered", c.getMarkered().toString());
-		} else {
-			out.writeAttribute("markered", Boolean.FALSE.toString());
 		}
 
 		out.writeEndElement();

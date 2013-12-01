@@ -25,7 +25,7 @@ public class PopImporter extends DefaultHandler {
 	private ArrayList<Specimen> specimenList;
 	private Specimen spec;
 	private Drawing input;
-	private ArrayList<Figure> channelList;
+	private ArrayList<Figure> figureList;
 	private Figure figure;
 	private LinkedList<Segment> segmentsList;
 	private Segment segment;
@@ -129,10 +129,6 @@ public class PopImporter extends DefaultHandler {
 		// TODO attributes.getValue("birth_date")
 		// spec.setBirth((java.sql.Date) d);
 
-		String age = attributes.getValue("age");
-		if (age != "")
-			spec.setAge(Integer.parseInt(age));
-
 		String hand = attributes.getValue("hand");
 		if (hand != "")
 			spec.setHand(Boolean.parseBoolean(hand));
@@ -161,14 +157,18 @@ public class PopImporter extends DefaultHandler {
 	public void initInput(Attributes attributes) {
 		input = new Drawing();
 		input.setName(attributes.getValue("id"));
-		String channels = attributes.getValue("channels");
-		if (channels != "")
-			channelList = new ArrayList<>(Integer.parseInt(channels));
+		String figures = attributes.getValue("figures");
+		if (figures != null && figures != "") {
+			System.out.println("ERR Figures: " + figures);
+			figureList = new ArrayList<>(Integer.parseInt(figures));
+		} else {
+			figureList = new ArrayList<>();
+		}
 		channelIndex = 0;
-		input.setFigure(channelList);
+		input.setFigure(figureList);
 
 		String pressureAvoid = attributes.getValue("pressure_avoid");
-		if (pressureAvoid != "")
+		if (pressureAvoid != null && pressureAvoid != "")
 			input.setPressureAvoid(Integer.parseInt(pressureAvoid));
 
 		String content = attributes.getValue("content");
@@ -183,14 +183,16 @@ public class PopImporter extends DefaultHandler {
 		}
 
 		String operation = attributes.getValue("operation");
-		if ((operation != null) && (operation != ""))
+		if ((operation != null) && (operation != "")) {
 			// TODO Operation missing?
+		}
 
-			if (input.getName().equals("0")) {
-				spec.setBefore(input);
-			} else if (input.getName().equals("1")) {
-				spec.setAfter(input);
-			}
+
+		if (input.getName().equals("0")) {
+			spec.setBefore(input);
+		} else if (input.getName().equals("1")) {
+			spec.setAfter(input);
+		}
 	}
 
 	public void initFigure(Attributes attributes) {
@@ -210,7 +212,7 @@ public class PopImporter extends DefaultHandler {
 
 		// TODO Nie wiem czy atrybuyt segments jest w ogóle potrzebny
 
-		channelList.add(channelIndex, figure);
+		figureList.add(channelIndex, figure);
 		channelIndex++;
 
 	}
