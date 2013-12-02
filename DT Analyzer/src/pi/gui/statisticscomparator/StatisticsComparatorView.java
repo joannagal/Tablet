@@ -35,7 +35,7 @@ public class StatisticsComparatorView extends JFrame
 	private JComboBox<String> figureCombo = new JComboBox<String>(figureStrings);;
 
 	String[] elementsStrings =
-	{ "Figure Standards", "Pressure", "Momentary Speed", "Acceleration" };
+	{ "Figure Standards", "Pressure", "Momentary Speed", "Acceleration", "Direction Change (f'')" };
 	private JList<String> elementsList = new JList<String>(elementsStrings);
 
 	private String figureStr = "ZigZag";

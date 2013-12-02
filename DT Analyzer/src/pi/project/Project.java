@@ -67,14 +67,11 @@ public class Project
 		setAnalyzer(new ECGAnalyzer());
 	}
 
-	
-	public boolean load(String path)
-	{
-		return true;
-	}
 
 	public boolean save(String path)
 	{
+		if (path == null) path = this.path;
+		
 		return true;
 	}
 		

@@ -51,17 +51,6 @@ public class FigureExtractor
 					newSegment.setRange(new Range(left, i));
 					segment.add(newSegment);	
 					
-					/*ArrayList <PacketData> copyPacket = new ArrayList <PacketData> (i - left + 1);
-					for (int j = left; j <= i; j++)
-					{
-						copyPacket.add(packet.get(j).getCopy());
-					}
-					if (copyPacket.size() > 2)
-					{
-						newSegment.setPacket(copyPacket);
-						segment.add(newSegment);	
-					}*/
-					
 				}
 
 			}

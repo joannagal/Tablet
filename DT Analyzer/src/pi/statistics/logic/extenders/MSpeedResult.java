@@ -11,7 +11,9 @@ import pi.statistics.functions.Average;
 import pi.statistics.functions.Collector;
 import pi.statistics.functions.DependencyCollector;
 import pi.statistics.functions.FFT;
+import pi.statistics.functions.FFTFreq;
 import pi.statistics.functions.Max;
+import pi.statistics.functions.Median;
 import pi.statistics.functions.Min;
 import pi.statistics.functions.StandardDev;
 import pi.statistics.functions.Variance;
@@ -24,6 +26,7 @@ public class MSpeedResult extends AttributeResult
 	private LinkedList<Segment> segment;
 
 	private ArrayList<ArrayList<Double>> toAcceleration;
+	private double freq = 1.0d / 100.0d;
 
 	public MSpeedResult(ArrayList<PacketData> packet,
 			LinkedList<Segment> segment)
@@ -35,14 +38,16 @@ public class MSpeedResult extends AttributeResult
 	@Override
 	public void calculateResult()
 	{
-		StatisticResult collectorResult = new StatisticResult();
-		StatisticResult dCollectorResult = new StatisticResult();
+		StatisticResult histogramResult = new StatisticResult();
+		StatisticResult dependencyResult = new StatisticResult();
 		StatisticResult minResult = new StatisticResult();
 		StatisticResult maxResult = new StatisticResult();
 		StatisticResult amplitudeResult = new StatisticResult();
 		StatisticResult avgResult = new StatisticResult();
 		StatisticResult fft = new StatisticResult();
-
+		StatisticResult median = new StatisticResult();
+		StatisticResult fftFreq = new StatisticResult();
+		
 		Min.init(minResult);
 		Max.init(maxResult);
 		Amplitude.init(amplitudeResult);
@@ -52,9 +57,9 @@ public class MSpeedResult extends AttributeResult
 
 		Iterator<Segment> it = this.segment.iterator();
 		Segment seg;
+		
 		double value, dist, time;
-		double timeOfFragmentation = 1000.0d * (1.0d / 8.0d);
-		double freq = 0.010d;
+		double timeOfFragmentation = 1000.0d * (1.0d / 10.0d);
 
 		while (it.hasNext())
 		{
@@ -93,6 +98,8 @@ public class MSpeedResult extends AttributeResult
 					Average.iterate(value);
 					sumTime = 0.0d;
 					sumDist = 0.0d;
+					size++;
+					
 				} else if (i == seg.getRange().getRight())
 				{
 					value = 0.0d;
@@ -102,18 +109,19 @@ public class MSpeedResult extends AttributeResult
 					Average.iterate(value);
 					sumTime = 0.0d;
 					sumDist = 0.0d;
+					size++;
 				}
 			}
-			size += seg.getRange().getInterval();
 		}
 
-		Collector.init(collectorResult, size);
-		DependencyCollector.init(dCollectorResult, size * 2);
-
 		Average.finish();
+		
 		StatisticResult varianceResult = new StatisticResult();
 		Variance.init(varianceResult, avgResult.getValue().get(0));
-
+		Collector.init(histogramResult, size);
+		DependencyCollector.init(dependencyResult, size * 2 + 1);
+		Median.init(median, size);
+		
 		boolean first = true;
 		double baseTime = 0.0d;
 
@@ -145,6 +153,8 @@ public class MSpeedResult extends AttributeResult
 					if (i < seg.getRange().getRight())
 					{
 						freq = packet.get(i + 1).getPkTime() - baseTime;
+						freq = freq / 1000;
+						freq = 1.0d / freq;
 					}
 
 				}
@@ -173,6 +183,7 @@ public class MSpeedResult extends AttributeResult
 					DependencyCollector.iterate(packet.get(i).getPkTime()
 							- baseTime, value);
 					Variance.iterate(value);
+					Median.iterate(value);
 				
 					toAdd.add(packet.get(i).getPkTime()
 							- baseTime);
@@ -187,6 +198,7 @@ public class MSpeedResult extends AttributeResult
 					DependencyCollector.iterate(packet.get(i).getPkTime()
 							- baseTime, value);
 					Variance.iterate(value);
+					Median.iterate(value);
 					
 					toAdd.add(packet.get(i).getPkTime()
 							- baseTime);
@@ -200,21 +212,25 @@ public class MSpeedResult extends AttributeResult
 		}
 
 		Variance.finish();
-
+		Median.finish();
+		
+		FFT.init(fft, histogramResult.getValue(), freq);
+		FFTFreq.init(fftFreq, fft.getValue());
+		
 		StatisticResult standardDevResult = new StatisticResult();
 		StandardDev.init(standardDevResult, varianceResult.getValue().get(0));
 
-		freq = 1000.0d / freq;
-		FFT.init(fft, collectorResult.getValue(), freq);
 
-		this.value.put("Collector", collectorResult);
-		this.value.put("Dependency Collector", dCollectorResult);
+		this.value.put("Collector", histogramResult);
+		this.value.put("Dependency Collector", dependencyResult);
 		this.value.put("FFT", fft);
+		this.value.put("FFT Freq", fftFreq);
 		this.value.put("Min", minResult);
 		this.value.put("Max", maxResult);
 		this.value.put("Amplitude", amplitudeResult);
 		this.value.put("Average", avgResult);
 		this.value.put("Variance", varianceResult);
+		this.value.put("Median", median);
 		this.value.put("StandardDev", standardDevResult);
 	}
 
@@ -233,6 +249,16 @@ public class MSpeedResult extends AttributeResult
 	public ArrayList<ArrayList<Double>> getForAcceleration()
 	{
 		return this.toAcceleration;
+	}
+
+	public double getFreq()
+	{
+		return freq;
+	}
+
+	public void setFreq(double freq)
+	{
+		this.freq = freq;
 	}
 
 }

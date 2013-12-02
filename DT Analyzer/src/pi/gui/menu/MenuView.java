@@ -1,5 +1,6 @@
 package pi.gui.menu;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,7 +24,8 @@ public class MenuView extends JMenuBar
 	private JMenuItem closeAppItem;
 	private JMenuItem aboutAppItem;
 
-	// private ChooseProjectView projectDialog;
+	private final JFileChooser fc = new JFileChooser();
+	
 	private JMenuItem[] menuItemsArray;
 
 	private String[] menuItemEvent = new String[]
@@ -106,5 +108,10 @@ public class MenuView extends JMenuBar
 			menuItemsArray[i].addActionListener(al);
 		}
 
+	}
+
+	public JFileChooser getFc()
+	{
+		return fc;
 	}
 }

@@ -31,7 +31,12 @@ public class Drawing
 	private int maxPressure = 1024;
 	private int totalTime = 0;
 	private int breakFigureDistance = 128;
-
+	
+	private int outOrgX = 0;
+	private int outOrgY = 0;
+	private int outExtX = 0;
+	private int outExtY = 0;
+	
 	FigureExtractor extractor = new FigureExtractor();
 	FigureInterpreter interpreter = new FigureInterpreter();
 
@@ -44,11 +49,7 @@ public class Drawing
 	
 	public Drawing()
 	{
-		//TODO Poni¿sze metody s¹ zbêdne?
-		/*
-		this.calculateBreakFigureDistance();
-		this.recalculate(true);
-		*/
+
 	}
 
 	public void recalculate(boolean bounds)
@@ -56,10 +57,18 @@ public class Drawing
 		if ((!bounds) && (!this.isWithExtract()))
 			return;
 		this.clearStuff();
-		extractor.extract(this);
-
+		
 		if (bounds)
-			this.calculateBounds();
+		{
+			this.setBounds();
+			double width = this.outOrgY - this.outOrgX;
+			width = width / 5;
+			
+			System.out.printf("aaaa %f\n", width);
+			this.setBreakFigureDistance((int)width);
+		}
+		
+		extractor.extract(this);
 
 		interpreter.interprate(this);
 		this.createStatus();
@@ -138,6 +147,9 @@ public class Drawing
 		int shift = 0;
 		int fileNameLength = this.getInt(data, shift);
 
+		System.out.printf("-----------\n");
+		System.out.printf("%d ", fileNameLength);
+		
 		if (fileNameLength > 0)
 		{
 			shift += 4;
@@ -145,10 +157,16 @@ public class Drawing
 			for (int i = 0; i < fileNameLength; i++)
 				fileName[i] = data[shift + i];
 			shift += fileNameLength;
+			
+			String str = new String(fileName, "UTF-8");
+			System.out.printf("%s \n", str);
+			
 		} else
 			shift++;
 
 		int dateLength = this.getInt(data, shift);
+		System.out.printf("%d ", dateLength);
+		
 		if (dateLength > 0)
 		{
 			shift += 4;
@@ -157,10 +175,15 @@ public class Drawing
 			for (int i = 0; i < dateLength; i++)
 				date[i] = data[shift + i];
 			shift += dateLength;
+			
+			String str = new String(date, "UTF-8");
+			System.out.printf("%s \n", str);
+			
 		} else
 			shift++;
 
 		int memoLength = this.getInt(data, shift);
+		System.out.printf("%d ", memoLength);
 		if (memoLength > 0)
 		{
 			shift += 4;
@@ -168,17 +191,22 @@ public class Drawing
 			for (int i = 0; i < memoLength; i++)
 				memo[i] = data[shift + i];
 			shift += memoLength;
+			
+			String str = new String(memo, "UTF-8");
+			System.out.printf("%s \n", str);
 		} else
 			shift++;
 
-		// long outOrgX = this.getInt(data, shift);
+		this.outOrgX = this.getInt(data, shift);
 		shift += 4;
-		// long outOrgY =this.getInt(data, shift);
+		this.outOrgY =this.getInt(data, shift);
 		shift += 4;
-		// long outExtX = this.getInt(data, shift);
+		this.outExtX = this.getInt(data, shift);
 		shift += 4;
-		// long outExtY = this.getInt(data, shift);
+		this.outExtY = this.getInt(data, shift);
 		shift += 4;
+		
+		System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX,outExtY);
 
 		int numPackages = this.getInt(data, shift);
 		shift += 4;
@@ -212,6 +240,11 @@ public class Drawing
 		this.setTotalTime(maxTime);
 	}
 
+	public void setBounds()
+	{
+		this.setContent(new Rectangle(this.outOrgX, this.outExtY, this.outOrgY, this.outExtX));
+	}
+	
 	public void calculateBounds()
 	{
 		if (this.figure == null)
@@ -258,6 +291,8 @@ public class Drawing
 
 		this.setContent(new Rectangle(min_x - prop, min_y - prop, width + 2
 				* prop, height + 2 * prop));
+		
+		System.out.printf("%d %d %d %d B\n", min_x, min_y, min_x + width,min_y + height);
 
 	}
 
@@ -431,5 +466,45 @@ public class Drawing
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getOutOrgX()
+	{
+		return outOrgX;
+	}
+
+	public void setOutOrgX(int outOrgX)
+	{
+		this.outOrgX = outOrgX;
+	}
+
+	public int getOutOrgY()
+	{
+		return outOrgY;
+	}
+
+	public void setOutOrgY(int outOrgY)
+	{
+		this.outOrgY = outOrgY;
+	}
+
+	public int getOutExtX()
+	{
+		return outExtX;
+	}
+
+	public void setOutExtX(int outExtX)
+	{
+		this.outExtX = outExtX;
+	}
+
+	public int getOutExtY()
+	{
+		return outExtY;
+	}
+
+	public void setOutExtY(int outExtY)
+	{
+		this.outExtY = outExtY;
 	}
 }

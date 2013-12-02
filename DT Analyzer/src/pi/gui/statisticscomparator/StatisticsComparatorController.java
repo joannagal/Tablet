@@ -28,7 +28,7 @@ public class StatisticsComparatorController implements ActionListener
 	private ArrayList<ArrayList<Double>> toHist;
 	private ArrayList<ArrayList<Double>> toDepend;
 	private ArrayList<ArrayList<Double>> toFFT;
-	
+
 	public void set(String figure, String element, int columns)
 	{
 
@@ -51,7 +51,7 @@ public class StatisticsComparatorController implements ActionListener
 		this.toHist = new ArrayList<ArrayList<Double>>(4);
 		this.toDepend = new ArrayList<ArrayList<Double>>(4);
 		this.toFFT = new ArrayList<ArrayList<Double>>(4);
-		
+
 		Map<String, DrawingResult> valueSpec = specResult[0].getValue();
 		DrawingResult drawingResult = valueSpec.get("Before");
 		if (drawingResult != null)
@@ -90,11 +90,11 @@ public class StatisticsComparatorController implements ActionListener
 		this.view.getHistogram().setData(this.toHist);
 		this.view.getHistogram().recalculate();
 		this.view.getHistogram().draw();
-		
+
 		this.view.getdGraph().setData(this.toDepend);
 		this.view.getdGraph().recalculate();
 		this.view.getdGraph().draw();
-		
+
 		this.view.getFftGraph().setData(this.toFFT);
 		this.view.getFftGraph().recalculate();
 		this.view.getFftGraph().draw();
@@ -146,22 +146,22 @@ public class StatisticsComparatorController implements ActionListener
 					ArrayList<Double> value = statistcResult.getValue();
 					this.toDepend.add(value);
 				}
-				
+
 				statistcResult = valueStat.get("FFT");
 				if (statistcResult != null)
 				{
 					ArrayList<Double> value = statistcResult.getValue();
 					this.toFFT.add(value);
 				}
-				
+
 				String[] standards =
-				{ "Min", "Max", "Amplitude", "Average", "Variance",
+				{ "Min", "Max", "Amplitude", "Average", "Median", "Variance",
 						"StandardDev", "Drawing time", "Drawing length",
-						"Avg Speed", "Breaks Amount" };
+						"Avg Speed", "Breaks Amount", "FFT Freq" };
 
 				int pos = 0;
 
-				for (int i = 0; i < 10; i++)
+				for (int i = 0; i < 12; i++)
 				{
 					statistcResult = valueStat.get(standards[i]);
 					if (statistcResult != null)

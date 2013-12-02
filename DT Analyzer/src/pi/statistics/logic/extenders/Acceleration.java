@@ -1,17 +1,15 @@
 package pi.statistics.logic.extenders;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 
-import pi.inputs.drawing.PacketData;
-import pi.inputs.drawing.Segment;
 import pi.statistics.functions.Amplitude;
 import pi.statistics.functions.Average;
 import pi.statistics.functions.Collector;
 import pi.statistics.functions.DependencyCollector;
 import pi.statistics.functions.FFT;
+import pi.statistics.functions.FFTFreq;
 import pi.statistics.functions.Max;
+import pi.statistics.functions.Median;
 import pi.statistics.functions.Min;
 import pi.statistics.functions.StandardDev;
 import pi.statistics.functions.Variance;
@@ -21,30 +19,33 @@ import pi.statistics.logic.StatisticResult;
 public class Acceleration extends AttributeResult
 {
 	private ArrayList<ArrayList <Double> > velocity;
-
-	public Acceleration(ArrayList<ArrayList <Double> > velocity)
+	private double freq = 1.0d / 100.0d;
+	
+	public Acceleration(ArrayList<ArrayList <Double> > velocity, double freq)
 	{
 		this.velocity = velocity;
+		this.freq = freq;
 	}
 
 	@Override
 	public void calculateResult()
 	{
-		StatisticResult collectorResult = new StatisticResult();
-		StatisticResult dCollectorResult = new StatisticResult();
+		StatisticResult histogramResult = new StatisticResult();
+		StatisticResult dependencyResult = new StatisticResult();
 		StatisticResult minResult = new StatisticResult();
 		StatisticResult maxResult = new StatisticResult();
 		StatisticResult amplitudeResult = new StatisticResult();
 		StatisticResult avgResult = new StatisticResult();
 		StatisticResult fft = new StatisticResult();
-
+		StatisticResult median = new StatisticResult();
+		StatisticResult fftFreq = new StatisticResult();
+		
 		Min.init(minResult);
 		Max.init(maxResult);
 		Amplitude.init(amplitudeResult);
 		Average.init(avgResult);
 
 		int size = 0;
-		double freq = 10.0d;
 		
 		for (int i = 0; i < this.velocity.size(); i++)
 		{
@@ -65,13 +66,14 @@ public class Acceleration extends AttributeResult
 		
 		Average.finish();
 		
-		Collector.init(collectorResult, size);
-		DependencyCollector.init(dCollectorResult, size * 2);
+		Collector.init(histogramResult, size);
+		DependencyCollector.init(dependencyResult, size * 2 + 1);
 		
 		StatisticResult varianceResult = new StatisticResult();
 		Variance.init(varianceResult, avgResult.getValue().get(0));
-		
 
+		Median.init(median, size);
+		
 		DependencyCollector.iterate( 0.0d , 0.0d );
 		
 		for (int i = 0; i < this.velocity.size(); i++)
@@ -87,26 +89,29 @@ public class Acceleration extends AttributeResult
 				Collector.iterate(a);
 				DependencyCollector.iterate( data.get(j), a);
 				Variance.iterate(a);
-				size++;
+				Median.iterate(a);
 			}
 		}
 		
 		Variance.finish();
+		Median.finish();
+		
+		FFT.init(fft, histogramResult.getValue(), freq);
+		FFTFreq.init(fftFreq, fft.getValue());
 		
 		StatisticResult standardDevResult = new StatisticResult();
 		StandardDev.init(standardDevResult, varianceResult.getValue().get(0));
 		
-		freq = 1000.0d / freq;
-		FFT.init(fft, collectorResult.getValue(), freq);
-		
-		this.value.put("Collector", collectorResult);
-		this.value.put("Dependency Collector", dCollectorResult);
+		this.value.put("Collector", histogramResult);
+		this.value.put("Dependency Collector", dependencyResult);
 		this.value.put("FFT", fft);
+		this.value.put("FFT Freq", fftFreq);
 		this.value.put("Min", minResult);
 		this.value.put("Max", maxResult);
 		this.value.put("Amplitude", amplitudeResult);
 		this.value.put("Average", avgResult);
 		this.value.put("Variance", varianceResult);
+		this.value.put("Median", median);
 		this.value.put("StandardDev", standardDevResult);
 	}
 
