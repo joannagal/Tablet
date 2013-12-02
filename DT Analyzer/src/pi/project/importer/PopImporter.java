@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
+import org.w3c.dom.css.Rect;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -174,19 +175,20 @@ public class PopImporter extends DefaultHandler {
 		String content = attributes.getValue("content");
 
 		if (content != "") {
-			// TODO Rectangle?
 			String[] points = content.split(" ");
 			if (points.length >= 4) {
-				Rectangle r = new Rectangle();
-				// ???
+				int x = Integer.parseInt(points[0]);
+				int y = Integer.parseInt(points[1]);
+				int w = Integer.parseInt(points[2]);
+				int h = Integer.parseInt(points[3]);
+				input.setContent(new Rectangle(x, y, w, h));
 			}
 		}
 
 		String operation = attributes.getValue("operation");
 		if ((operation != null) && (operation != "")) {
-			// TODO Operation missing?
+			spec.setOperationType(Boolean.parseBoolean(operation));
 		}
-
 
 		if (input.getName().equals("0")) {
 			spec.setBefore(input);
@@ -202,10 +204,18 @@ public class PopImporter extends DefaultHandler {
 		if (type != "")
 			figure.setType(Integer.parseInt(type));
 
-		String bounds = attributes.getValue("bounds");
-		// TODO
-		// if (bounds != "")
-		// figure.setBounds(Integer.valueOf(bounds));
+		String bounds = attributes.getValue("bounds");		
+		if (bounds != "") {
+			String[] points = bounds.split(" ");
+			if (points.length >= 4) {
+				int x = Integer.parseInt(points[0]);
+				int y = Integer.parseInt(points[1]);
+				int w = Integer.parseInt(points[2]);
+				int h = Integer.parseInt(points[3]);
+				Rectangle r = new Rectangle();
+				figure.setBounds(new Rectangle(x, y, w, h));
+			}
+		}
 
 		segmentsList = new LinkedList<Segment>();
 		figure.setSegment(segmentsList);

@@ -149,15 +149,12 @@ public class PopSaver {
 	}
 
 	private String rectangleToString(Rectangle r) {
-		// TODO ??????
 		String content = "";
 		if (r != null) {
-			content += r.getMinX();
-			content += " " + r.getMaxX();
-			content += " " + r.getMinY();
-			content += " " + r.getMaxY();
-		} else {
-			content = "1 2 3 4 ERR";
+			content += (int) r.getX();
+			content += " " + (int) r.getY();
+			content += " " + (int) r.getWidth();
+			content += " " + (int) r.getHeight();
 		}
 		return content;
 	}
@@ -179,13 +176,9 @@ public class PopSaver {
 			out.writeAttribute("bounds", "");
 		}
 
-		// out.writeStartElement("CYCLES");
-		// out.writeAttribute("number", String.valueOf(fig.getCycle().size()));
 		for (Segment s : fig.getSegment()) {
 			saveSegment(s);
 		}
-
-		// out.writeEndElement();
 
 		out.writeEndElement();
 	}
