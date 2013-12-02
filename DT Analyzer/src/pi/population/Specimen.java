@@ -18,7 +18,7 @@ public class Specimen
 	private String name = null;
 	private String surname = null;
 	
-	private Integer pesel = null;
+	private String pesel = null;
 	private Boolean sex = null; // true - male
 	private Boolean hand = null; // true - right
 	private Boolean brain = null; // true - right
@@ -105,12 +105,12 @@ public class Specimen
 		this.result = result;
 	}
 
-	public Integer getPesel()
+	public String getPesel()
 	{
 		return pesel;
 	}
 
-	public void setPesel(Integer pesel)
+	public void setPesel(String pesel)
 	{
 		this.pesel = pesel;
 	}

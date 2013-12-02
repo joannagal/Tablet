@@ -158,7 +158,7 @@ public class InformationsView extends JFrame
 
 		String name = specimen.getName();
 		String surname = specimen.getSurname();
-		Integer pesel = specimen.getPesel();
+		String pesel = specimen.getPesel();
 		Boolean sex = specimen.getSex();
 		Date birth = specimen.getBirth();
 		Boolean hand = specimen.getHand();
@@ -178,7 +178,7 @@ public class InformationsView extends JFrame
 			this.surnameField.setText("");
 
 		if (pesel != null)
-			this.peselField.setText(Integer.toString(pesel));
+			this.peselField.setText(pesel);
 		else
 			this.peselField.setText("");
 

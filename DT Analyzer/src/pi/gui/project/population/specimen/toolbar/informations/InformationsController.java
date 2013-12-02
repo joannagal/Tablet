@@ -68,8 +68,7 @@ public class InformationsController implements ActionListener
 			{
 				try
 				{
-					Integer i = Integer.parseInt(pesel);
-					specimen.setPesel(i);
+					specimen.setPesel(pesel);
 				} catch (NumberFormatException nfe)
 				{
 					specimen.setPesel(null);

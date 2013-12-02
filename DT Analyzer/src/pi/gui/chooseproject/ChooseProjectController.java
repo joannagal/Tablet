@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import pi.gui.chooseproject.pairimporter.PairImporterView;
+import pi.gui.chooseproject.populpairimporter.PopulPairImporterView;
 import pi.gui.chooseproject.populsingleimporter.PopulSingleImporterView;
 import pi.gui.chooseproject.singleimporter.SingleImporterView;
 import pi.gui.menu.MenuView;
@@ -63,8 +64,12 @@ public class ChooseProjectController implements ActionListener
 			}
 			if (selected.equals("POPULATION_DIFFERENCE"))
 			{
-				System.out.printf("D");
-				view.setVisible(false);
+				PopulPairImporterView importer = new PopulPairImporterView();
+				importer.setVisible(true);
+				
+				this.view.setVisible(false);
+				
+				SharedController.getInstance().getFrame().getMenuView().setInChoose(true);
 			}
 		}
 
