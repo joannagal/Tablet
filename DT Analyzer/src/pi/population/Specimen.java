@@ -15,13 +15,10 @@ import pi.statistics.logic.SpecimenResult;
 
 public class Specimen
 {
-	// IMIE, NAZWISKO OSOBNIKA
-	// W PRANIU MOZE WYJSC ZE LACZYMY TO W JEDNEGO
-	// STRINGA I ZOSTAWIAMY PO PROSTU NAME
 	private String name = null;
 	private String surname = null;
 	
-	private String pesel = null;
+	private Integer pesel = null;
 	private Boolean sex = null; // true - male
 	private Boolean hand = null; // true - right
 	private Boolean brain = null; // true - right
@@ -108,12 +105,12 @@ public class Specimen
 		this.result = result;
 	}
 
-	public String getPesel()
+	public Integer getPesel()
 	{
 		return pesel;
 	}
 
-	public void setPesel(String pesel)
+	public void setPesel(Integer pesel)
 	{
 		this.pesel = pesel;
 	}

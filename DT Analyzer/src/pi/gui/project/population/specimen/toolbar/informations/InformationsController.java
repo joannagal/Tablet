@@ -1,4 +1,4 @@
-package pi.gui.specimen.toolbar.informations;
+package pi.gui.project.population.specimen.toolbar.informations;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,16 +7,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import pi.gui.project.population.specimen.SpecimenView;
 import pi.population.Specimen;
 
 public class InformationsController implements ActionListener
 {
-	private Specimen specimen;
+	private SpecimenView specimenView;
 	private InformationsView view;
 
-	public InformationsController(Specimen specimen, InformationsView view)
+	public InformationsController(SpecimenView specimenView,
+			InformationsView view)
 	{
-		this.specimen = specimen;
+		this.specimenView = specimenView;
 		this.view = view;
 	}
 
@@ -29,8 +31,12 @@ public class InformationsController implements ActionListener
 			view.setVisible(false);
 		}
 
-		if (action.equals("OK"))
+		else if (action.equals("OK"))
 		{
+			if (this.specimenView.getSpecimen() == null)
+				return;
+			Specimen specimen = this.specimenView.getSpecimen();
+
 			String name = this.view.getNameField().getText();
 			String surname = this.view.getSurnameField().getText();
 			String pesel = this.view.getPeselField().getText();
@@ -136,6 +142,7 @@ public class InformationsController implements ActionListener
 				}
 			}
 
+			view.getSpecimenView().getPopulationView().updateLabels();
 			view.setVisible(false);
 		}
 

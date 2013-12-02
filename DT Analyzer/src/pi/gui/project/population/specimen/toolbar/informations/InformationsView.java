@@ -1,4 +1,4 @@
-package pi.gui.specimen.toolbar.informations;
+package pi.gui.project.population.specimen.toolbar.informations;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import pi.gui.project.population.specimen.SpecimenView;
 import pi.population.Specimen;
 
 public class InformationsView extends JFrame
@@ -58,10 +59,12 @@ public class InformationsView extends JFrame
 	private JButton okButton = new JButton("OK");
 
 	private InformationsController controller;
-	private Specimen specimen;
+	private SpecimenView specimenView;
 
-	public InformationsView(Specimen specimen)
+	public InformationsView(SpecimenView specimenView)
 	{
+		this.specimenView = specimenView;
+		
 		this.setTitle("Informations");
 		this.setLayout(null);
 		this.setSize(new Dimension(275, 380));
@@ -133,7 +136,7 @@ public class InformationsView extends JFrame
 		this.okButton.setBounds(170, 320, 80, 25);
 		this.add(this.okButton);
 
-		controller = new InformationsController(specimen, this);
+		controller = new InformationsController(this.specimenView, this);
 
 		this.cancelButton.setActionCommand("CANCEL");
 		this.cancelButton.addActionListener(controller);
@@ -141,26 +144,28 @@ public class InformationsView extends JFrame
 		this.okButton.setActionCommand("OK");
 		this.okButton.addActionListener(controller);
 
-		this.specimen = specimen;
 	}
 
 	public void showWithData()
 	{
+		if (this.specimenView.getSpecimen() == null) return;
+		Specimen specimen = this.specimenView.getSpecimen();
+		
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
 		int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
 		this.setLocation(x, y);
 
-		String name = this.specimen.getName();
-		String surname = this.specimen.getSurname();
-		Integer pesel = this.specimen.getPesel();
-		Boolean sex = this.specimen.getSex();
-		Date birth = this.specimen.getBirth();
-		Boolean hand = this.specimen.getHand();
-		Boolean brain = this.specimen.getBrain();
-		Boolean operation = this.specimen.getOperationType();
-		Integer firstOperation = this.specimen.getFirstOperation();
-		Integer secondOperation = this.specimen.getSecondOperation();
+		String name = specimen.getName();
+		String surname = specimen.getSurname();
+		Integer pesel = specimen.getPesel();
+		Boolean sex = specimen.getSex();
+		Date birth = specimen.getBirth();
+		Boolean hand = specimen.getHand();
+		Boolean brain = specimen.getBrain();
+		Boolean operation = specimen.getOperationType();
+		Integer firstOperation = specimen.getFirstOperation();
+		Integer secondOperation = specimen.getSecondOperation();
 
 		if (name != null)
 			this.nameField.setText(name);
@@ -284,6 +289,16 @@ public class InformationsView extends JFrame
 	public JTextField getSecondOperationField()
 	{
 		return secondOperationField;
+	}
+
+	public SpecimenView getSpecimenView()
+	{
+		return specimenView;
+	}
+
+	public void setSpecimenView(SpecimenView specimenView)
+	{
+		this.specimenView = specimenView;
 	}
 
 

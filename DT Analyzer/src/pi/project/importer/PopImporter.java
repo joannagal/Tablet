@@ -124,7 +124,7 @@ public class PopImporter extends DefaultHandler {
 		spec = new Specimen();
 		spec.setName(attributes.getValue("name"));
 		spec.setSurname(attributes.getValue("surname"));
-		spec.setPesel(attributes.getValue("pesel"));
+		spec.setPesel(Integer.parseInt(attributes.getValue("pesel")));
 		Date d = new Date();
 		// TODO attributes.getValue("birth_date")
 		// spec.setBirth((java.sql.Date) d);

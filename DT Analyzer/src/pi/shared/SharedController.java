@@ -2,6 +2,9 @@ package pi.shared;
 
 import java.awt.Color;
 
+import pi.gui.OurFrame;
+import pi.gui.project.ProjectView;
+import pi.project.Project;
 import pi.shared.schemes.Scheme;
 import pi.shared.schemes.drawing.DrawingScheme;
 
@@ -14,6 +17,10 @@ public class SharedController
 	private Scheme currentScheme;
 	private Scheme whiteScheme;
 	private Scheme blackScheme;
+	
+	private Project project = null;
+	private ProjectView projectView = null;
+	private OurFrame frame = null;
 
 	private SharedController()
 	{
@@ -72,5 +79,35 @@ public class SharedController
 			this.currentScheme = this.blackScheme;
 		else
 			this.currentScheme = this.whiteScheme;
+	}
+
+	public Project getProject()
+	{
+		return project;
+	}
+
+	public void setProject(Project project)
+	{
+		this.project = project;
+	}
+
+	public ProjectView getProjectView()
+	{
+		return projectView;
+	}
+
+	public void setProjectView(ProjectView projectView)
+	{
+		this.projectView = projectView;
+	}
+
+	public OurFrame getFrame()
+	{
+		return frame;
+	}
+
+	public void setFrame(OurFrame frame)
+	{
+		this.frame = frame;
 	}
 }

@@ -75,8 +75,11 @@ public class Graph extends JPanel implements MouseMotionListener
 	// SIMPLE DRAWING BACKGROUND
 	public void drawLabel(Graphics graphics)
 	{
-		graphics.setColor(getScheme().getLabelColor());
-		graphics.drawString(this.drawing.getLabel(), 5, 15);
+		if (this.drawing != null)
+		{
+			graphics.setColor(getScheme().getLabelColor());
+			graphics.drawString(this.drawing.getLabel(), 5, 15);
+		}
 	}
 
 	// ------------------------------------------
@@ -173,8 +176,11 @@ public class Graph extends JPanel implements MouseMotionListener
 
 	public void setDrawing(Drawing drawing)
 	{
-		this.selection.setRange(drawing.getTotalTime(),
-				drawing.getTotalTime() + 1);
+		if (drawing != null)
+			this.selection.setRange(drawing.getTotalTime(),
+					drawing.getTotalTime() + 1);
+		else
+			this.selection.setRange(100, 101);
 		this.drawing = drawing;
 	}
 

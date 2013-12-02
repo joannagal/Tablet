@@ -1,12 +1,18 @@
 package pi.project;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedList;
+
+import javax.swing.JOptionPane;
+
 
 import pi.analyze.AnalysisResult;
 import pi.analyze.Analyzer;
 import pi.analyze.ECG.ECGAnalyzer;
+import pi.inputs.drawing.Drawing;
 import pi.population.Population;
+import pi.population.Specimen;
 
 //-------------------------------------------
 /*
@@ -61,9 +67,6 @@ public class Project
 		setAnalyzer(new ECGAnalyzer());
 	}
 
-	// OGOLNIE PONIZEJ SA GLOWNIE SETTERY I GETTERY
-	// NO ALE TO W MIARE POTRZEB, BEDZIE SIE TA KLASE ROZBUDOWYWALO
-	// NP. TRZEBA NAPISAC KLASE LOAD, SAVE
 	
 	public boolean load(String path)
 	{
@@ -75,6 +78,114 @@ public class Project
 		return true;
 	}
 		
+	public boolean create(ArrayList <String> firstBefore, ArrayList <String> firstAfter,
+			ArrayList <String> secondBefore, ArrayList <String> secondAfter)
+	{
+		if (firstBefore != null)
+		{
+			System.out.printf("A\n");
+			int size = firstBefore.size();
+			ArrayList <Specimen> specimenArray = new ArrayList <Specimen> (size);
+			Specimen specimen;
+			Drawing temp;
+			for (int i = 0; i < size; i++)
+			{
+				try
+				{
+					temp = new Drawing(firstBefore.get(i));
+					temp.setLabel("First Population: Before:");
+					specimen = new Specimen();
+					specimen.setBefore(temp);
+					specimenArray.add(specimen);
+					
+				} catch (Exception e)
+				{
+					String msg =  "Something goes wrong with: " + firstBefore.get(i);
+					JOptionPane.showMessageDialog(null, msg);
+					return false;
+				}	
+			}
+			this.getFirstPopulation().setName("First Population");
+			this.getFirstPopulation().setSpecimen(specimenArray);
+		}
+		
+		if (firstAfter != null)
+		{
+			System.out.printf("B\n");
+			int size = firstAfter.size();
+			ArrayList <Specimen> specimenArray = this.getFirstPopulation().getSpecimen();
+			Drawing temp;
+			for (int i = 0; i < size; i++)
+			{
+				try
+				{
+					temp = new Drawing(firstAfter.get(i));
+					temp.setLabel("First Population: After:");
+					specimenArray.get(i).setAfter(temp);
+					
+				} catch (Exception e)
+				{
+					String msg =  "Something goes wrong with: " + firstAfter.get(i);
+					JOptionPane.showMessageDialog(null, msg);
+					return false;
+				}	
+			}
+		}
+		
+		//
+		
+		if (secondBefore != null)
+		{
+			int size = secondBefore.size();
+			ArrayList <Specimen> specimenArray = new ArrayList <Specimen> (size);
+			Specimen specimen;
+			Drawing temp;
+			for (int i = 0; i < size; i++)
+			{
+				try
+				{
+					temp = new Drawing(secondBefore.get(i));
+					temp.setLabel("Second Population: Before:");
+					specimen = new Specimen();
+					specimen.setBefore(temp);
+					specimenArray.add(specimen);
+					
+				} catch (Exception e)
+				{
+					String msg =  "Something goes wrong with: " + secondBefore.get(i);
+					JOptionPane.showMessageDialog(null, msg);
+					return false;
+				}	
+			}
+			this.getSecondPopulation().setName("Second Population");
+			this.getSecondPopulation().setSpecimen(specimenArray);
+		}
+
+		if (secondAfter != null)
+		{
+			int size = secondAfter.size();
+			ArrayList <Specimen> specimenArray = this.getSecondPopulation().getSpecimen();
+			Drawing temp;
+			for (int i = 0; i < size; i++)
+			{
+				try
+				{
+					temp = new Drawing(secondAfter.get(i));
+					temp.setLabel("Second Population: After:");
+					specimenArray.get(i).setAfter(temp);
+					
+				} catch (Exception e)
+				{
+					String msg =  "Something goes wrong with: " + secondAfter.get(i);
+					JOptionPane.showMessageDialog(null, msg);
+					return false;
+				}	
+			}
+		}
+		
+		return true;
+	}
+	
 
 	public String getName()
 	{
