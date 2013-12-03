@@ -37,7 +37,7 @@ public class PairImporterController implements ActionListener
 				project.setType(Project.SPECIMEN_PAIR);
 				
 				project.setFirstPopulation(new Population());
-				project.setSecondPopulation(new Population());
+				project.setSecondPopulation(null);
 				
 				ArrayList <String> firstBefore = new ArrayList <String> (1);
 				firstBefore.add(this.view.getFirstBeforeField().getText());

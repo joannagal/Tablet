@@ -164,8 +164,8 @@ public class InformationsView extends JFrame
 		Boolean hand = specimen.getHand();
 		Boolean brain = specimen.getBrain();
 		Boolean operation = specimen.getOperationType();
-		Integer firstOperation = specimen.getFirstOperation();
-		Integer secondOperation = specimen.getSecondOperation();
+		Integer firstOperation = specimen.getFirstOperationNo();
+		Integer secondOperation = specimen.getSecondOperationNo();
 
 		if (name != null)
 			this.nameField.setText(name);

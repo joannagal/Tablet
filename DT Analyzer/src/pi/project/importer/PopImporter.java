@@ -1,11 +1,15 @@
 package pi.project.importer;
 
 import java.awt.Rectangle;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
-import org.w3c.dom.css.Rect;
+import javax.xml.crypto.Data;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -19,13 +23,14 @@ import pi.population.Specimen;
 import pi.project.Project;
 import pi.utilities.Range;
 
-public class PopImporter extends DefaultHandler {
-
+public class PopImporter extends DefaultHandler
+{
 	private Project project;
 	private Population popul;
 	private ArrayList<Specimen> specimenList;
 	private Specimen spec;
 	private Drawing input;
+	private Drawing currentDrawing = null;
 	private ArrayList<Figure> figureList;
 	private Figure figure;
 	private LinkedList<Segment> segmentsList;
@@ -33,137 +38,199 @@ public class PopImporter extends DefaultHandler {
 
 	private int specimenIndex = 0;
 	private int channelIndex = 0;
+	
+	private int rawSize = -1;
 
 	boolean rawDataNode = false;
 
 	@Override
-	public void startDocument() {
+	public void startDocument()
+	{
 		System.out.println("Start project import");
 	}
 
 	@Override
-	public void endDocument() {
+	public void endDocument()
+	{
 		System.out.println("Project imported");
 	}
 
 	@Override
 	public void startElement(String uri, String localName, String qName,
-			Attributes attributes) throws SAXException {
+			Attributes attributes) throws SAXException
+	{
 
-		if (qName.equalsIgnoreCase("PROJECT")) {
+		if (qName.equalsIgnoreCase("PROJECT"))
+		{
 			initProject(attributes);
-		} else if (qName.equalsIgnoreCase("POPUL")) {
+		} else if (qName.equalsIgnoreCase("POPUL"))
+		{
 			initPopul(attributes);
-		} else if (qName.equalsIgnoreCase("SPECIMEN")) {
+		} else if (qName.equalsIgnoreCase("SPECIMEN"))
+		{
 			initSpecimen(attributes);
-		} else if (qName.equalsIgnoreCase("INPUT")) {
+		} else if (qName.equalsIgnoreCase("INPUT"))
+		{
 			initInput(attributes);
-		} else if (qName.equalsIgnoreCase("FIGURE")) {
+		} else if (qName.equalsIgnoreCase("FIGURE"))
+		{
 			initFigure(attributes);
-		} else if (qName.equalsIgnoreCase("RAW_DATA")) {
+		} else if (qName.equalsIgnoreCase("RAW_DATA"))
+		{
+			initRawData(attributes);
 			rawDataNode = true;
-		} else if (qName.equalsIgnoreCase("SEGMENT")) {
+		} else if (qName.equalsIgnoreCase("SEGMENT"))
+		{
 			initSegment(attributes);
-		} else if (qName.equalsIgnoreCase("CYCLE")) {
+		} else if (qName.equalsIgnoreCase("CYCLE"))
+		{
 			initSegment(attributes);
 		}
 	}
 
 	@Override
 	public void endElement(String uri, String localName, String qName)
-			throws SAXException {
+			throws SAXException
+	{
 		System.out.println("End Element :" + qName);
 	}
 
 	@Override
 	public void characters(char ch[], int start, int length)
-			throws SAXException {
+			throws SAXException
+	{
 
-		if (rawDataNode) {
+		if (rawDataNode)
+		{
 			getRawData(ch, start, length);
 			rawDataNode = false;
 		}
 	}
 
-	public void init() {
+	public void init()
+	{
 
 	}
 
-	public void finalize() {
+	public void finalize()
+	{
 
 	}
 
-	public void initProject(Attributes attributes) {
+	public void initProject(Attributes attributes)
+	{
 		project = new Project();
 		project.setName(attributes.getValue("name"));
 		project.setPath(attributes.getValue("path"));
-		// TODO:
-		// Date date = new Date(attributes.getValue("date"));
-		// project.setDate(date);
+
 		String type = attributes.getValue("type");
 		if (type != "")
 			project.setType(Integer.parseInt(type));
 	}
 
-	public void initPopul(Attributes attributes) {
+	public void initPopul(Attributes attributes)
+	{
 		popul = new Population();
 		int popId = Integer.parseInt(attributes.getValue("id"));
+		String name = attributes.getValue("name");
+		popul.setName(name);
 		String specCount = attributes.getValue("specimens");
 		if (specCount != "")
 			specimenList = new ArrayList<>(Integer.parseInt(specCount));
 		specimenIndex = 0;
 		popul.setSpecimen(specimenList);
 
-		if (popId == 1) {
+		if (popId == 1)
+		{
 			project.setFirstPopulation(popul);
-		} else if (popId == 2) {
+		} else if (popId == 2)
+		{
 			project.setSecondPopulation(popul);
 		}
 	}
 
-	public void initSpecimen(Attributes attributes) {
+	public void initSpecimen(Attributes attributes)
+	{
 		spec = new Specimen();
+
 		spec.setName(attributes.getValue("name"));
 		spec.setSurname(attributes.getValue("surname"));
 		spec.setPesel(attributes.getValue("pesel"));
-		Date d = new Date();
-		// TODO attributes.getValue("birth_date")
-		// spec.setBirth((java.sql.Date) d);
+
+		// birth_date
+		String date = attributes.getValue("birth_date");
+		if (date != null)
+		{
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			try
+			{
+				Date d = df.parse(date);
+				spec.setBirth(d);
+
+			} catch (ParseException e1)
+			{
+				spec.setBirth(null);
+			}
+		} else
+		{
+			spec.setBirth(null);
+		}
 
 		String hand = attributes.getValue("hand");
-		if (hand != "")
+		if (hand != null)
 			spec.setHand(Boolean.parseBoolean(hand));
+		else
+			spec.setHand(null);
 
 		String sex = attributes.getValue("sex");
-		if (sex != "") {
+		if (sex != null)
 			spec.setSex(Boolean.parseBoolean(sex));
-		}
+		else
+			spec.setSex(null);
 
 		String brain = attributes.getValue("brain");
-		if (brain != "") {
+		if (brain != null)
 			spec.setBrain(Boolean.parseBoolean(brain));
-		}
+		else
+			spec.setBrain(null);
 
 		String operation = attributes.getValue("operation");
-		if (operation != "") {
+		if (operation != null)
 			spec.setOperationType(Boolean.parseBoolean(operation));
-		}
+		else
+			spec.setOperationType(null);
 
-		// TODO Inputs number?
+		String firstOperationNo = attributes.getValue("firstoperationno");
+		if (firstOperationNo != null)
+			spec.setFirstOperationNo(Integer.parseInt(firstOperationNo));
+		else
+			spec.setFirstOperationNo(null);
+
+		String secondOperationNo = attributes.getValue("secondoperationno");
+		if (secondOperationNo != null)
+			spec.setSecondOperationNo(Integer.parseInt(secondOperationNo));
+		else
+			spec.setSecondOperationNo(null);
 
 		popul.getSpecimen().add(specimenIndex, spec);
 		specimenIndex++;
 	}
 
-	public void initInput(Attributes attributes) {
+	public void initInput(Attributes attributes)
+	{
 		input = new Drawing();
-		input.setName(attributes.getValue("id"));
+		this.currentDrawing = input;
+		
+		String id = attributes.getValue("id");
 		String figures = attributes.getValue("figures");
-		if (figures != null && figures != "") {
+		if (figures != null && figures != "")
+		{
 			System.out.println("ERR Figures: " + figures);
 			figureList = new ArrayList<>(Integer.parseInt(figures));
-		} else {
+		} else
+		{
 			figureList = new ArrayList<>();
+
 		}
 		channelIndex = 0;
 		input.setFigure(figureList);
@@ -174,9 +241,11 @@ public class PopImporter extends DefaultHandler {
 
 		String content = attributes.getValue("content");
 
-		if (content != "") {
+		if (content != "")
+		{
 			String[] points = content.split(" ");
-			if (points.length >= 4) {
+			if (points.length >= 4)
+			{
 				int x = Integer.parseInt(points[0]);
 				int y = Integer.parseInt(points[1]);
 				int w = Integer.parseInt(points[2]);
@@ -186,33 +255,40 @@ public class PopImporter extends DefaultHandler {
 		}
 
 		String operation = attributes.getValue("operation");
-		if ((operation != null) && (operation != "")) {
+		if ((operation != null) && (operation != ""))
+		{
 			spec.setOperationType(Boolean.parseBoolean(operation));
 		}
 
-		if (input.getName().equals("0")) {
+		if (id.equals("1"))
+		{
 			spec.setBefore(input);
-		} else if (input.getName().equals("1")) {
+		} else if (id.equals("2"))
+		{
 			spec.setAfter(input);
 		}
+
+		input.createStatus();
 	}
 
-	public void initFigure(Attributes attributes) {
+	public void initFigure(Attributes attributes)
+	{
 		figure = new Figure(input);
 
 		String type = attributes.getValue("type");
 		if (type != "")
 			figure.setType(Integer.parseInt(type));
 
-		String bounds = attributes.getValue("bounds");		
-		if (bounds != "") {
+		String bounds = attributes.getValue("bounds");
+		if (bounds != "")
+		{
 			String[] points = bounds.split(" ");
-			if (points.length >= 4) {
+			if (points.length >= 4)
+			{
 				int x = Integer.parseInt(points[0]);
 				int y = Integer.parseInt(points[1]);
 				int w = Integer.parseInt(points[2]);
 				int h = Integer.parseInt(points[3]);
-				Rectangle r = new Rectangle();
 				figure.setBounds(new Rectangle(x, y, w, h));
 			}
 		}
@@ -220,54 +296,55 @@ public class PopImporter extends DefaultHandler {
 		segmentsList = new LinkedList<Segment>();
 		figure.setSegment(segmentsList);
 
-		// TODO Nie wiem czy atrybuyt segments jest w ogóle potrzebny
-
 		figureList.add(channelIndex, figure);
 		channelIndex++;
 
 	}
 
-	public void getRawData(char ch[], int start, int length) {
-		String data[] = (new String(ch, start, length)).split(" ");
-		ArrayList<PacketData> packets = new ArrayList<>(data.length);
-		int packetsNumber = 0;
-		for (int i = 0; i < data.length; i++) {
+	public void initRawData(Attributes attributes)
+	{
+		this.rawSize = Integer.parseInt(attributes.getValue("packets"));
+	}
+	
+	public void getRawData(char ch[], int start, int length)
+	{
+		
+		String data[] = (new String(ch, start, start)).split(" ");
+		
+		System.out.printf("--- %d %d\n", rawSize, data.length);
+		
+		ArrayList<PacketData> packets = new ArrayList<>(rawSize);
+		
+		for (int i = 0; i < data.length - 1; i += 6)
+		{
+			System.out.printf("%s ", data[i]);
+			
+			
 			PacketData p = new PacketData();
-			int pd = i % 6;
-			switch (pd) {
-			case 0:
-				p = new PacketData();
-				p.setPkX(Integer.parseInt(data[i]));
-				break;
-			case 1:
-				p.setPkY(Integer.parseInt(data[i]));
-				break;
-			case 2:
-				p.setPkPressure(Integer.parseInt(data[i]));
-				break;
-			case 3:
-				p.setPkTime(Integer.parseInt(data[i]));
-				break;
-			case 4:
-				p.setPkAzimuth(Integer.parseInt(data[i]));
-				break;
-			case 5:
-				p.setPkAltitude(Integer.parseInt(data[i]));
-				packetsNumber++;
-				break;
-			}
-
-			packets.add(packetsNumber, p);
+			p = new PacketData();
+			p.setPkX(Integer.parseInt(data[i]));
+			p.setPkY(Integer.parseInt(data[i + 1]));
+			p.setPkPressure(Integer.parseInt(data[i + 2]));
+			p.setPkTime(Integer.parseInt(data[i + 3]));
+			p.setPkAzimuth(Integer.parseInt(data[i + 4]));
+			p.setPkAltitude(Integer.parseInt(data[i + 5]));
+			packets.add(p);
 		}
 
+		if (this.currentDrawing != null)
+		{
+			this.currentDrawing.setPacket(packets);
+		}
 	}
 
-	public void initSegment(Attributes attributes) {
+	public void initSegment(Attributes attributes)
+	{
 		segment = new Segment();
 
 		String range = attributes.getValue("range");
 		String[] bounds = range.split(" ");
-		if (bounds.length >= 2) {
+		if (bounds.length >= 2)
+		{
 			int a = Integer.parseInt(bounds[0]);
 			int b = Integer.parseInt(bounds[1]);
 
@@ -277,7 +354,8 @@ public class PopImporter extends DefaultHandler {
 		segmentsList.add(segment);
 	}
 
-	public Project getProject() {
+	public Project getProject()
+	{
 		return project;
 	}
 }

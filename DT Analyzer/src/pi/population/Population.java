@@ -14,6 +14,7 @@ public class Population
 	// NIE WIEM CZY SIE PRZYDA, RACZEJ WZGLEDY ARTYSTYCZNE
 	private String name;
 	
+	
 	// WIADOMO - WEKTOR OSOBNIKOW
 	private ArrayList <Specimen> specimen;
 	

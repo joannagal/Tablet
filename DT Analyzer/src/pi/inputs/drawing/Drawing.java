@@ -14,7 +14,6 @@ import pi.utilities.Range;
 public class Drawing
 {
 	private String label = "";
-	private String name = "";
 
 	private Rectangle content;
 
@@ -460,13 +459,6 @@ public class Drawing
 		this.completeFigure = completeFigure;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public int getOutOrgX()
 	{

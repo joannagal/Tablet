@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import pi.shared.SharedController;
 
@@ -66,6 +67,10 @@ public class PopulPairImporterView extends JFrame
 
 	public PopulPairImporterView()
 	{
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "htd and mtb files (*.htd, *.mtb)", "htd", "mtb");
+	    fc.setFileFilter(filter);
+		
 		this.controller = new PopulPairImporterController(this);
 
 		this.setTitle("Create Two Populations: Single");

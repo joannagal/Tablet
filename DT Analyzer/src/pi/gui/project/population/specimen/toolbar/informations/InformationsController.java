@@ -114,30 +114,30 @@ public class InformationsController implements ActionListener
 				specimen.setOperationType(false);
 
 			if ((firstOperation.equals("")) || (firstOperation.isEmpty()))
-				specimen.setFirstOperation(null);
+				specimen.setFirstOperationNo(null);
 			else
 			{
 				try
 				{
 					Integer i = Integer.parseInt(firstOperation);
-					specimen.setFirstOperation(i);
+					specimen.setFirstOperationNo(i);
 				} catch (NumberFormatException nfe)
 				{
-					specimen.setFirstOperation(null);
+					specimen.setFirstOperationNo(null);
 				}
 			}
 
 			if ((secondOperation.equals("")) || (secondOperation.isEmpty()))
-				specimen.setSecondOperation(null);
+				specimen.setSecondOperationNo(null);
 			else
 			{
 				try
 				{
 					Integer i = Integer.parseInt(secondOperation);
-					specimen.setSecondOperation(i);
+					specimen.setSecondOperationNo(i);
 				} catch (NumberFormatException nfe)
 				{
-					specimen.setSecondOperation(null);
+					specimen.setSecondOperationNo(null);
 				}
 			}
 

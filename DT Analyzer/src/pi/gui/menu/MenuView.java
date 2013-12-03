@@ -6,8 +6,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-import pi.shared.SharedController;
 
 public class MenuView extends JMenuBar
 {
@@ -36,6 +36,10 @@ public class MenuView extends JMenuBar
 
 	public MenuView(JFrame frame)
 	{
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "XML files (*.xml)", "xml");
+	    fc.setFileFilter(filter);
+		
 		this.parent = frame;
 		mainMenu = new JMenu("Application");
 		projectMenu = new JMenu("Project");

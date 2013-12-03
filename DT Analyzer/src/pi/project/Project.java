@@ -1,11 +1,14 @@
 package pi.project;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
-
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
 
 import pi.analyze.AnalysisResult;
 import pi.analyze.Analyzer;
@@ -13,28 +16,29 @@ import pi.analyze.ECG.ECGAnalyzer;
 import pi.inputs.drawing.Drawing;
 import pi.population.Population;
 import pi.population.Specimen;
+import pi.project.saver.PopSaver;
 
 //-------------------------------------------
 /*
-	TA KLASA TRZYMA WSZYSTKIE INFO O CALYM 
-	POJEDYNCZYM PROJEKCIE 
-	
-	TA SMIESZNA STRUKTURA DRZEWKA JAK
-	PAMIETACIE 
-*/
+ TA KLASA TRZYMA WSZYSTKIE INFO O CALYM 
+ POJEDYNCZYM PROJEKCIE 
+
+ TA SMIESZNA STRUKTURA DRZEWKA JAK
+ PAMIETACIE 
+ */
 //-------------------------------------------
 
 public class Project
 {
-	// NAZWA PROJEKTU 
+	// NAZWA PROJEKTU
 	private String name;
-	
+
 	// SCIEZKA PLIKU PROJEKTU
 	private String path;
-	
+
 	// DATA UTWORZENIA PROJEKTU
 	private Date date;
-	
+
 	// PIERWSZA POPULACJA
 	// ONA TWORZONA JEST OBOWIAZKOWO
 	// NO BO NAWET W NAJPROSTSZYM PROJEKCIE
@@ -42,7 +46,7 @@ public class Project
 	// MUSI ON NALEZEC W KONCU DO POPULACJI
 	// (KTORA ZAWIERA 1 OSOBNIKA)
 	private Population firstPopulation;
-	
+
 	// DRUGA POPULACJA, WIADOMO
 	// TWORZYMY JAK JEST PROJEKT Z DRUGA POPULACJA
 	private Population secondPopulation;
@@ -50,7 +54,7 @@ public class Project
 	// KLASA PROJEKT JEST OWNEREM
 	// MODULU STATYSTYCZNEGO
 	private Analyzer analyzer;
-	
+
 	// TUTAJ PRZECHOWUJEMY WYNIKI ANALIZY
 	private LinkedList<AnalysisResult> results;
 
@@ -61,28 +65,42 @@ public class Project
 	public static final int SPECIMEN_PAIR = 1;
 	public static final int POPULATION_SINGLE = 2;
 	public static final int POPULATION_PAIR = 3;
-	
+
 	public Project()
 	{
 		setAnalyzer(new ECGAnalyzer());
 	}
 
-
 	public boolean save(String path)
 	{
-		if (path == null) path = this.path;
+		if (path == null)
+			path = this.path;
 		
+		PopSaver ps = new PopSaver(this);
+		try
+		{
+			ps.save(path);
+			this.path = path;
+			
+		} catch (FileNotFoundException | UnsupportedEncodingException
+				| XMLStreamException | FactoryConfigurationError e)
+		{
+
+			e.printStackTrace();
+		}
+
 		return true;
 	}
-		
-	public boolean create(ArrayList <String> firstBefore, ArrayList <String> firstAfter,
-			ArrayList <String> secondBefore, ArrayList <String> secondAfter)
+
+	public boolean create(ArrayList<String> firstBefore,
+			ArrayList<String> firstAfter, ArrayList<String> secondBefore,
+			ArrayList<String> secondAfter)
 	{
 		if (firstBefore != null)
 		{
 			System.out.printf("A\n");
 			int size = firstBefore.size();
-			ArrayList <Specimen> specimenArray = new ArrayList <Specimen> (size);
+			ArrayList<Specimen> specimenArray = new ArrayList<Specimen>(size);
 			Specimen specimen;
 			Drawing temp;
 			for (int i = 0; i < size; i++)
@@ -94,23 +112,25 @@ public class Project
 					specimen = new Specimen();
 					specimen.setBefore(temp);
 					specimenArray.add(specimen);
-					
+
 				} catch (Exception e)
 				{
-					String msg =  "Something goes wrong with: " + firstBefore.get(i);
+					String msg = "Something goes wrong with: "
+							+ firstBefore.get(i);
 					JOptionPane.showMessageDialog(null, msg);
 					return false;
-				}	
+				}
 			}
 			this.getFirstPopulation().setName("First Population");
 			this.getFirstPopulation().setSpecimen(specimenArray);
 		}
-		
+
 		if (firstAfter != null)
 		{
 			System.out.printf("B\n");
 			int size = firstAfter.size();
-			ArrayList <Specimen> specimenArray = this.getFirstPopulation().getSpecimen();
+			ArrayList<Specimen> specimenArray = this.getFirstPopulation()
+					.getSpecimen();
 			Drawing temp;
 			for (int i = 0; i < size; i++)
 			{
@@ -119,22 +139,23 @@ public class Project
 					temp = new Drawing(firstAfter.get(i));
 					temp.setLabel("First Population: After:");
 					specimenArray.get(i).setAfter(temp);
-					
+
 				} catch (Exception e)
 				{
-					String msg =  "Something goes wrong with: " + firstAfter.get(i);
+					String msg = "Something goes wrong with: "
+							+ firstAfter.get(i);
 					JOptionPane.showMessageDialog(null, msg);
 					return false;
-				}	
+				}
 			}
 		}
-		
+
 		//
-		
+
 		if (secondBefore != null)
 		{
 			int size = secondBefore.size();
-			ArrayList <Specimen> specimenArray = new ArrayList <Specimen> (size);
+			ArrayList<Specimen> specimenArray = new ArrayList<Specimen>(size);
 			Specimen specimen;
 			Drawing temp;
 			for (int i = 0; i < size; i++)
@@ -146,13 +167,14 @@ public class Project
 					specimen = new Specimen();
 					specimen.setBefore(temp);
 					specimenArray.add(specimen);
-					
+
 				} catch (Exception e)
 				{
-					String msg =  "Something goes wrong with: " + secondBefore.get(i);
+					String msg = "Something goes wrong with: "
+							+ secondBefore.get(i);
 					JOptionPane.showMessageDialog(null, msg);
 					return false;
-				}	
+				}
 			}
 			this.getSecondPopulation().setName("Second Population");
 			this.getSecondPopulation().setSpecimen(specimenArray);
@@ -161,7 +183,8 @@ public class Project
 		if (secondAfter != null)
 		{
 			int size = secondAfter.size();
-			ArrayList <Specimen> specimenArray = this.getSecondPopulation().getSpecimen();
+			ArrayList<Specimen> specimenArray = this.getSecondPopulation()
+					.getSpecimen();
 			Drawing temp;
 			for (int i = 0; i < size; i++)
 			{
@@ -170,19 +193,19 @@ public class Project
 					temp = new Drawing(secondAfter.get(i));
 					temp.setLabel("Second Population: After:");
 					specimenArray.get(i).setAfter(temp);
-					
+
 				} catch (Exception e)
 				{
-					String msg =  "Something goes wrong with: " + secondAfter.get(i);
+					String msg = "Something goes wrong with: "
+							+ secondAfter.get(i);
 					JOptionPane.showMessageDialog(null, msg);
 					return false;
-				}	
+				}
 			}
 		}
-		
+
 		return true;
 	}
-	
 
 	public String getName()
 	{

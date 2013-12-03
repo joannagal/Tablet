@@ -80,10 +80,12 @@ public class SpecimenView extends JPanel
 	
 	public void setSpecimen(Specimen specimen)
 	{
+
 		this.specimen = specimen;
 		if ((type == Project.POPULATION_SINGLE) || 
 				(type == Project.SPECIMEN_SINGLE))
 		{
+		
 			if (specimen != null)
 				this.before.setDrawing(specimen.getBefore());
 			else 

@@ -60,13 +60,19 @@ public class DrawingTestView extends JPanel
 
 	public void setDrawing(Drawing drawing)
 	{
+		if (drawing != null) drawing.createStatus();
+		
+		
 		this.graph.setDrawing(drawing);
 		this.graph.recalculate();
 		this.toolbarView.rebuild(drawing);
 		if (drawing != null)
 			this.graph.setCurrentTime(drawing.getTotalTime());
 		else
+		{
 			this.graph.setCurrentTime(0);
+		}
+			
 		this.graph.draw();
 
 	}

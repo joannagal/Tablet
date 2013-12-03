@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLOutputFactory;
@@ -52,11 +55,11 @@ public class PopSaver {
 		out.writeAttribute("type", String.valueOf(project.getType()));
 
 		if (project.getFirstPopulation() != null) {
-			savePopul(project.getFirstPopulation());
+			savePopul(project.getFirstPopulation(), "1");
 		}
 
 		if (project.getSecondPopulation() != null) {
-			savePopul(project.getSecondPopulation());
+			savePopul(project.getSecondPopulation(), "2");
 		}
 
 		out.writeEndElement();
@@ -65,13 +68,14 @@ public class PopSaver {
 		out.close();
 	}
 
-	private void savePopul(Population popul) throws XMLStreamException {
+	private void savePopul(Population popul, String id) throws XMLStreamException {
 		out.writeStartElement("POPUL");
 		if (popul.getName() != null) {
-			out.writeAttribute("id", popul.getName());
+			out.writeAttribute("name", popul.getName());
 		} else {
-			out.writeAttribute("id", "");
+			out.writeAttribute("name", "");
 		}
+		out.writeAttribute("id", id);
 		out.writeAttribute("specimens",
 				String.valueOf(popul.getSpecimen().size()));
 
@@ -84,22 +88,35 @@ public class PopSaver {
 
 	private void saveSpecimen(Specimen s) throws XMLStreamException {
 		out.writeStartElement("SPECIMEN");
+		
 		if (s.getName() != null)
 			out.writeAttribute("name", s.getName());
 		if (s.getSurname() != null)
 			out.writeAttribute("surname", s.getSurname());
-		if (s.getBirth() != null) {
-			out.writeAttribute("birth_date", s.getBirth().toString());
-		} else {
-			out.writeAttribute("birth_date", "");
+		if (s.getPesel() != null)
+			out.writeAttribute("pesel", s.getPesel());
+		if (s.getBirth() != null) 
+		{
+			Date date = s.getBirth();
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			out.writeAttribute("birth_date", df.format(date));
 		}
-		out.writeAttribute("sex", String.valueOf(s.getSex()));
-		out.writeAttribute("hand", String.valueOf(s.getHand()));
-		out.writeAttribute("brain", String.valueOf(s.getBrain()));
-		if (s.getOperationType() != null) {
+		if (s.getSex() != null)
+			out.writeAttribute("sex", String.valueOf(s.getSex()));
+		if (s.getHand() != null)
+			out.writeAttribute("hand", String.valueOf(s.getHand()));
+		if (s.getBrain() != null)
+			out.writeAttribute("brain", String.valueOf(s.getBrain()));
+		if (s.getOperationType() != null) 
 			out.writeAttribute("operation",
 					String.valueOf(s.getOperationType()));
-		}
+		if (s.getFirstOperationNo() != null) 
+			out.writeAttribute("firstoperationno",
+					String.valueOf(s.getFirstOperationNo()));
+		if (s.getSecondOperationNo() != null) 
+			out.writeAttribute("secondoperationno",
+					String.valueOf(s.getSecondOperationNo()));
+		
 		if (s.getAfter() != null) {
 			out.writeAttribute("inputs_number", "2");
 		} else {
@@ -107,20 +124,22 @@ public class PopSaver {
 		}
 
 		if (s.getBefore() != null) {
-			saveDrawing((Drawing) s.getBefore());
+			saveDrawing((Drawing) s.getBefore(), "1");
 		}
 
 		if (s.getAfter() != null) {
-			saveDrawing((Drawing) s.getAfter());
+			saveDrawing((Drawing) s.getAfter(), "2");
 		}
 
 		out.writeEndElement();
 	}
 
-	private void saveDrawing(Drawing drawing) throws XMLStreamException {
+	private void saveDrawing(Drawing drawing, String id) throws XMLStreamException {
 		out.writeStartElement("INPUT");
-		if (drawing.getName() != null)
-			out.writeAttribute("id", drawing.getName());
+		
+
+		out.writeAttribute("id", id);
+		
 		out.writeAttribute("figures",
 				String.valueOf(drawing.getFigure().size()));
 		out.writeAttribute("pressure_avoid",
@@ -128,6 +147,8 @@ public class PopSaver {
 		out.writeAttribute("content", rectangleToString(drawing.getContent()));
 
 		out.writeStartElement("RAW_DATA");
+		out.writeAttribute("packets", Integer.toString(drawing.getPacket().size()));
+		
 		if (drawing.getPacket() != null) {
 			for (PacketData p : drawing.getPacket()) {
 				out.writeCharacters(p.getPkX() + " ");
@@ -163,18 +184,14 @@ public class PopSaver {
 		out.writeStartElement("FIGURE");
 		out.writeAttribute("type", String.valueOf(fig.getType()));
 
-		if (fig.getSegment() != null) {
+		if (fig.getSegment() != null) 
 			out.writeAttribute("segments",
 					String.valueOf(fig.getSegment().size()));
-		} else {
-			out.writeAttribute("segments", "");
-		}
+		
 
-		if (fig.getBounds() != null) {
+		if (fig.getBounds() != null)
 			out.writeAttribute("bounds", rectangleToString(fig.getBounds()));
-		} else {
-			out.writeAttribute("bounds", "");
-		}
+		
 
 		for (Segment s : fig.getSegment()) {
 			saveSegment(s);

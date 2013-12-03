@@ -36,7 +36,7 @@ public class SingleImporterController implements ActionListener
 				project.setType(Project.SPECIMEN_SINGLE);
 				
 				project.setFirstPopulation(new Population());
-				project.setSecondPopulation(new Population());
+				project.setSecondPopulation(null);
 				
 				ArrayList <String> firstBefore = new ArrayList <String> (1);
 				firstBefore.add(this.view.getFirstBeforeField().getText());

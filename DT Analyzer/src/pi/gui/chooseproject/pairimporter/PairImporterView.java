@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import pi.shared.SharedController;
 
@@ -20,7 +21,7 @@ public class PairImporterView extends JFrame
 	private PairImporterController controller;
 
 	private JLabel firstBefore = new JLabel("First: Before: ");
-	private JLabel firstAfter = new JLabel("First: Before: ");
+	private JLabel firstAfter = new JLabel("First: After: ");
 	
 	private JTextField firstBeforeField = new JTextField();
 	private JTextField firstAfterField = new JTextField();
@@ -35,6 +36,10 @@ public class PairImporterView extends JFrame
 
 	public PairImporterView()
 	{
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "htd and mtb files (*.htd, *.mtb)", "htd", "mtb");
+	    fc.setFileFilter(filter);
+		
 		this.controller = new PairImporterController(this);
 
 		this.setTitle("Create Specimen: Pair");
