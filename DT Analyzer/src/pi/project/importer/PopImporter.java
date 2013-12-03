@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.xml.crypto.Data;
@@ -38,10 +39,12 @@ public class PopImporter extends DefaultHandler
 
 	private int specimenIndex = 0;
 	private int channelIndex = 0;
-	
+
 	private int rawSize = -1;
 
 	boolean rawDataNode = false;
+
+	LinkedList<String> toBuild;
 
 	@Override
 	public void startDocument()
@@ -63,28 +66,35 @@ public class PopImporter extends DefaultHandler
 		if (qName.equalsIgnoreCase("PROJECT"))
 		{
 			initProject(attributes);
+			rawDataNode = false;
+
 		} else if (qName.equalsIgnoreCase("POPUL"))
 		{
 			initPopul(attributes);
+			rawDataNode = false;
 		} else if (qName.equalsIgnoreCase("SPECIMEN"))
 		{
 			initSpecimen(attributes);
+			rawDataNode = false;
+
 		} else if (qName.equalsIgnoreCase("INPUT"))
 		{
 			initInput(attributes);
 		} else if (qName.equalsIgnoreCase("FIGURE"))
 		{
 			initFigure(attributes);
+			rawDataNode = false;
+			
+
 		} else if (qName.equalsIgnoreCase("RAW_DATA"))
 		{
 			initRawData(attributes);
 			rawDataNode = true;
+			
 		} else if (qName.equalsIgnoreCase("SEGMENT"))
 		{
 			initSegment(attributes);
-		} else if (qName.equalsIgnoreCase("CYCLE"))
-		{
-			initSegment(attributes);
+			rawDataNode = false;
 		}
 	}
 
@@ -93,17 +103,20 @@ public class PopImporter extends DefaultHandler
 			throws SAXException
 	{
 		System.out.println("End Element :" + qName);
+		if (rawDataNode)
+		{
+			this.finishRawData();
+			rawDataNode = false;
+		}
 	}
 
 	@Override
 	public void characters(char ch[], int start, int length)
 			throws SAXException
 	{
-
 		if (rawDataNode)
 		{
 			getRawData(ch, start, length);
-			rawDataNode = false;
 		}
 	}
 
@@ -220,7 +233,7 @@ public class PopImporter extends DefaultHandler
 	{
 		input = new Drawing();
 		this.currentDrawing = input;
-		
+
 		String id = attributes.getValue("id");
 		String figures = attributes.getValue("figures");
 		if (figures != null && figures != "")
@@ -238,6 +251,10 @@ public class PopImporter extends DefaultHandler
 		String pressureAvoid = attributes.getValue("pressure_avoid");
 		if (pressureAvoid != null && pressureAvoid != "")
 			input.setPressureAvoid(Integer.parseInt(pressureAvoid));
+		
+		String totalTime = attributes.getValue("total_time");
+		if (totalTime != null && totalTime != "")
+			input.setTotalTime(Integer.parseInt(totalTime));
 
 		String content = attributes.getValue("content");
 
@@ -304,22 +321,39 @@ public class PopImporter extends DefaultHandler
 	public void initRawData(Attributes attributes)
 	{
 		this.rawSize = Integer.parseInt(attributes.getValue("packets"));
+		this.toBuild = new LinkedList<String>();
 	}
-	
+
 	public void getRawData(char ch[], int start, int length)
 	{
+		String toAdd = new String(ch, start, length);
+		this.toBuild.addLast(toAdd);
+	}
+
+	public void finishRawData()
+	{
 		
-		String data[] = (new String(ch, start, start)).split(" ");
+		System.out.printf("--- FINISH\n");
+		Iterator <String> it = this.toBuild.iterator();
+		String value;
+		String sum = "";
 		
-		System.out.printf("--- %d %d\n", rawSize, data.length);
-		
+		while (it.hasNext())
+		{
+			value = it.next();
+			System.out.printf("L: %d\n", value.length());
+			sum = sum + value;
+		}
+		String data[] = sum.split(" ");
+
+		System.out.printf("--- %d %d %d\n", sum.length(), rawSize, data.length);
+
 		ArrayList<PacketData> packets = new ArrayList<>(rawSize);
-		
+
 		for (int i = 0; i < data.length - 1; i += 6)
 		{
 			System.out.printf("%s ", data[i]);
-			
-			
+
 			PacketData p = new PacketData();
 			p = new PacketData();
 			p.setPkX(Integer.parseInt(data[i]));

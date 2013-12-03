@@ -144,6 +144,8 @@ public class PopSaver {
 				String.valueOf(drawing.getFigure().size()));
 		out.writeAttribute("pressure_avoid",
 				String.valueOf(drawing.getPressureAvoid()));
+		out.writeAttribute("total_time",
+				String.valueOf(drawing.getTotalTime()));
 		out.writeAttribute("content", rectangleToString(drawing.getContent()));
 
 		out.writeStartElement("RAW_DATA");
