@@ -109,7 +109,7 @@ public class PopulPairImporterView extends JFrame
 		secondAfterPanel.setLayout(null);
 		secondAfterPanel.add(this.secondAfterPane);
 		this.secondAfterPane.setBounds(0, 0, 540, 345);
-		this.tabbedPane.addTab("Second Popul: Before", secondAfterPanel);
+		this.tabbedPane.addTab("Second Popul: After", secondAfterPanel);
 		
 		this.add(this.tabbedPane);
 

@@ -59,14 +59,14 @@ public class Drawing
 			return;
 		this.clearStuff();
 		
-		if (bounds)
-		{
-			this.setBounds();
-			double width = this.outOrgY - this.outOrgX;
-			width = width / 5;
-			this.setBreakFigureDistance((int)width);
-		}
-		
+		//if (bounds)
+		//{
+		this.setBounds();
+		double width = this.outOrgY - this.outOrgX;
+		width = width / 5;
+		this.setBreakFigureDistance((int)width);
+		//}
+
 		extractor.extract(this);
 
 		interpreter.interprate(this);
@@ -299,7 +299,7 @@ public class Drawing
 
 	public void calculateBreakFigureDistance()
 	{
-		int size = this.packet.size();
+		/*int size = this.packet.size();
 		int min_x = 1000000;
 		int max_x = -1000000;
 		for (int i = 0; i < size; i++)
@@ -312,7 +312,11 @@ public class Drawing
 				min_x = packet.get(i).getPkX();
 		}
 		int width = max_x - min_x;
-		this.setBreakFigureDistance(width / 5);
+		this.setBreakFigureDistance(width / 5);*/
+		
+		double width = this.outOrgY - this.outOrgX;
+		width = width / 5;
+		this.setBreakFigureDistance((int)width);
 	}
 
 	public int getInt(byte[] data, int position)

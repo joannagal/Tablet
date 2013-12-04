@@ -60,12 +60,16 @@ public class FigureInterpreter
 			figure.setType(test);
 			return;
 		}
-		test = this.zigzagTest(figure);
+		
+		figure.setType(Figure.ZIGZAG);
+		
+		/*test = this.zigzagTest(figure);
 		if (test != -1)
 		{
 			figure.setType(test);
+			//figure.setType(Figure.ZIGZAG);
 			return;
-		}
+		}*/
 	}
 
 	public int zigzagTest(Figure figure)

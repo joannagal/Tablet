@@ -25,8 +25,7 @@ public class Specimen
 	private Boolean operationType = null; // true - P
 	private int age;
 
-	private Integer firstOperationNo = null;
-	private Integer secondOperationNo = null;
+	private Integer operationTestNo = null;
 	
 	// DATA URODZENIA
 	private Date birth = null;
@@ -153,32 +152,22 @@ public class Specimen
 		this.operationType = operationType;
 	}
 
-	public Integer getFirstOperationNo()
-	{
-		return firstOperationNo;
-	}
-
-	public void setFirstOperationNo(Integer firstOperation)
-	{
-		this.firstOperationNo = firstOperation;
-	}
-
-	public Integer getSecondOperationNo()
-	{
-		return secondOperationNo;
-	}
-
-	public void setSecondOperationNo(Integer secondOperation)
-	{
-		this.secondOperationNo = secondOperation;
-	}
-
 	public int getAge() {
 		return age;
 	}
 
 	public void setAge(int age) {
 		this.age = age;
+	}
+
+	public Integer getOperationTestNo()
+	{
+		return operationTestNo;
+	}
+
+	public void setOperationTestNo(Integer operationTestNo)
+	{
+		this.operationTestNo = operationTestNo;
 	}
 
 

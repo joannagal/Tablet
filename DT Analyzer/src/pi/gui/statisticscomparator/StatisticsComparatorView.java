@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import pi.gui.dependgraph.DependGraph;
 import pi.gui.histogram.Histogram;
 import pi.population.Specimen;
+import pi.shared.SharedController;
 
 public class StatisticsComparatorView extends JFrame
 {
@@ -56,6 +57,8 @@ public class StatisticsComparatorView extends JFrame
 
 	public StatisticsComparatorView()
 	{
+		this.setTitle("Statistics");
+		
 		this.setLayout(null);
 		this.setSize(new Dimension(1000, 500));
 		this.setResizable(false);
@@ -126,11 +129,17 @@ public class StatisticsComparatorView extends JFrame
 	{
 		this.setSpecimen(first, second);
 
+		int max = 1;
+		if (second != null) max++;
+		//SharedController.getInstance().getProgressView().init(max);
+		
 		this.specimen[0].calculateStatistic();
 		if (this.specimen[1] != null)
 			specimen[1].calculateStatistic();
 
 		this.prepare(this.figureStr, this.elementStr);
+		
+
 	}
 
 	public void prepare(String figure, String element)
@@ -185,6 +194,8 @@ public class StatisticsComparatorView extends JFrame
 
 		controller.set(figure, element, pntr);
 		this.setVisible(true);
+		
+		
 	}
 
 	public Specimen[] getSpecimen()

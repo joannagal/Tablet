@@ -26,9 +26,8 @@ public class InformationsView extends JFrame
 	private JLabel birth = new JLabel("Birth dd/MM/yyyy");
 	private JLabel hand = new JLabel("Hand");
 	private JLabel brain = new JLabel("Brain");
-	private JLabel operation = new JLabel("Op. Type");
-	private JLabel firstOperation = new JLabel("First Op. Number");
-	private JLabel secondOperation = new JLabel("Second Op. Number");
+	private JLabel operation = new JLabel("Operation/Test Type");
+	private JLabel firstOperation = new JLabel("Operation/Test No.");
 
 	private JTextField nameField = new JTextField();
 	private JTextField surnameField = new JTextField();
@@ -49,11 +48,10 @@ public class InformationsView extends JFrame
 	private JComboBox<String> brainField = new JComboBox<String>(brainStrings);
 
 	String[] operationStrings =
-	{ "", "P", "T" };
+	{ "", "P/P", "T/H" };
 	private JComboBox<String> operationField = new JComboBox<String>(operationStrings);
 
 	private JTextField firstOperationField = new JTextField();
-	private JTextField secondOperationField = new JTextField();
 	
 	private JLabel beforeOriginLabel = new JLabel("Origin Before");
 	private JTextField beforeOriginField = new JTextField();
@@ -73,7 +71,7 @@ public class InformationsView extends JFrame
 		
 		this.setTitle("Informations");
 		this.setLayout(null);
-		this.setSize(new Dimension(275, 440));
+		this.setSize(new Dimension(275, 410));
 		this.setResizable(false);
 
 		this.name.setBounds(15, 15, 150, 15);
@@ -103,8 +101,6 @@ public class InformationsView extends JFrame
 		this.firstOperation.setBounds(15, 255, 150, 15);
 		this.add(this.firstOperation);
 
-		this.secondOperation.setBounds(15, 285, 150, 15);
-		this.add(this.secondOperation);
 
 		this.nameField.setBounds(80, 13, 170, 19);
 		this.add(this.nameField);
@@ -127,33 +123,30 @@ public class InformationsView extends JFrame
 		this.brainField.setBounds(80, 193, 170, 19);
 		this.add(this.brainField);
 
-		this.operationField.setBounds(80, 223, 170, 19);
+		this.operationField.setBounds(140, 223, 110, 19);
 		this.add(this.operationField);
 
 		this.firstOperationField.setBounds(140, 253, 110, 19);
 		this.add(this.firstOperationField);
 
-		this.secondOperationField.setBounds(140, 283, 110, 19);
-		this.add(this.secondOperationField);
-
-		this.beforeOriginField.setBounds(100, 313, 150, 19);
+		this.beforeOriginField.setBounds(100, 283, 150, 19);
 		this.beforeOriginField.setEditable(false);
 		this.add(this.beforeOriginField);
 		
-		this.beforeOriginLabel.setBounds(15, 313, 150, 15);
+		this.beforeOriginLabel.setBounds(15, 283, 150, 15);
 		this.add(this.beforeOriginLabel);
 		
-		this.afterOriginField.setBounds(100, 343, 150, 19);
+		this.afterOriginField.setBounds(100, 313, 150, 19);
 		this.afterOriginField.setEditable(false);
 		this.add(this.afterOriginField);
 		
-		this.afterOriginLabel.setBounds(15, 343, 150, 15);
+		this.afterOriginLabel.setBounds(15, 313, 150, 15);
 		this.add(this.afterOriginLabel);
 		
-		this.cancelButton.setBounds(15, 380, 80, 25);
+		this.cancelButton.setBounds(15, 350, 80, 25);
 		this.add(this.cancelButton);
 
-		this.okButton.setBounds(170, 380, 80, 25);
+		this.okButton.setBounds(170, 350, 80, 25);
 		this.add(this.okButton);
 
 		controller = new InformationsController(this.specimenView, this);
@@ -184,8 +177,7 @@ public class InformationsView extends JFrame
 		Boolean hand = specimen.getHand();
 		Boolean brain = specimen.getBrain();
 		Boolean operation = specimen.getOperationType();
-		Integer firstOperation = specimen.getFirstOperationNo();
-		Integer secondOperation = specimen.getSecondOperationNo();
+		Integer firstOperation = specimen.getOperationTestNo();
 		String beforeOrigin = specimen.getBefore().getOrigin();
 		String afterOrigin = null;
 		if (specimen.getAfter() != null) afterOrigin = specimen.getAfter().getOrigin();
@@ -251,11 +243,6 @@ public class InformationsView extends JFrame
 			this.firstOperationField.setText(Integer.toString(firstOperation));
 		else
 			this.firstOperationField.setText("");
-
-		if (secondOperation != null)
-			this.secondOperationField.setText(Integer.toString(secondOperation));
-		else
-			this.secondOperationField.setText("");
 		
 		if (beforeOrigin != null)
 			this.beforeOriginField.setText(beforeOrigin);
@@ -315,10 +302,6 @@ public class InformationsView extends JFrame
 		return firstOperationField;
 	}
 
-	public JTextField getSecondOperationField()
-	{
-		return secondOperationField;
-	}
 
 	public SpecimenView getSpecimenView()
 	{

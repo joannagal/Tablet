@@ -38,9 +38,9 @@ public class InformationsView extends JFrame
 
 		if ((type == Project.POPULATION_PAIR)
 				|| (type == Project.POPULATION_SINGLE))
-			this.setSize(340, 200);
+			this.setSize(340, 180);
 		else
-			this.setSize(340, 140);
+			this.setSize(340, 120);
 
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);

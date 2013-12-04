@@ -27,6 +27,10 @@ public class ToolbarController implements ActionListener
 		}
 		else if (action.equals("STAT"))
 		{
+			this.view.getStatisticsView().showWithData();
+		}
+		else if (action.equals("COMP"))
+		{
 			
 		}
 	}

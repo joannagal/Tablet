@@ -31,8 +31,8 @@ public class ProgressView extends JFrame
 
 	public void init(int max)
 	{
-		this.progress.setValue(0);
 		this.progress.setMaximum(max);
+		this.progress.setValue(0);
 		this.setVisible(true);
 	}
 

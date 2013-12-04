@@ -49,8 +49,7 @@ public class InformationsController implements ActionListener
 					.toString();
 			String firstOperation = this.view.getFirstOperationField()
 					.getText();
-			String secondOperation = this.view.getSecondOperationField()
-					.getText();
+	
 
 			if ((name.equals("")) || (name.isEmpty()))
 				specimen.setName(null);
@@ -108,36 +107,22 @@ public class InformationsController implements ActionListener
 
 			if ((operation.equals("")) || (operation.isEmpty()))
 				specimen.setOperationType(null);
-			else if (operation.equals("P"))
+			else if (operation.equals("P/P"))
 				specimen.setOperationType(true);
-			else if (operation.equals("T"))
+			else if (operation.equals("T/H"))
 				specimen.setOperationType(false);
 
 			if ((firstOperation.equals("")) || (firstOperation.isEmpty()))
-				specimen.setFirstOperationNo(null);
+				specimen.setOperationTestNo(null);
 			else
 			{
 				try
 				{
 					Integer i = Integer.parseInt(firstOperation);
-					specimen.setFirstOperationNo(i);
+					specimen.setOperationTestNo(i);
 				} catch (NumberFormatException nfe)
 				{
-					specimen.setFirstOperationNo(null);
-				}
-			}
-
-			if ((secondOperation.equals("")) || (secondOperation.isEmpty()))
-				specimen.setSecondOperationNo(null);
-			else
-			{
-				try
-				{
-					Integer i = Integer.parseInt(secondOperation);
-					specimen.setSecondOperationNo(i);
-				} catch (NumberFormatException nfe)
-				{
-					specimen.setSecondOperationNo(null);
+					specimen.setOperationTestNo(null);
 				}
 			}
 

@@ -4,21 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
-import pi.analyze.AnalysisResult;
-import pi.analyze.Analyzer;
-import pi.analyze.ECG.ECGAnalyzer;
 import pi.inputs.drawing.Drawing;
 import pi.population.Population;
 import pi.population.Specimen;
 import pi.project.saver.PopSaver;
-import pi.shared.SharedController;
+import pi.statistics.logic.ProjectResult;
 
 //-------------------------------------------
 /*
@@ -53,12 +48,9 @@ public class Project
 	// TWORZYMY JAK JEST PROJEKT Z DRUGA POPULACJA
 	private Population secondPopulation;
 
-	// KLASA PROJEKT JEST OWNEREM
-	// MODULU STATYSTYCZNEGO
-	private Analyzer analyzer;
+	// --------------------------------
+	private ProjectResult result;
 
-	// TUTAJ PRZECHOWUJEMY WYNIKI ANALIZY
-	private LinkedList<AnalysisResult> results;
 
 	// PO WCZYTANIU USTALAMY TYP PROJEKTU
 	// KOLEJNOSC JAK W TYM PLIKU Z ZALOZENIAMI
@@ -68,9 +60,11 @@ public class Project
 	public static final int POPULATION_SINGLE = 2;
 	public static final int POPULATION_PAIR = 3;
 
-	public Project()
+	
+	public void calculateStatistic()
 	{
-		setAnalyzer(new ECGAnalyzer());
+		result = new ProjectResult(this);
+		result.calculateResult();
 	}
 
 	class SaverThread implements Runnable {
@@ -279,25 +273,6 @@ public class Project
 		this.secondPopulation = secondPopulation;
 	}
 
-	public Analyzer getAnalyzer()
-	{
-		return analyzer;
-	}
-
-	public void setAnalyzer(Analyzer analyzer)
-	{
-		this.analyzer = analyzer;
-	}
-
-	public LinkedList<AnalysisResult> getResults()
-	{
-		return results;
-	}
-
-	public void setResults(LinkedList<AnalysisResult> results)
-	{
-		this.results = results;
-	}
 
 	public int getType()
 	{
@@ -307,6 +282,16 @@ public class Project
 	public void setType(int type)
 	{
 		this.type = type;
+	}
+
+	public ProjectResult getResult()
+	{
+		return result;
+	}
+
+	public void setResult(ProjectResult result)
+	{
+		this.result = result;
 	}
 
 }

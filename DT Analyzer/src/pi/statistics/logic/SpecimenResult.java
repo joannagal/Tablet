@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pi.population.Specimen;
+import pi.shared.SharedController;
 
 public class SpecimenResult
 {
@@ -17,7 +18,6 @@ public class SpecimenResult
 	
 	public void calculateResult()
 	{
-		
 		DrawingResult before = new DrawingResult(this.specimen.getBefore());
 		before.calculateResult();
 		getValue().put("Before", before);
@@ -28,7 +28,10 @@ public class SpecimenResult
 			after.calculateResult();
 			getValue().put("After", after);
 		}
-	
+		System.out.printf("X");
+		SharedController.getInstance().getProgressView().increase();
+		
+		this.specimen.setResult(this);
 	}
 
 	public Map<String, DrawingResult> getValue()

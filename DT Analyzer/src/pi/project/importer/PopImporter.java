@@ -48,13 +48,13 @@ public class PopImporter extends DefaultHandler
 	@Override
 	public void startDocument()
 	{
-		System.out.println("Start project import");
+		//System.out.println("Start project import");
 	}
 
 	@Override
 	public void endDocument()
 	{
-		System.out.println("Project imported");
+		//System.out.println("Project imported");
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class PopImporter extends DefaultHandler
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException
 	{
-		System.out.println("End Element :" + qName);
+		//System.out.println("End Element :" + qName);
 		if (rawDataNode)
 		{
 			this.finishRawData();
@@ -218,15 +218,10 @@ public class PopImporter extends DefaultHandler
 
 		String firstOperationNo = attributes.getValue("firstoperationno");
 		if (firstOperationNo != null)
-			spec.setFirstOperationNo(Integer.parseInt(firstOperationNo));
+			spec.setOperationTestNo(Integer.parseInt(firstOperationNo));
 		else
-			spec.setFirstOperationNo(null);
+			spec.setOperationTestNo(null);
 
-		String secondOperationNo = attributes.getValue("secondoperationno");
-		if (secondOperationNo != null)
-			spec.setSecondOperationNo(Integer.parseInt(secondOperationNo));
-		else
-			spec.setSecondOperationNo(null);
 
 		popul.getSpecimen().add(specimenIndex, spec);
 		specimenIndex++;
@@ -241,7 +236,7 @@ public class PopImporter extends DefaultHandler
 		String figures = attributes.getValue("figures");
 		if (figures != null && figures != "")
 		{
-			System.out.println("ERR Figures: " + figures);
+			//System.out.println("ERR Figures: " + figures);
 			figureList = new ArrayList<>(Integer.parseInt(figures));
 		} else
 		{
@@ -274,6 +269,12 @@ public class PopImporter extends DefaultHandler
 				int w = Integer.parseInt(points[2]);
 				int h = Integer.parseInt(points[3]);
 				input.setContent(new Rectangle(x, y, w, h));
+				input.setOutOrgX(x);
+				input.setOutOrgY(w);
+				input.setOutExtX(h);
+				input.setOutExtY(y);
+				
+				//this.setContent(new Rectangle(this.outOrgX, this.outExtY, this.outOrgY, this.outExtX));
 			}
 		}
 
@@ -340,7 +341,7 @@ public class PopImporter extends DefaultHandler
 	public void finishRawData()
 	{
 
-		System.out.printf("--- FINISH\n");
+		//System.out.printf("--- FINISH\n");
 		Iterator<String> it = this.toBuild.iterator();
 		String value;
 		String sum = "";
@@ -348,18 +349,18 @@ public class PopImporter extends DefaultHandler
 		while (it.hasNext())
 		{
 			value = it.next();
-			System.out.printf("L: %d\n", value.length());
+			//System.out.printf("L: %d\n", value.length());
 			sum = sum + value;
 		}
 		String data[] = sum.split(" ");
 
-		System.out.printf("--- %d %d %d\n", sum.length(), rawSize, data.length);
+		//System.out.printf("--- %d %d %d\n", sum.length(), rawSize, data.length);
 
 		ArrayList<PacketData> packets = new ArrayList<>(rawSize);
 
 		for (int i = 0; i < data.length - 1; i += 6)
 		{
-			System.out.printf("%s ", data[i]);
+			//System.out.printf("%s ", data[i]);
 
 			PacketData p = new PacketData();
 			p = new PacketData();

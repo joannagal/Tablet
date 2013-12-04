@@ -123,12 +123,9 @@ public class PopSaver {
 		if (s.getOperationType() != null) 
 			out.writeAttribute("operation",
 					String.valueOf(s.getOperationType()));
-		if (s.getFirstOperationNo() != null) 
+		if (s.getOperationTestNo() != null) 
 			out.writeAttribute("firstoperationno",
-					String.valueOf(s.getFirstOperationNo()));
-		if (s.getSecondOperationNo() != null) 
-			out.writeAttribute("secondoperationno",
-					String.valueOf(s.getSecondOperationNo()));
+					String.valueOf(s.getOperationTestNo()));
 		
 		if (s.getAfter() != null) {
 			out.writeAttribute("inputs_number", "2");
