@@ -73,6 +73,13 @@ public class ProjectView extends JPanel
 		this.add(this.toolbar, c);
 	}
 
+	public void updateLabels()
+	{
+		this.first.updateLabels();
+		if (this.second != null)
+			this.second.updateLabels();
+	}
+
 	public void addSpecimenPair(Drawing firstBefore, Drawing firstAfter,
 			Drawing secondBefore, Drawing secondAfter)
 	{

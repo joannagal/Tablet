@@ -1,14 +1,9 @@
 package pi.statistics.logic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 
 import pi.inputs.drawing.Figure;
-import pi.inputs.drawing.PacketData;
-import pi.inputs.drawing.Segment;
 import pi.statistics.logic.extenders.Acceleration;
 import pi.statistics.logic.extenders.ChangeDirection;
 import pi.statistics.logic.extenders.FigureStandards;

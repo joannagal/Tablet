@@ -70,11 +70,11 @@ public class PopSaver {
 
 	private void savePopul(Population popul, String id) throws XMLStreamException {
 		out.writeStartElement("POPUL");
+		
 		if (popul.getName() != null) {
 			out.writeAttribute("name", popul.getName());
-		} else {
-			out.writeAttribute("name", "");
-		}
+		} 
+		
 		out.writeAttribute("id", id);
 		out.writeAttribute("specimens",
 				String.valueOf(popul.getSpecimen().size()));

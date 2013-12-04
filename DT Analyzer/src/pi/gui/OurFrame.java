@@ -24,7 +24,7 @@ public class OurFrame extends JFrame
 	private GridBagConstraints constraints;
 
 	private ProjectView projectView;
-	
+
 	public OurFrame()
 	{
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -48,25 +48,30 @@ public class OurFrame extends JFrame
 
 		this.setVisible(true);
 	}
-	
+
 	public void initProjectView(Project project)
 	{
-		if (this.projectView != null) 
+		if (this.projectView != null)
 			this.remove(this.projectView);
-		
+
 		this.menuBar.setInProject(true);
 		this.menuBar.setInChoose(false);
+
+		this.projectView = new ProjectView(project);
+
 		SharedController.getInstance().setProjectView(this.projectView);
 		SharedController.getInstance().setProject(project);
-		this.projectView = new ProjectView(project);
+
 		this.add(this.projectView, this.constraints);
-		
+
+		this.projectView.updateLabels();
+
 		this.pack();
-		
+
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setBounds(0, 0, dimension.width, dimension.height);
 	}
-	
+
 	public void closeProject()
 	{
 		this.menuBar.setInProject(false);
@@ -75,11 +80,11 @@ public class OurFrame extends JFrame
 		SharedController.getInstance().setProject(null);
 		SharedController.getInstance().setProjectView(null);
 		this.pack();
-		
+
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setBounds(0, 0, dimension.width, dimension.height);
 	}
-	
+
 	public MenuView getMenuView()
 	{
 		return this.menuBar;

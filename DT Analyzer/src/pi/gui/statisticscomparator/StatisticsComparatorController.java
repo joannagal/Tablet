@@ -3,12 +3,8 @@ package pi.gui.statisticscomparator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
-import pi.inputs.drawing.Figure;
-import pi.inputs.drawing.PacketData;
-import pi.inputs.drawing.Segment;
 import pi.population.Specimen;
 import pi.statistics.logic.AttributeResult;
 import pi.statistics.logic.DrawingResult;

@@ -7,7 +7,6 @@ import pi.gui.chooseproject.pairimporter.PairImporterView;
 import pi.gui.chooseproject.populpairimporter.PopulPairImporterView;
 import pi.gui.chooseproject.populsingleimporter.PopulSingleImporterView;
 import pi.gui.chooseproject.singleimporter.SingleImporterView;
-import pi.gui.menu.MenuView;
 import pi.shared.SharedController;
 
 

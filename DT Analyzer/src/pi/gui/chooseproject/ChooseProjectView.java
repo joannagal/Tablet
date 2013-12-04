@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import pi.gui.menu.MenuView;
 import pi.shared.SharedController;
 
 public class ChooseProjectView extends JDialog
