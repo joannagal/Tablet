@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -21,6 +20,7 @@ import pi.inputs.drawing.Segment;
 import pi.population.Population;
 import pi.population.Specimen;
 import pi.project.Project;
+import pi.shared.SharedController;
 import pi.utilities.Range;
 
 public class PopImporter extends DefaultHandler
@@ -83,13 +83,12 @@ public class PopImporter extends DefaultHandler
 		{
 			initFigure(attributes);
 			rawDataNode = false;
-			
 
 		} else if (qName.equalsIgnoreCase("RAW_DATA"))
 		{
 			initRawData(attributes);
 			rawDataNode = true;
-			
+
 		} else if (qName.equalsIgnoreCase("SEGMENT"))
 		{
 			initSegment(attributes);
@@ -135,6 +134,9 @@ public class PopImporter extends DefaultHandler
 		project.setName(attributes.getValue("name"));
 		project.setPath(attributes.getValue("path"));
 
+		int specimens = Integer.parseInt(attributes.getValue("specimens"));
+		SharedController.getInstance().getProgressView().init(specimens);
+
 		String type = attributes.getValue("type");
 		if (type != "")
 			project.setType(Integer.parseInt(type));
@@ -163,8 +165,10 @@ public class PopImporter extends DefaultHandler
 
 	public void initSpecimen(Attributes attributes)
 	{
-		spec = new Specimen();
 
+		SharedController.getInstance().getProgressView().increase();
+
+		spec = new Specimen();
 		spec.setName(attributes.getValue("name"));
 		spec.setSurname(attributes.getValue("surname"));
 		spec.setPesel(attributes.getValue("pesel"));
@@ -247,10 +251,13 @@ public class PopImporter extends DefaultHandler
 		channelIndex = 0;
 		input.setFigure(figureList);
 
+		String origin = attributes.getValue("origin");
+		input.setOrigin(origin);
+
 		String pressureAvoid = attributes.getValue("pressure_avoid");
 		if (pressureAvoid != null && pressureAvoid != "")
 			input.setPressureAvoid(Integer.parseInt(pressureAvoid));
-		
+
 		String totalTime = attributes.getValue("total_time");
 		if (totalTime != null && totalTime != "")
 			input.setTotalTime(Integer.parseInt(totalTime));
@@ -299,6 +306,7 @@ public class PopImporter extends DefaultHandler
 		if (bounds != "")
 		{
 			String[] points = bounds.split(" ");
+
 			if (points.length >= 4)
 			{
 				int x = Integer.parseInt(points[0]);
@@ -331,12 +339,12 @@ public class PopImporter extends DefaultHandler
 
 	public void finishRawData()
 	{
-		
+
 		System.out.printf("--- FINISH\n");
-		Iterator <String> it = this.toBuild.iterator();
+		Iterator<String> it = this.toBuild.iterator();
 		String value;
 		String sum = "";
-		
+
 		while (it.hasNext())
 		{
 			value = it.next();

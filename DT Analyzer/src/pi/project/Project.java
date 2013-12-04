@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
@@ -17,6 +18,7 @@ import pi.inputs.drawing.Drawing;
 import pi.population.Population;
 import pi.population.Specimen;
 import pi.project.saver.PopSaver;
+import pi.shared.SharedController;
 
 //-------------------------------------------
 /*
@@ -71,23 +73,43 @@ public class Project
 		setAnalyzer(new ECGAnalyzer());
 	}
 
+	class SaverThread implements Runnable {
+		
+		String path = null;
+		Project project;
+		
+		public SaverThread(String path, Project project)
+		{
+			this.path = path;
+			this.project = project;
+		}
+		
+		public void run() 
+		{
+			if (path == null)
+				path = project.getPath();
+			
+			PopSaver ps = new PopSaver(this.project);
+			try
+			{
+				ps.save(path);
+				project.setPath(path);
+				
+			} catch (FileNotFoundException | UnsupportedEncodingException
+					| XMLStreamException | FactoryConfigurationError e)
+			{
+
+			
+			}
+		}
+	}
+	
+	
 	public boolean save(String path)
 	{
-		if (path == null)
-			path = this.path;
-		
-		PopSaver ps = new PopSaver(this);
-		try
-		{
-			ps.save(path);
-			this.path = path;
-			
-		} catch (FileNotFoundException | UnsupportedEncodingException
-				| XMLStreamException | FactoryConfigurationError e)
-		{
-
-			e.printStackTrace();
-		}
+		SaverThread runnable = new SaverThread(path, this);
+		Thread thread = new Thread(runnable);
+		thread.start();
 
 		return true;
 	}

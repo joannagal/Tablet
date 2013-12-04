@@ -54,7 +54,13 @@ public class InformationsView extends JFrame
 
 	private JTextField firstOperationField = new JTextField();
 	private JTextField secondOperationField = new JTextField();
+	
+	private JLabel beforeOriginLabel = new JLabel("Origin Before");
+	private JTextField beforeOriginField = new JTextField();
 
+	private JLabel afterOriginLabel = new JLabel("Origin After");
+	private JTextField afterOriginField = new JTextField();
+	
 	private JButton cancelButton = new JButton("Cancel");
 	private JButton okButton = new JButton("OK");
 
@@ -67,7 +73,7 @@ public class InformationsView extends JFrame
 		
 		this.setTitle("Informations");
 		this.setLayout(null);
-		this.setSize(new Dimension(275, 380));
+		this.setSize(new Dimension(275, 440));
 		this.setResizable(false);
 
 		this.name.setBounds(15, 15, 150, 15);
@@ -130,10 +136,24 @@ public class InformationsView extends JFrame
 		this.secondOperationField.setBounds(140, 283, 110, 19);
 		this.add(this.secondOperationField);
 
-		this.cancelButton.setBounds(15, 320, 80, 25);
+		this.beforeOriginField.setBounds(100, 313, 150, 19);
+		this.beforeOriginField.setEditable(false);
+		this.add(this.beforeOriginField);
+		
+		this.beforeOriginLabel.setBounds(15, 313, 150, 15);
+		this.add(this.beforeOriginLabel);
+		
+		this.afterOriginField.setBounds(100, 343, 150, 19);
+		this.afterOriginField.setEditable(false);
+		this.add(this.afterOriginField);
+		
+		this.afterOriginLabel.setBounds(15, 343, 150, 15);
+		this.add(this.afterOriginLabel);
+		
+		this.cancelButton.setBounds(15, 380, 80, 25);
 		this.add(this.cancelButton);
 
-		this.okButton.setBounds(170, 320, 80, 25);
+		this.okButton.setBounds(170, 380, 80, 25);
 		this.add(this.okButton);
 
 		controller = new InformationsController(this.specimenView, this);
@@ -166,7 +186,10 @@ public class InformationsView extends JFrame
 		Boolean operation = specimen.getOperationType();
 		Integer firstOperation = specimen.getFirstOperationNo();
 		Integer secondOperation = specimen.getSecondOperationNo();
-
+		String beforeOrigin = specimen.getBefore().getOrigin();
+		String afterOrigin = null;
+		if (specimen.getAfter() != null) afterOrigin = specimen.getAfter().getOrigin();
+		
 		if (name != null)
 			this.nameField.setText(name);
 		else
@@ -233,7 +256,13 @@ public class InformationsView extends JFrame
 			this.secondOperationField.setText(Integer.toString(secondOperation));
 		else
 			this.secondOperationField.setText("");
+		
+		if (beforeOrigin != null)
+			this.beforeOriginField.setText(beforeOrigin);
 
+		if (afterOrigin != null)
+			this.afterOriginField.setText(afterOrigin);
+		
 		this.setVisible(true);
 	}
 

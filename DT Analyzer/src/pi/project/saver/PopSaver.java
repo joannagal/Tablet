@@ -23,6 +23,7 @@ import pi.inputs.drawing.Segment;
 import pi.population.Population;
 import pi.population.Specimen;
 import pi.project.Project;
+import pi.shared.SharedController;
 
 public class PopSaver {
 
@@ -47,6 +48,16 @@ public class PopSaver {
 			out.writeAttribute("name", project.getName());
 		if (project.getPath() != null)
 			out.writeAttribute("path", project.getPath());
+		// --------------
+		int specimens = project.getFirstPopulation().getSpecimen().size();
+		if (project.getSecondPopulation() != null)
+			specimens += project.getSecondPopulation().getSpecimen().size();
+	
+		out.writeAttribute("specimens", Integer.toString(specimens));
+		
+		SharedController.getInstance().getProgressView().init(specimens);
+		
+		// ---------------
 		if (project.getDate() != null) {
 			out.writeAttribute("date", project.getDate().toString());
 		} else {
@@ -88,6 +99,8 @@ public class PopSaver {
 
 	private void saveSpecimen(Specimen s) throws XMLStreamException {
 		out.writeStartElement("SPECIMEN");
+		
+		SharedController.getInstance().getProgressView().increase();
 		
 		if (s.getName() != null)
 			out.writeAttribute("name", s.getName());
@@ -144,6 +157,10 @@ public class PopSaver {
 				String.valueOf(drawing.getFigure().size()));
 		out.writeAttribute("pressure_avoid",
 				String.valueOf(drawing.getPressureAvoid()));
+		
+		out.writeAttribute("origin", drawing.getOrigin());
+		System.out.printf("-- %s\n",  drawing.getOrigin());
+		
 		out.writeAttribute("total_time",
 				String.valueOf(drawing.getTotalTime()));
 		out.writeAttribute("content", rectangleToString(drawing.getContent()));
@@ -163,7 +180,10 @@ public class PopSaver {
 		}
 		out.writeEndElement();
 
+		System.out.printf("ILE: %d\n", drawing.getFigure().size());
+		
 		for (Figure ch : drawing.getFigure()) {
+			System.out.printf("---\n");
 			saveFigure(ch);
 		}
 
@@ -194,6 +214,7 @@ public class PopSaver {
 		if (fig.getBounds() != null)
 			out.writeAttribute("bounds", rectangleToString(fig.getBounds()));
 		
+		else System.out.printf("UUUPSSS!! %s\n", String.valueOf(fig.getType()));
 
 		for (Segment s : fig.getSegment()) {
 			saveSegment(s);

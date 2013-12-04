@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -26,6 +25,51 @@ public class MenuController implements ActionListener
 	{
 		this.menuView = view;
 		this.menuView.setMenuItemListener(this);
+	}
+
+	class OpenThread implements Runnable
+	{
+
+		File file = null;
+		MenuView menuView;
+
+		public OpenThread(File file, MenuView menuView)
+		{
+			this.file = file;
+			this.menuView = menuView;
+		}
+
+		public void run()
+		{
+			File file = this.menuView.getFc().getSelectedFile();
+
+			PopImporter pi = new PopImporter();
+
+			XMLReader p;
+			try
+			{
+				p = XMLReaderFactory.createXMLReader();
+				p.setContentHandler(pi);
+
+				String path = file.getAbsolutePath();
+				path = path.replace("\\", "/");
+				String url = String.format("file:///%s", path);
+
+				p.parse(url);
+
+				Project project = pi.getProject();
+				project.setPath(file.getAbsolutePath());
+				SharedController.getInstance().getFrame()
+						.initProjectView(project);
+
+			} catch (SAXException e)
+			{
+				e.printStackTrace();
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void actionPerformed(ActionEvent ae)
@@ -67,36 +111,10 @@ public class MenuController implements ActionListener
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				File file = this.menuView.getFc().getSelectedFile();
-			
-				// create with importer
 
-				PopImporter pi = new PopImporter();
-
-				XMLReader p;
-				try
-				{
-					p = XMLReaderFactory.createXMLReader();
-					p.setContentHandler(pi);
-
-					String path = file.getAbsolutePath();
-					path = path.replace("\\", "/");
-					String url = String.format("file:///%s", path);
-					
-					p.parse(url);
-
-					Project project = pi.getProject();
-					project.setPath(file.getAbsolutePath());
-					SharedController.getInstance().getFrame()
-							.initProjectView(project);
-
-				} catch (SAXException e)
-				{
-					e.printStackTrace();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-
+				OpenThread runnable = new OpenThread(file, this.menuView);
+				Thread thread = new Thread(runnable);
+				thread.start();
 			}
 		}
 		if (action.equals("SAVE_PROJECT"))

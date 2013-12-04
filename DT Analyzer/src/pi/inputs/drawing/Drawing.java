@@ -14,9 +14,11 @@ import pi.utilities.Range;
 public class Drawing
 {
 	private String label = "";
-
+	private String origin = null;
+	
+	
 	private Rectangle content;
-
+	
 	private ArrayList<PacketData> packet;
 	private ArrayList<Figure> figure;
 
@@ -62,8 +64,6 @@ public class Drawing
 			this.setBounds();
 			double width = this.outOrgY - this.outOrgX;
 			width = width / 5;
-			
-			System.out.printf("aaaa %f\n", width);
 			this.setBreakFigureDistance((int)width);
 		}
 		
@@ -140,14 +140,16 @@ public class Drawing
 		long size = file.length();
 		byte[] data = new byte[(int) size];
 
+		this.origin = file.getName();
+		
 		insputStream.read(data);
 		insputStream.close();
 
 		int shift = 0;
 		int fileNameLength = this.getInt(data, shift);
 
-		System.out.printf("-----------\n");
-		System.out.printf("%d ", fileNameLength);
+		//System.out.printf("-----------\n");
+		//System.out.printf("%d ", fileNameLength);
 		
 		if (fileNameLength > 0)
 		{
@@ -157,14 +159,14 @@ public class Drawing
 				fileName[i] = data[shift + i];
 			shift += fileNameLength;
 			
-			String str = new String(fileName, "UTF-8");
-			System.out.printf("%s \n", str);
+			//String str = new String(fileName, "UTF-8");
+			//System.out.printf("%s \n", str);
 			
 		} else
 			shift++;
 
 		int dateLength = this.getInt(data, shift);
-		System.out.printf("%d ", dateLength);
+		//System.out.printf("%d ", dateLength);
 		
 		if (dateLength > 0)
 		{
@@ -175,14 +177,14 @@ public class Drawing
 				date[i] = data[shift + i];
 			shift += dateLength;
 			
-			String str = new String(date, "UTF-8");
-			System.out.printf("%s \n", str);
+			//String str = new String(date, "UTF-8");
+			//System.out.printf("%s \n", str);
 			
 		} else
 			shift++;
 
 		int memoLength = this.getInt(data, shift);
-		System.out.printf("%d ", memoLength);
+		//System.out.printf("%d ", memoLength);
 		if (memoLength > 0)
 		{
 			shift += 4;
@@ -191,8 +193,8 @@ public class Drawing
 				memo[i] = data[shift + i];
 			shift += memoLength;
 			
-			String str = new String(memo, "UTF-8");
-			System.out.printf("%s \n", str);
+			//String str = new String(memo, "UTF-8");
+			//System.out.printf("%s \n", str);
 		} else
 			shift++;
 
@@ -205,12 +207,12 @@ public class Drawing
 		this.outExtY = this.getInt(data, shift);
 		shift += 4;
 		
-		System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX,outExtY);
+		//System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX,outExtY);
 
 		int numPackages = this.getInt(data, shift);
 		shift += 4;
 
-		System.out.printf("PACKAGES:  %d\n", numPackages);
+		//System.out.printf("PACKAGES:  %d\n", numPackages);
 
 		this.setPressureAvoid(128);
 		this.setMaxPressure(1024);
@@ -291,7 +293,7 @@ public class Drawing
 		this.setContent(new Rectangle(min_x - prop, min_y - prop, width + 2
 				* prop, height + 2 * prop));
 		
-		System.out.printf("%d %d %d %d B\n", min_x, min_y, min_x + width,min_y + height);
+		//System.out.printf("%d %d %d %d B\n", min_x, min_y, min_x + width,min_y + height);
 
 	}
 
@@ -498,5 +500,15 @@ public class Drawing
 	public void setOutExtY(int outExtY)
 	{
 		this.outExtY = outExtY;
+	}
+
+	public String getOrigin()
+	{
+		return origin;
+	}
+
+	public void setOrigin(String origin)
+	{
+		this.origin = origin;
 	}
 }

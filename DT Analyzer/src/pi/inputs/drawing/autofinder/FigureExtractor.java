@@ -56,8 +56,12 @@ public class FigureExtractor
 			}
 		}
 		
-		newFigure.calculateBounds();
-		return newFigure;
+		if (segment.size() > 0)
+		{
+			newFigure.calculateBounds();
+			return newFigure;
+		}
+		else return null;
 	}
 	
 	public void extract(Drawing drawing)
@@ -72,7 +76,7 @@ public class FigureExtractor
 		int pointer = 0;
 		int last = 0;
 		
-		
+
 		packet.get(0).setBroken(false);
 		for (int i = 1; i < size; i++)
 		{
@@ -99,7 +103,8 @@ public class FigureExtractor
 		while (it.hasNext())
 		{
 			value = it.next();
-			figure.add(this.getFigure(drawing, value));
+			Figure tmp = this.getFigure(drawing, value);
+			if (tmp != null) figure.add(tmp);
 		}
 		
 	}

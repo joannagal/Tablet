@@ -22,6 +22,8 @@ public class SharedController
 	private ProjectView projectView = null;
 	private OurFrame frame = null;
 
+	private ProgressView progressView = new ProgressView();
+	
 	private SharedController()
 	{
 		this.createWhiteScheme();
@@ -109,5 +111,15 @@ public class SharedController
 	public void setFrame(OurFrame frame)
 	{
 		this.frame = frame;
+	}
+
+	public ProgressView getProgressView()
+	{
+		return progressView;
+	}
+
+	public void setProgressView(ProgressView progressView)
+	{
+		this.progressView = progressView;
 	}
 }
