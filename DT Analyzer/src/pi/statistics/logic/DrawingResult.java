@@ -23,18 +23,7 @@ public class DrawingResult
 			
 			FigureResult figResult = new FigureResult(this.drawing.getCompleteFigure()[i]);
 			
-			String label = "";
-			switch (i)
-			{
-			case 0: label = "ZigZag"; break;
-			case 1: label = "Circle-Left"; break;
-			case 2: label = "Circle-Right"; break;
-			case 3: label = "First Line"; break;
-			case 4: label = "Second Line"; break;
-			case 5: label = "Broken Line"; break;
-			case 6: label = "Spiral-In"; break;
-			case 7: label = "Spiral-Out"; break;
-			}
+			String label = StatMapper.figureNames[i];
 			
 			figResult.calculateResult();
 			value.put(label, figResult);

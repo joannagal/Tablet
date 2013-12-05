@@ -19,6 +19,7 @@ import pi.gui.dependgraph.DependGraph;
 import pi.gui.histogram.Histogram;
 import pi.population.Specimen;
 import pi.shared.SharedController;
+import pi.statistics.logic.StatMapper;
 
 public class StatisticsComparatorView extends JFrame
 {
@@ -29,15 +30,9 @@ public class StatisticsComparatorView extends JFrame
 
 	public JLabel figureLabel = new JLabel("Figure");
 
-	String[] figureStrings =
-	{ "ZigZag", "Circle-Left", "Circle-Right", "First Line", "Second Line",
-			"Broken Line", "Spiral-In", "Spiral-Out" };
-
-	private JComboBox<String> figureCombo = new JComboBox<String>(figureStrings);;
-
-	String[] elementsStrings =
-	{ "Figure Standards", "Pressure", "Momentary Speed", "Acceleration", "Direction Change (f'')" };
-	private JList<String> elementsList = new JList<String>(elementsStrings);
+	private JComboBox<String> figureCombo = new JComboBox<String>(StatMapper.figureNames);
+	
+	private JList<String> elementsList = new JList<String>(StatMapper.attributeNames);
 
 	private String figureStr = "ZigZag";
 	private String elementStr = "Figure Standards";
@@ -164,7 +159,7 @@ public class StatisticsComparatorView extends JFrame
 		}
 
 		String[] columns = new String[size];
-		columns[0] = "Element";
+		columns[0] = "";
 
 		int pntr = 0;
 		if (specimen[0] != null)

@@ -28,7 +28,6 @@ public class SpecimenResult
 			after.calculateResult();
 			getValue().put("After", after);
 		}
-		System.out.printf("X");
 		SharedController.getInstance().getProgressView().increase();
 		
 		this.specimen.setResult(this);

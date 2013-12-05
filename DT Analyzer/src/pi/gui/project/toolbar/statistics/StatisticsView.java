@@ -2,8 +2,6 @@ package pi.gui.project.toolbar.statistics;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 import pi.project.Project;
 import pi.shared.SharedController;
+import pi.statistics.logic.StatMapper;
 
 public class StatisticsView extends JFrame
 {
@@ -27,16 +26,10 @@ public class StatisticsView extends JFrame
 
 	public JLabel figureLabel = new JLabel("Figure");
 
-	String[] figureStrings =
-	{ "ZigZag", "Circle-Left", "Circle-Right", "First Line", "Second Line",
-			"Broken Line", "Spiral-In", "Spiral-Out" };
 
-	private JComboBox<String> figureCombo = new JComboBox<String>(figureStrings);;
+	private JComboBox<String> figureCombo = new JComboBox<String>(StatMapper.figureNames);
 
-	String[] elementsStrings =
-	{ "Figure Standards", "Pressure", "Momentary Speed", "Acceleration",
-			"Direction Change (f'')" };
-	private JList<String> elementsList = new JList<String>(elementsStrings);
+	private JList<String> elementsList = new JList<String>(StatMapper.attributeNames);
 
 	private String figureStr = "ZigZag";
 	private String elementStr = "Figure Standards";
@@ -142,38 +135,40 @@ public class StatisticsView extends JFrame
 
 		if (type == Project.POPULATION_SINGLE)
 		{
-			columns = new String[2];
+			columns = new String[3];
 			Project project = SharedController.getInstance().getProject();
-			columns[0] = project.getFirstPopulation().getName();
-			columns[1] = project.getSecondPopulation().getName();
+			columns[0] = "";
+			columns[1] = project.getFirstPopulation().getName();
+			columns[2] = project.getSecondPopulation().getName();
 
 			this.getModel().setDataVector(null, columns);
 
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 3; i++)
 				columns[i] = "";
 			for (int i = 0; i < 10; i++)
 				this.model.addRow(columns);
 
-			// controller.set(figure, element, 2);
+			controller.set(figure, element);
 
 		} else if (type == Project.POPULATION_PAIR)
 		{
-			columns = new String[5];
+			columns = new String[6];
 			Project project = SharedController.getInstance().getProject();
-			columns[0] = project.getFirstPopulation().getName() + ": B with A";
-			columns[1] = project.getSecondPopulation().getName() + ": B with A";
-			columns[2] = "B with B";
-			columns[3] = "A with A";
-			columns[4] = "(A - B) with (A - B)";
+			columns[0] = "";
+			columns[1] = project.getFirstPopulation().getName() + ": B with A";
+			columns[2] = project.getSecondPopulation().getName() + ": B with A";
+			columns[3] = "B with B";
+			columns[4] = "A with A";
+			columns[5] = "(A - B) with (A - B)";
 
 			this.getModel().setDataVector(null, columns);
 
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 6; i++)
 				columns[i] = "";
 			for (int i = 0; i < 10; i++)
 				this.model.addRow(columns);
 
-			// controller.set(figure, element, 5);
+			controller.set(figure, element);
 		}
 
 		this.report.setModel(this.getModel());
