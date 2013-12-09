@@ -6,12 +6,12 @@ import java.util.Map;
 
 public class AttributeResult {
 	
-		protected Map <String, StatisticResult> value = new HashMap<String, StatisticResult>();
+		protected Map <String, StatisticResult> value;
       
 		
 		public void calculateResult()
 		{
-
+			this.value = new HashMap<String, StatisticResult>();
 		}
 
 		public Map <String, StatisticResult> getValue()

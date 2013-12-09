@@ -1,6 +1,7 @@
 package pi.statistics.logic.extenders;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import pi.statistics.functions.Amplitude;
 import pi.statistics.functions.Average;
@@ -30,6 +31,8 @@ public class Acceleration extends AttributeResult
 	@Override
 	public void calculateResult()
 	{
+		this.value = new HashMap<String, StatisticResult>();
+		
 		StatisticResult histogramResult = new StatisticResult();
 		StatisticResult dependencyResult = new StatisticResult();
 		StatisticResult minResult = new StatisticResult();

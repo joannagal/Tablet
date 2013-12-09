@@ -1,6 +1,7 @@
 package pi.statistics.logic.extenders;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -38,6 +39,8 @@ public class MSpeedResult extends AttributeResult
 	@Override
 	public void calculateResult()
 	{
+		this.value = new HashMap<String, StatisticResult>();
+		
 		StatisticResult histogramResult = new StatisticResult();
 		StatisticResult dependencyResult = new StatisticResult();
 		StatisticResult minResult = new StatisticResult();

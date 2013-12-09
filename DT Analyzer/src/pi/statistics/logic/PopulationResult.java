@@ -14,7 +14,7 @@ public class PopulationResult
 {
 
 	private Population population;
-	private Map<String, SpecimenResult> value = new HashMap<String, SpecimenResult>();
+	private Map<String, SpecimenResult> value;
 
 	// 1. before/after
 	// 2. figure
@@ -29,15 +29,15 @@ public class PopulationResult
 
 	public void calculateResult()
 	{
-
+		this.value = new HashMap<String, SpecimenResult>();
+		
 		int size = this.population.getSpecimen().size();
 
 		for (int i = 0; i < size; i++)
-		{
-			SpecimenResult result = new SpecimenResult(this.population
-					.getSpecimen().get(i));
-			result.calculateResult();
-			value.put(String.format("%d", i), result);
+		{	
+			Specimen specimen = this.population.getSpecimen().get(i);
+			specimen.calculateStatistic();
+			value.put(String.format("%d", i), specimen.getResult());
 		}
 
 		this.calculateDataVectors();
@@ -66,9 +66,12 @@ public class PopulationResult
 		}
 
 		int size = this.population.getSpecimen().size();
+		System.out.printf("POPUL SIZE: %d\n", size);
+		
 		for (int i = 0; i < size; i++)
 		{
 			Specimen spec = this.population.getSpecimen().get(i);
+			
 			this.fillForSpecimen("Before", spec);
 			if (after)
 				this.fillForSpecimen("After", spec);
@@ -88,12 +91,16 @@ public class PopulationResult
 		LinkedList<Double> list;
 
 		SpecimenResult specimenResult = spec.getResult();
+		
+		if (specimenResult == null) return;
 
 		// drawing
 		DrawingResult drawingResult = specimenResult.getValue().get(side);
 		if (drawingResult == null)
 			return;
 
+		int cnt = 0;
+		
 		// figures
 		for (int i = 0; i < 8; i++)
 		{
@@ -111,19 +118,22 @@ public class PopulationResult
 
 				for (int k = 0; k < 12; k++)
 				{
+					StatisticResult statisticResult = attributeResult
+							.getValue().get(StatMapper.statisticNames[k]);
+					if (statisticResult == null) continue;
+					
 					list = figureMap.get(StatMapper.figureNames[i])
 							.get(StatMapper.attributeNames[j])
 							.get(StatMapper.statisticNames[k]);
-					StatisticResult statisticResult = attributeResult
-							.getValue().get(StatMapper.statisticNames[k]);
-					if ((statisticResult == null) || (list == null))
-						continue;
-
+					
 					double value = statisticResult.getValue().get(0);
-					list.add(value);
+					list.addLast(value);
+					
+					cnt++;
 				}
 			}
 		}
+	
 	}
 
 	public void calculateDiff()

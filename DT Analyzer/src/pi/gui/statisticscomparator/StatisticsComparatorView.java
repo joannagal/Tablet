@@ -18,7 +18,6 @@ import javax.swing.table.DefaultTableModel;
 import pi.gui.dependgraph.DependGraph;
 import pi.gui.histogram.Histogram;
 import pi.population.Specimen;
-import pi.shared.SharedController;
 import pi.statistics.logic.StatMapper;
 
 public class StatisticsComparatorView extends JFrame
@@ -30,9 +29,11 @@ public class StatisticsComparatorView extends JFrame
 
 	public JLabel figureLabel = new JLabel("Figure");
 
-	private JComboBox<String> figureCombo = new JComboBox<String>(StatMapper.figureNames);
-	
-	private JList<String> elementsList = new JList<String>(StatMapper.attributeNames);
+	private JComboBox<String> figureCombo = new JComboBox<String>(
+			StatMapper.figureNames);
+
+	private JList<String> elementsList = new JList<String>(
+			StatMapper.attributeNames);
 
 	private String figureStr = "ZigZag";
 	private String elementStr = "Figure Standards";
@@ -43,9 +44,8 @@ public class StatisticsComparatorView extends JFrame
 	private DependGraph dGraph = new DependGraph();
 	private DependGraph fftGraph = new DependGraph();
 
-	
-	JTabbedPane tabbedPane = new JTabbedPane();
-	
+	private JTabbedPane tabbedPane = new JTabbedPane();
+
 	private JTable report = new JTable();
 	private DefaultTableModel model = new DefaultTableModel();
 	private JScrollPane reportPane = new JScrollPane(report);
@@ -53,7 +53,7 @@ public class StatisticsComparatorView extends JFrame
 	public StatisticsComparatorView()
 	{
 		this.setTitle("Statistics");
-		
+
 		this.setLayout(null);
 		this.setSize(new Dimension(1000, 500));
 		this.setResizable(false);
@@ -68,7 +68,7 @@ public class StatisticsComparatorView extends JFrame
 		this.figureCombo.setSelectedIndex(0);
 		this.figureCombo.setActionCommand("CHANGE_FIGURE");
 		this.figureCombo.addActionListener(controller);
-		
+
 		this.figureLabel.setBounds(15, 20, 100, 15);
 		this.add(this.figureLabel);
 
@@ -76,16 +76,16 @@ public class StatisticsComparatorView extends JFrame
 		this.add(this.figureCombo);
 
 		this.elementsList.setBounds(15, 45, 140, 390);
-		this.elementsList.addListSelectionListener(new ListSelectionListener() {
+		this.elementsList.addListSelectionListener(new ListSelectionListener()
+		{
 			@Override
 			public void valueChanged(ListSelectionEvent arg0)
 			{
 				prepare(getFigureStr(), getElementsList().getSelectedValue());
 			}
-        });
+		});
 		this.add(this.elementsList);
 
-		
 		this.closeButton.setActionCommand("CLOSE");
 		this.closeButton.addActionListener(controller);
 		this.closeButton.setBounds(15, 440, 140, 25);
@@ -95,21 +95,21 @@ public class StatisticsComparatorView extends JFrame
 		this.saveButton.addActionListener(controller);
 		this.saveButton.setBounds(850, 440, 140, 25);
 		this.add(this.saveButton);
-	
+
 		this.tabbedPane.addTab("Data", this.reportPane);
 		this.tabbedPane.addTab("Histogram", this.histogram);
 		this.tabbedPane.addTab("Dependency Graph", this.dGraph);
 		this.tabbedPane.addTab("FFT", this.fftGraph);
 		this.tabbedPane.setBounds(165, 18, 820, 417);
 		this.add(this.tabbedPane);
-		
+
 		this.histogram.recalculate();
 		this.histogram.draw();
-		
+
 		this.dGraph.setType(DependGraph.MIXED);
 		this.dGraph.recalculate();
 		this.dGraph.draw();
-		
+
 		this.fftGraph.recalculate();
 		this.fftGraph.draw();
 	}
@@ -124,24 +124,18 @@ public class StatisticsComparatorView extends JFrame
 	{
 		this.setSpecimen(first, second);
 
-		int max = 1;
-		if (second != null) max++;
-		//SharedController.getInstance().getProgressView().init(max);
-		
 		this.specimen[0].calculateStatistic();
 		if (this.specimen[1] != null)
 			specimen[1].calculateStatistic();
 
 		this.prepare(this.figureStr, this.elementStr);
-		
-
 	}
 
 	public void prepare(String figure, String element)
 	{
 		this.figureStr = figure;
 		this.elementStr = element;
-		
+
 		int size = 1;
 
 		if (this.specimen[0] != null)
@@ -189,8 +183,7 @@ public class StatisticsComparatorView extends JFrame
 
 		controller.set(figure, element, pntr);
 		this.setVisible(true);
-		
-		
+
 	}
 
 	public Specimen[] getSpecimen()

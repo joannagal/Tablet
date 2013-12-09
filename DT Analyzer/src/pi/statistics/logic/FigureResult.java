@@ -12,7 +12,7 @@ import pi.statistics.logic.extenders.PressureResult;
 
 public class FigureResult
 {
-	private Map<String, AttributeResult> value = new HashMap<String, AttributeResult>();
+	private Map<String, AttributeResult> value;
 	private Figure figure;
 
 	public FigureResult(Figure figure)
@@ -22,6 +22,8 @@ public class FigureResult
 
 	public void calculateResult()
 	{
+		this.value = new HashMap<String, AttributeResult>();
+		
 		PressureResult pressure = new PressureResult(this.figure.getParent().getPacket(), this.figure.getSegment());
 		pressure.calculateResult();
 		this.value.put("Pressure", pressure);

@@ -10,7 +10,7 @@ import pi.shared.SharedController;
 public class ProjectResult
 {
 	private Project project;
-	private Map<String, PopulationResult> value = new HashMap<String, PopulationResult>();
+	private Map<String, PopulationResult> value;
 
 	// 1. before/after
 	// 2. figure
@@ -86,19 +86,21 @@ public class ProjectResult
 				{
 					fList = fMap.get(StatMapper.figureNames[i])
 							.get(StatMapper.attributeNames[j])
-							.get(StatMapper.statisticNames[j]);
+							.get(StatMapper.statisticNames[k]);
 					sList = sMap.get(StatMapper.figureNames[i])
 							.get(StatMapper.attributeNames[j])
-							.get(StatMapper.statisticNames[j]);
+							.get(StatMapper.statisticNames[k]);
 
 					if ((fList.isEmpty()) || (sList.isEmpty()))
 						continue;
 
+					//System.out.printf("SIZE: %d %s\n", fList.size(), sList.size());
+					
 					// ----- PERFORM ACTION WITH THIS LISTS :D
 					// DUMMY ACTION;
 					result = map.get(StatMapper.figureNames[i])
 							.get(StatMapper.attributeNames[j])
-							.get(StatMapper.statisticNames[j]);
+							.get(StatMapper.statisticNames[k]);
 
 					result.add(fList.get(0));
 					// ----
@@ -109,9 +111,12 @@ public class ProjectResult
 
 	public void calculateResult()
 	{
+		this.value = new HashMap<String, PopulationResult>();
+		
 		PopulationResult first = new PopulationResult(
 				this.project.getFirstPopulation());
 		first.calculateResult();
+		
 		value.put("First", first);
 
 		if (this.project.getSecondPopulation() != null)
@@ -135,6 +140,16 @@ public class ProjectResult
 			Map<String, Map<String, Map<String, Map<String, LinkedList<Double>>>>> testResult)
 	{
 		this.testResult = testResult;
+	}
+
+	public Map<String, PopulationResult> getValue()
+	{
+		return value;
+	}
+
+	public void setValue(Map<String, PopulationResult> value)
+	{
+		this.value = value;
 	}
 
 }

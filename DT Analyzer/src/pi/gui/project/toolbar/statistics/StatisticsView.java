@@ -9,11 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import pi.gui.histogram.Histogram;
 import pi.project.Project;
 import pi.shared.SharedController;
 import pi.statistics.logic.StatMapper;
@@ -26,10 +29,11 @@ public class StatisticsView extends JFrame
 
 	public JLabel figureLabel = new JLabel("Figure");
 
+	private JComboBox<String> figureCombo = new JComboBox<String>(
+			StatMapper.figureNames);
 
-	private JComboBox<String> figureCombo = new JComboBox<String>(StatMapper.figureNames);
-
-	private JList<String> elementsList = new JList<String>(StatMapper.attributeNames);
+	private JList<String> elementsList = new JList<String>(
+			StatMapper.attributeNames);
 
 	private String figureStr = "ZigZag";
 	private String elementStr = "Figure Standards";
@@ -37,8 +41,23 @@ public class StatisticsView extends JFrame
 	private JButton closeButton = new JButton("Close");
 	private JButton saveButton = new JButton("Save");
 
+	private Histogram histogram = new Histogram();
+
+	public class MyTableModel extends DefaultTableModel
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public boolean isCellEditable(int row, int column)
+		{
+			return false;
+		}
+	}
+
+	private JTabbedPane tabbedPane = new JTabbedPane();
+
 	private JTable report = new JTable();
-	private DefaultTableModel model = new DefaultTableModel();
+	private DefaultTableModel model = new MyTableModel();
 	private JScrollPane reportPane = new JScrollPane(report);
 
 	public StatisticsView()
@@ -71,6 +90,7 @@ public class StatisticsView extends JFrame
 			public void valueChanged(ListSelectionEvent arg0)
 			{
 				prepare(getFigureStr(), getElementsList().getSelectedValue());
+				report.changeSelection(0, 1, false, false);
 			}
 		});
 		this.add(this.elementsList);
@@ -85,21 +105,60 @@ public class StatisticsView extends JFrame
 		this.saveButton.setBounds(850, 440, 140, 25);
 		this.add(this.saveButton);
 
+		this.report.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.report.setCellSelectionEnabled(true);
+		this.report.setDragEnabled(false);
+
+		ListSelectionModel cellSelectionModel = this.report.getSelectionModel();
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				int row = report.getSelectedRow();
+				int column = report.getSelectedColumn();
+				//System.out.printf("-- %d %d\n", column, row);
+				
+				if ((row == -1) || (column == -1)) return;
+				
+
+				String figure = getFigureStr();
+				String attribute = getElementStr();
+
+				String statistics = model
+						.getValueAt(row, 0).toString();	
+				
+				//System.out.printf("C:: %s %s %s\n", figure, attribute, statistics);
+				
+				controller.setHistogram(column, figure, attribute, statistics);
+			}
+		});
+
 		this.reportPane.setBounds(165, 18, 820, 417);
-		this.add(this.reportPane);
+		this.report.getTableHeader().setReorderingAllowed(false);
+
+		this.histogram.setBounds(165, 18, 820, 417);
+		this.histogram.recalculate();
+		this.histogram.draw();
+
+		this.tabbedPane.setBounds(165, 18, 820, 417);
+		this.tabbedPane.add("Results", this.reportPane);
+		this.tabbedPane.add("Histogram", this.histogram);
+		this.add(this.tabbedPane);
+
 	}
 
+	class ShowThread implements Runnable
+	{
 
-	class ShowThread implements Runnable {
-		
 		StatisticsView view;
-		
+
 		public ShowThread(StatisticsView view)
 		{
 			this.view = view;
 		}
-		
-		public void run() 
+
+		public void run()
 		{
 			Project project = SharedController.getInstance().getProject();
 			int specimens = project.getFirstPopulation().getSpecimen().size();
@@ -108,30 +167,33 @@ public class StatisticsView extends JFrame
 				specimens += project.getSecondPopulation().getSpecimen().size();
 			}
 
-			System.out.printf("SPEC: %d\n", specimens);
 			SharedController.getInstance().getProgressView().init(specimens);
-
 			project.calculateStatistic();
 
 			view.prepare(view.getFigureStr(), view.getElementStr());
+
+			view.report.changeSelection(0, 1, false, false);
+
 			view.setVisible(true);
 		}
 	}
-	
-	
+
 	public void showWithData()
 	{
 		ShowThread runnable = new ShowThread(this);
 		Thread thread = new Thread(runnable);
 		thread.start();
+
 	}
-	
 
 	public void prepare(String figure, String element)
 	{
 		int type = SharedController.getInstance().getProject().getType();
 
 		String[] columns;
+		
+		this.figureStr = figure;
+		this.elementStr = element;
 
 		if (type == Project.POPULATION_SINGLE)
 		{
@@ -222,5 +284,25 @@ public class StatisticsView extends JFrame
 	public void setModel(DefaultTableModel model)
 	{
 		this.model = model;
+	}
+
+	public JTable getReport()
+	{
+		return report;
+	}
+
+	public void setReport(JTable report)
+	{
+		this.report = report;
+	}
+
+	public Histogram getHistogram()
+	{
+		return histogram;
+	}
+
+	public void setHistogram(Histogram histogram)
+	{
+		this.histogram = histogram;
 	}
 }

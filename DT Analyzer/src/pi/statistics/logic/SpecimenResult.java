@@ -9,7 +9,7 @@ import pi.shared.SharedController;
 public class SpecimenResult
 {
 	public Specimen specimen;
-	private Map<String, DrawingResult> value = new HashMap <String, DrawingResult>();
+	private Map<String, DrawingResult> value;
 	
 	public SpecimenResult(Specimen specimen)
 	{
@@ -18,6 +18,8 @@ public class SpecimenResult
 	
 	public void calculateResult()
 	{
+		this.value = new HashMap <String, DrawingResult>();
+		
 		DrawingResult before = new DrawingResult(this.specimen.getBefore());
 		before.calculateResult();
 		getValue().put("Before", before);

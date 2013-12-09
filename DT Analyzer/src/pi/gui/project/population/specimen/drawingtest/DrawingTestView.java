@@ -62,7 +62,6 @@ public class DrawingTestView extends JPanel
 	{
 		if (drawing != null) drawing.createStatus();
 		
-		
 		this.graph.setDrawing(drawing);
 		this.graph.recalculate();
 		this.toolbarView.rebuild(drawing);

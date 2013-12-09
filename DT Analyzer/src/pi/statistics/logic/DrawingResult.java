@@ -7,16 +7,19 @@ import pi.inputs.drawing.Drawing;
 
 public class DrawingResult
 {
-	private Map<String, FigureResult> value = new HashMap<String, FigureResult>();
+	private Map<String, FigureResult> value;
 	private Drawing drawing;
 	
 	public DrawingResult(Drawing drawing)
 	{
 		this.drawing = drawing;
+		drawing.createStatus();
 	}
 	
 	public void calculateResult()
 	{
+		this.value = new HashMap<String, FigureResult>();
+		
 		for (int i = 0; i < 8; i++)
 		{
 			if (this.drawing.getCompleteFigure()[i] == null) continue;
