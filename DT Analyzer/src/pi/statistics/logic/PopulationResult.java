@@ -30,11 +30,11 @@ public class PopulationResult
 	public void calculateResult()
 	{
 		this.value = new HashMap<String, SpecimenResult>();
-		
+
 		int size = this.population.getSpecimen().size();
 
 		for (int i = 0; i < size; i++)
-		{	
+		{
 			Specimen specimen = this.population.getSpecimen().get(i);
 			specimen.calculateStatistic();
 			value.put(String.format("%d", i), specimen.getResult());
@@ -67,11 +67,11 @@ public class PopulationResult
 
 		int size = this.population.getSpecimen().size();
 		System.out.printf("POPUL SIZE: %d\n", size);
-		
+
 		for (int i = 0; i < size; i++)
 		{
 			Specimen spec = this.population.getSpecimen().get(i);
-			
+
 			this.fillForSpecimen("Before", spec);
 			if (after)
 				this.fillForSpecimen("After", spec);
@@ -91,49 +91,47 @@ public class PopulationResult
 		LinkedList<Double> list;
 
 		SpecimenResult specimenResult = spec.getResult();
-		
-		if (specimenResult == null) return;
+
+		if (specimenResult == null)
+			return;
 
 		// drawing
 		DrawingResult drawingResult = specimenResult.getValue().get(side);
 		if (drawingResult == null)
 			return;
 
-		int cnt = 0;
-		
 		// figures
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < StatMapper.figureNames.length; i++)
 		{
 			FigureResult figureResult = drawingResult.getValue().get(
 					StatMapper.figureNames[i]);
 			if (figureResult == null)
 				continue;
 
-			for (int j = 0; j < 5; j++)
+			for (int j = 0; j < StatMapper.attributeNames.length; j++)
 			{
 				AttributeResult attributeResult = figureResult.getValue().get(
 						StatMapper.attributeNames[j]);
 				if (attributeResult == null)
 					continue;
 
-				for (int k = 0; k < 12; k++)
+				for (int k = 0; k < StatMapper.statisticNames.length; k++)
 				{
 					StatisticResult statisticResult = attributeResult
 							.getValue().get(StatMapper.statisticNames[k]);
-					if (statisticResult == null) continue;
-					
+					if (statisticResult == null)
+						continue;
+
 					list = figureMap.get(StatMapper.figureNames[i])
 							.get(StatMapper.attributeNames[j])
 							.get(StatMapper.statisticNames[k]);
-					
+
 					double value = statisticResult.getValue().get(0);
 					list.addLast(value);
-					
-					cnt++;
 				}
 			}
 		}
-	
+
 	}
 
 	public void calculateDiff()

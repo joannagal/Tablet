@@ -22,7 +22,7 @@ public class Dummy
 	
 	public Dummy()
 	{
-		Project project = this.getDummyProject2();
+		Project project = this.getDummyProject1();
 		SharedController.getInstance().setProject(project);
 		
 		frame = new JFrame("DT Prototype");
@@ -61,14 +61,17 @@ public class Dummy
 		project.setSecondPopulation(new Population());
 		
 		ArrayList <String> firstBefore = new ArrayList <String> (1);
-		firstBefore.add("src/michal/przed1.mtb");
+		firstBefore.add("src/michal/t1.htd");
 		
 		if (!project.create(firstBefore, null, null, null))
 		{
 			project = null;
 			System.out.printf("OMG SMTH WRONG\n");
 		}
-		else System.out.printf("OK\n"); 
+		else {
+			
+			System.out.printf("OK\n"); 
+		}
 		
 		return project;
 	}

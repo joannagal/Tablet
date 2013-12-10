@@ -10,6 +10,7 @@ import pi.statistics.logic.AttributeResult;
 import pi.statistics.logic.DrawingResult;
 import pi.statistics.logic.FigureResult;
 import pi.statistics.logic.SpecimenResult;
+import pi.statistics.logic.StatMapper;
 import pi.statistics.logic.StatisticResult;
 
 public class StatisticsComparatorController implements ActionListener
@@ -150,23 +151,18 @@ public class StatisticsComparatorController implements ActionListener
 					this.toFFT.add(value);
 				}
 
-				String[] standards =
-				{ "Min", "Max", "Amplitude", "Average", "Median", "Variance",
-						"StandardDev", "Drawing time", "Drawing length",
-						"Avg Speed", "Breaks Amount", "FFT Freq" };
-
 				int pos = 0;
 
-				for (int i = 0; i < 12; i++)
+				for (int i = 0; i < StatMapper.statisticNames.length; i++)
 				{
-					statistcResult = valueStat.get(standards[i]);
+					statistcResult = valueStat.get(StatMapper.statisticNames[i]);
 					if (statistcResult != null)
 					{
 						Double value = statistcResult.getValue().get(0);
 						this.view.getModel().setValueAt(Double.toString(value),
 								pos, column);
 						if (column == 1)
-							this.view.getModel().setValueAt(standards[i], pos,
+							this.view.getModel().setValueAt( StatMapper.statisticNames[i], pos,
 									0);
 						pos++;
 					}

@@ -3,8 +3,11 @@ package pi.gui.histogram;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class Histogram extends JPanel
@@ -34,6 +37,9 @@ public class Histogram extends JPanel
 
 	private double minValue = 0.0d;
 	private double maxValue = 0.0d;
+	
+	private JButton addSegmentButton = new JButton("+");
+	private JButton delSegmentButton = new JButton("-");
 
 	public void recalculate()
 	{
@@ -204,6 +210,35 @@ public class Histogram extends JPanel
 		}
 
 	}
+	
+	public Histogram()
+	{
+		this.setLayout(null);
+		
+		this.addSegmentButton.setBounds(5, 5, 45, 40);
+		this.addSegmentButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				addSegment();
+			}
+			
+		});
+		this.add(this.addSegmentButton);
+		
+		this.delSegmentButton.setBounds(5, 45, 45, 40);
+		this.delSegmentButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				delSegment();
+			}
+			
+		});
+		this.add(this.delSegmentButton);
+	}
 
 	public void draw()
 	{
@@ -230,6 +265,26 @@ public class Histogram extends JPanel
 		graphics.fillRect(0, 0, frame.width - 1, frame.height - 1);
 	}
 
+	public void addSegment()
+	{
+		if (this.ranges < 10) 
+		{
+			this.ranges++;
+			this.recalculate();
+			this.draw();
+		}
+	}
+	
+	public void delSegment()
+	{
+		if (this.ranges > 3) 
+		{
+			this.ranges--;
+			this.recalculate();
+			this.draw();
+		}
+	}
+	
 	public int getRanges()
 	{
 		return ranges;

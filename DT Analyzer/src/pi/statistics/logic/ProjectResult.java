@@ -1,16 +1,21 @@
 package pi.statistics.logic;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
 import pi.project.Project;
 import pi.shared.SharedController;
+import pi.statistics.tests.LillieforsNormality;
 
 public class ProjectResult
 {
 	private Project project;
 	private Map<String, PopulationResult> value;
+
+	private double signiLillie = 0.05d;
+	private int rangesLillie = 5;
 
 	// 1. before/after
 	// 2. figure
@@ -40,7 +45,7 @@ public class ProjectResult
 		if (after)
 		{
 			String[] maps =
-			{ "P1AB", "P2AB", "BB", "AA", "dAB",  };
+			{ "P1AB", "P2AB", "BB", "AA", "dAB", };
 			this.testResult = StatMapper.getMap(maps);
 			this.performTest("First", "Before", "First", "After",
 					this.testResult.get("P1AB"));
@@ -52,7 +57,7 @@ public class ProjectResult
 					this.testResult.get("AA"));
 			this.performTest("First", "Diff", "Second", "Diff",
 					this.testResult.get("dAB"));
-		
+
 		} else
 		{
 			String[] maps =
@@ -78,11 +83,11 @@ public class ProjectResult
 		LinkedList<Double> sList;
 		LinkedList<Double> result;
 
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < StatMapper.figureNames.length; i++)
 		{
-			for (int j = 0; j < 5; j++)
+			for (int j = 0; j < StatMapper.attributeNames.length; j++)
 			{
-				for (int k = 0; k < 12; k++)
+				for (int k = 0; k < StatMapper.statisticNames.length; k++)
 				{
 					fList = fMap.get(StatMapper.figureNames[i])
 							.get(StatMapper.attributeNames[j])
@@ -94,29 +99,75 @@ public class ProjectResult
 					if ((fList.isEmpty()) || (sList.isEmpty()))
 						continue;
 
-					//System.out.printf("SIZE: %d %s\n", fList.size(), sList.size());
-					
+					// System.out.printf("SIZE: %d %s\n", fList.size(),
+					// sList.size());
+
 					// ----- PERFORM ACTION WITH THIS LISTS :D
 					// DUMMY ACTION;
 					result = map.get(StatMapper.figureNames[i])
 							.get(StatMapper.attributeNames[j])
 							.get(StatMapper.statisticNames[k]);
 
-					result.add(fList.get(0));
+					// To [] double
+
+					double[] left = this.listToDouble(fList);
+					double[] right = this.listToDouble(sList);
+
+					LillieforsNormality.compute(left, this.rangesLillie, false);
+					boolean normal = LillieforsNormality
+							.isTrueForAlpha(this.signiLillie);
+
+					double lillieStatLeft = LillieforsNormality.statistics;
+					double lillieStatRight = 0.0d;
+					if (normal == true)
+					{
+						LillieforsNormality.compute(right, this.rangesLillie, false);
+						normal = LillieforsNormality
+								.isTrueForAlpha(this.signiLillie);
+
+						lillieStatRight = LillieforsNormality.statistics;
+					}
+
+					if (normal == true)
+					{
+						//result.add(1.0d);
+						result.add(lillieStatLeft);
+						//result.add(lillieStatRight);
+					} else
+					{
+						result.add(0.0d);
+					}
+
 					// ----
 				}
 			}
 		}
 	}
 
+	public double[] listToDouble(LinkedList<Double> list)
+	{
+		double[] result = new double[list.size()];
+		Iterator<Double> it = list.iterator();
+		Double value = 0.0d;
+		int place = 0;
+		while (it.hasNext())
+		{
+			value = it.next();
+			result[place] = value;
+			place++;
+		}
+
+		return result;
+	}
+
 	public void calculateResult()
 	{
 		this.value = new HashMap<String, PopulationResult>();
-		
+
 		PopulationResult first = new PopulationResult(
 				this.project.getFirstPopulation());
 		first.calculateResult();
-		
+
 		value.put("First", first);
 
 		if (this.project.getSecondPopulation() != null)

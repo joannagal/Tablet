@@ -19,9 +19,9 @@ public class ToolbarView extends JPanel
 	private JButton informationsButton = new JButton("Informations");
 	private JButton statisticsButton = new JButton("Statistics");
 	private JButton compareButton = new JButton("Compare");
-	
+
 	private StatisticsView statisticsView = new StatisticsView();
-	
+
 	public ToolbarView(Project project)
 	{
 		controller = new ToolbarController(this);
@@ -36,9 +36,15 @@ public class ToolbarView extends JPanel
 		this.statisticsButton.setActionCommand("STAT");
 		this.statisticsButton.addActionListener(this.controller);
 
+		if ((this.project.getType() == Project.SPECIMEN_SINGLE)
+				|| (this.project.getType() == Project.SPECIMEN_PAIR))
+		{
+			this.statisticsButton.setEnabled(false);
+		}
+
 		this.compareButton.setActionCommand("COMP");
 		this.compareButton.addActionListener(this.controller);
-		
+
 		this.add(this.informationsButton);
 		this.add(this.statisticsButton);
 	}

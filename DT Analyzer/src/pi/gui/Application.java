@@ -98,7 +98,7 @@ public static double[]rawData2={
 	public static void main(String[] args) {
 		
 		//Application.lilieTest();
-		LillieforsNormality.compute(rawData2, 10);
+		LillieforsNormality.compute(rawData2, 10, false);
 		
 		
 		OurFrame ourFrame = new OurFrame();

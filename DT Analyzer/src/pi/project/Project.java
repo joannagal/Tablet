@@ -134,8 +134,12 @@ public class Project
 					String msg = "Something goes wrong with: "
 							+ firstBefore.get(i);
 					JOptionPane.showMessageDialog(null, msg);
+					
+					e.printStackTrace();
 					return false;
 				}
+				
+				
 			}
 			this.getFirstPopulation().setName("First Population");
 			this.getFirstPopulation().setSpecimen(specimenArray);

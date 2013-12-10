@@ -28,7 +28,7 @@ public class Drawing
 
 	private boolean withExtract = false;
 
-	private int pressureAvoid = 128;
+	private int pressureAvoid = 64;
 	private int maxPressure = 1024;
 	private int totalTime = 0;
 	private int breakFigureDistance = 128;
@@ -44,7 +44,6 @@ public class Drawing
 	public Drawing(String path) throws Exception
 	{
 		this.createFromFile(path);
-		this.calculateBreakFigureDistance();
 		this.recalculate(true);
 	}
 	
@@ -61,7 +60,10 @@ public class Drawing
 		
 		//if (bounds)
 		//{
-		this.setBounds();
+		//this.setBounds();
+		this.calculateBounds();
+		this.calculateBreakFigureDistance();
+		
 		double width = this.outOrgY - this.outOrgX;
 		width = width / 5;
 		this.setBreakFigureDistance((int)width);
@@ -148,8 +150,8 @@ public class Drawing
 		int shift = 0;
 		int fileNameLength = this.getInt(data, shift);
 
-		//System.out.printf("-----------\n");
-		//System.out.printf("%d ", fileNameLength);
+		System.out.printf("-----------\n");
+		System.out.printf("%d ", fileNameLength);
 		
 		if (fileNameLength > 0)
 		{
@@ -159,14 +161,14 @@ public class Drawing
 				fileName[i] = data[shift + i];
 			shift += fileNameLength;
 			
-			//String str = new String(fileName, "UTF-8");
-			//System.out.printf("%s \n", str);
+			String str = new String(fileName, "UTF-8");
+			System.out.printf("%s \n", str);
 			
 		} else
-			shift++;
+			shift += 4;
 
 		int dateLength = this.getInt(data, shift);
-		//System.out.printf("%d ", dateLength);
+		System.out.printf("%d ", dateLength);
 		
 		if (dateLength > 0)
 		{
@@ -177,14 +179,14 @@ public class Drawing
 				date[i] = data[shift + i];
 			shift += dateLength;
 			
-			//String str = new String(date, "UTF-8");
-			//System.out.printf("%s \n", str);
+			String str = new String(date, "UTF-8");
+			System.out.printf("%s \n", str);
 			
 		} else
-			shift++;
+			shift += 4;
 
 		int memoLength = this.getInt(data, shift);
-		//System.out.printf("%d ", memoLength);
+		System.out.printf("%d ", memoLength);
 		if (memoLength > 0)
 		{
 			shift += 4;
@@ -193,10 +195,12 @@ public class Drawing
 				memo[i] = data[shift + i];
 			shift += memoLength;
 			
-			//String str = new String(memo, "UTF-8");
-			//System.out.printf("%s \n", str);
+			String str = new String(memo, "UTF-8");
+			System.out.printf("%s \n", str);
 		} else
-			shift++;
+			shift += 4;
+		
+		
 
 		this.outOrgX = this.getInt(data, shift);
 		shift += 4;
@@ -207,14 +211,14 @@ public class Drawing
 		this.outExtY = this.getInt(data, shift);
 		shift += 4;
 		
-		//System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX,outExtY);
+		System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX,outExtY);
 
 		int numPackages = this.getInt(data, shift);
 		shift += 4;
 
-		//System.out.printf("PACKAGES:  %d\n", numPackages);
-
-		this.setPressureAvoid(128);
+		System.out.printf("PACKAGES:  %d\n", numPackages);
+	
+		this.setPressureAvoid(64);
 		this.setMaxPressure(1024);
 
 		this.packet = new ArrayList<PacketData>(numPackages);
@@ -248,8 +252,9 @@ public class Drawing
 	
 	public void calculateBounds()
 	{
-		if (this.figure == null)
-			return;
+		//if (this.figure == null)
+		//	return;
+			
 
 		int min_x = 1000000;
 		int max_x = -1000000;
@@ -259,31 +264,19 @@ public class Drawing
 		int height = 0;
 		int prop;
 
-		for (int i = 0; i < this.figure.size(); i++)
+		int size = this.packet.size();
+		
+		for (int i = 0; i < size; i++)
 		{
+			if (packet.get(i).getPkX() > max_x)
+				max_x = packet.get(i).getPkX();
+			if (packet.get(i).getPkX() < min_x)
+				min_x = packet.get(i).getPkX();
 
-			Iterator<Segment> itSeg = this.figure.get(i).getSegment()
-					.iterator();
-			Segment seg;
-
-			while (itSeg.hasNext())
-			{
-				seg = itSeg.next();
-				Range range = seg.getRange();
-
-				for (int j = range.getLeft(); j <= range.getRight(); j++)
-				{
-					if (packet.get(j).getPkX() > max_x)
-						max_x = packet.get(j).getPkX();
-					if (packet.get(j).getPkX() < min_x)
-						min_x = packet.get(j).getPkX();
-
-					if (packet.get(j).getPkY() > max_y)
-						max_y = packet.get(j).getPkY();
-					if (packet.get(j).getPkY() < min_y)
-						min_y = packet.get(j).getPkY();
-				}
-			}
+			if (packet.get(i).getPkY() > max_y)
+				max_y = packet.get(i).getPkY();
+			if (packet.get(i).getPkY() < min_y)
+				min_y = packet.get(i).getPkY();
 		}
 
 		width = max_x - min_x;
@@ -292,29 +285,13 @@ public class Drawing
 
 		this.setContent(new Rectangle(min_x - prop, min_y - prop, width + 2
 				* prop, height + 2 * prop));
-		
-		//System.out.printf("%d %d %d %d B\n", min_x, min_y, min_x + width,min_y + height);
 
 	}
 
 	public void calculateBreakFigureDistance()
 	{
-		/*int size = this.packet.size();
-		int min_x = 1000000;
-		int max_x = -1000000;
-		for (int i = 0; i < size; i++)
-		{
-			if (packet.get(i).getPkPressure() < 512)
-				continue;
-			if (packet.get(i).getPkX() > max_x)
-				max_x = packet.get(i).getPkX();
-			if (packet.get(i).getPkX() < min_x)
-				min_x = packet.get(i).getPkX();
-		}
-		int width = max_x - min_x;
-		this.setBreakFigureDistance(width / 5);*/
+		double width = this.content.width;
 		
-		double width = this.outOrgY - this.outOrgX;
 		width = width / 5;
 		this.setBreakFigureDistance((int)width);
 	}

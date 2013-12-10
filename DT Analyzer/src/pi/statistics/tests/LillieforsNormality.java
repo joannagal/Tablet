@@ -11,13 +11,13 @@ public class LillieforsNormality
 	private static double[] value;
 	private static double[] frequency;
 
-	private static double statistics = 0.0d;
+	public static double statistics = 0.0d;
 	private static int populationSize = 0;
 
 	private static double average = 0.0d;
 	private static double deviation = 0.0d;
 
-	public static void compute(double[] input, int ranges)
+	public static void compute(double[] input, int ranges, boolean debug)
 	{
 		if (ranges < 4)
 			return;
@@ -53,28 +53,36 @@ public class LillieforsNormality
 		for (int i = 0; i < size; i++)
 			cumulatedInput[i] = cumulatedFreq[i] / cumulatedFreq[size - 1];
 
-		double maxDist = 2.0d;
+		double maxDist = -1.0d;
 
 		for (int i = 0; i < size; i++)
 		{
 			double d = cumulatedNormal[i] - cumulatedInput[i];
 			if (d < 0.0d)
 				d *= -1.0d;
-			if (d < maxDist)
+			if (d > maxDist)
 				maxDist = d;
 		}
 
 		LillieforsNormality.statistics = maxDist;
 
+		if (debug)
+		{
+			System.out.printf("A - %f   D  %f\n", LillieforsNormality.average,
+					LillieforsNormality.deviation);
+			for (int i = 0; i < size; i++)
+			{
+				System.out.printf("%d. - %f %f %f %f %f %f\n", i,
+						LillieforsNormality.value[i],
+						LillieforsNormality.frequency[i], cumulatedFreq[i],
+						standard[i], cumulatedNormal[i], cumulatedInput[i]);
+			}
+			System.out.printf("D - %f %f\n", maxDist,
+					LillieforsNormality.getCritFromTable(
+							LillieforsNormality.populationSize, 0.05d));
+		}
 		/*
-		 * System.out.printf("A - %f   D  %f\n", LillieforsNormality.average,
-		 * LillieforsNormality.deviation); for (int i = 0; i < size; i++) {
-		 * System.out.printf("%d. - %f %f %f %f %f %f\n", i,
-		 * LillieforsNormality.value[i], LillieforsNormality.frequency[i],
-		 * cumulatedFreq[i], standard[i], cumulatedNormal[i],
-		 * cumulatedInput[i]); } System.out.printf("D - %f %f\n", maxDist,
-		 * LillieforsNormality
-		 * .getCritFromTable(LillieforsNormality.populationSize, 0.05d));
+	
 		 */
 
 		// System.out.printf("D - %f\n",
@@ -155,7 +163,7 @@ public class LillieforsNormality
 
 	private static double getCritFromTable(int population, double alpha)
 	{
-		//System.out.printf("::::: %d %f\n", population, alpha);
+		// System.out.printf("::::: %d %f\n", population, alpha);
 		// α = .20 α = .15 α = .10 α = .05 α = .01
 		if (population < 4)
 			return 1.0d;

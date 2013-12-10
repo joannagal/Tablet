@@ -11,6 +11,7 @@ import pi.project.Project;
 import pi.shared.SharedController;
 import pi.statistics.logic.ProjectResult;
 import pi.statistics.logic.StatMapper;
+import pi.statistics.tests.LillieforsNormality;
 
 public class StatisticsController implements ActionListener
 {
@@ -41,6 +42,27 @@ public class StatisticsController implements ActionListener
 
 		if ((first == null) || (second == null))
 			return;
+		
+		//  -------------------------------------
+		
+		/*double[] left = pResult.listToDouble(first);
+		double[] right = pResult.listToDouble(second);
+
+		LillieforsNormality.compute(left, 5, true);
+		boolean normal = LillieforsNormality
+				.isTrueForAlpha(0.05d);
+
+		
+		System.out.printf("POLICZONE : %f\n", LillieforsNormality.statistics);
+		
+		
+		LillieforsNormality.compute(right, 5, false);
+		normal = LillieforsNormality
+					.isTrueForAlpha(0.05d);
+
+		System.out.printf("POLICZONE : %f\n", LillieforsNormality.statistics);*/
+		
+		//  -------------------------------------
 		
 		System.out.printf("PREV ----- %d %d\n", first.size(), second.size());
 		
@@ -101,7 +123,7 @@ public class StatisticsController implements ActionListener
 
 		int where = 0;
 
-		for (int i = 0; i < 12; i++)
+		for (int i = 0; i <  StatMapper.statisticNames.length; i++)
 		{
 			result = map.get(figure).get(element)
 					.get(StatMapper.statisticNames[i]);
