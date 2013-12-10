@@ -37,7 +37,7 @@ public class Histogram extends JPanel
 
 	private double minValue = 0.0d;
 	private double maxValue = 0.0d;
-	
+
 	private JButton addSegmentButton = new JButton("+");
 	private JButton delSegmentButton = new JButton("-");
 
@@ -46,31 +46,37 @@ public class Histogram extends JPanel
 		if (getData() == null)
 			return;
 
-		counter = new ArrayList<ArrayList<Integer>>(ranges);
+		System.out.printf("DEEEBUG: %d %d\n", data.size(), ranges);
+
+		counter = new ArrayList<ArrayList<Integer>>(data.size());
 		for (int i = 0; i < data.size(); i++)
 		{
-			counter.add(new ArrayList<Integer>(data.size()));
+			counter.add(new ArrayList<Integer>(ranges));
 		}
 
 		this.minValue = 1000000.0d;
 		this.maxValue = -1000000.0d;
 		this.maxCounter = 0;
-		
+
 		for (int i = 0; i < data.size(); i++)
 		{
 			int size = data.get(i).size();
-			ArrayList<Integer> tmp = counter.get(i);
 			for (int j = 0; j < size; j++)
 			{
-				tmp.add(0);
-
 				if (getData().get(i).get(j) > maxValue)
 					maxValue = getData().get(i).get(j);
 				if (getData().get(i).get(j) < minValue)
 					minValue = getData().get(i).get(j);
 			}
-		}
+			
+			size = counter.get(i).size();
 
+			for (int j = 0; j < ranges; j++)
+			{
+				counter.get(i).add(0);
+			}
+
+		}
 
 		double range = (double) (maxValue - minValue) / (double) ranges;
 
@@ -210,32 +216,34 @@ public class Histogram extends JPanel
 		}
 
 	}
-	
+
 	public Histogram()
 	{
 		this.setLayout(null);
-		
+
 		this.addSegmentButton.setBounds(5, 5, 45, 40);
-		this.addSegmentButton.addActionListener(new ActionListener() {
+		this.addSegmentButton.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
 				addSegment();
 			}
-			
+
 		});
 		this.add(this.addSegmentButton);
-		
+
 		this.delSegmentButton.setBounds(5, 45, 45, 40);
-		this.delSegmentButton.addActionListener(new ActionListener() {
+		this.delSegmentButton.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				delSegment();
 			}
-			
+
 		});
 		this.add(this.delSegmentButton);
 	}
@@ -267,24 +275,24 @@ public class Histogram extends JPanel
 
 	public void addSegment()
 	{
-		if (this.ranges < 10) 
+		if (this.ranges < 10)
 		{
 			this.ranges++;
 			this.recalculate();
 			this.draw();
 		}
 	}
-	
+
 	public void delSegment()
 	{
-		if (this.ranges > 3) 
+		if (this.ranges > 3)
 		{
 			this.ranges--;
 			this.recalculate();
 			this.draw();
 		}
 	}
-	
+
 	public int getRanges()
 	{
 		return ranges;

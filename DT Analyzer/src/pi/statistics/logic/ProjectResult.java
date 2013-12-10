@@ -5,6 +5,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.apache.commons.math3.stat.inference.MannWhitneyUTest;
+import org.apache.commons.math3.stat.inference.TTest;
+import org.apache.commons.math3.stat.inference.WilcoxonSignedRankTest;
+
 import pi.project.Project;
 import pi.shared.SharedController;
 import pi.statistics.tests.LillieforsNormality;
@@ -14,6 +18,8 @@ public class ProjectResult
 	private Project project;
 	private Map<String, PopulationResult> value;
 
+	private boolean projectLvPaired = false;
+	private double signiPairedTTest = 0.05d;
 	private double signiLillie = 0.05d;
 	private int rangesLillie = 5;
 
@@ -96,7 +102,7 @@ public class ProjectResult
 							.get(StatMapper.attributeNames[j])
 							.get(StatMapper.statisticNames[k]);
 
-					if ((fList.isEmpty()) || (sList.isEmpty()))
+					if ((fList.size() < 2) || (sList.size() < 2))
 						continue;
 
 					// System.out.printf("SIZE: %d %s\n", fList.size(),
@@ -110,6 +116,9 @@ public class ProjectResult
 
 					// To [] double
 
+					if (fList.size() != sList.size())
+						continue;
+
 					double[] left = this.listToDouble(fList);
 					double[] right = this.listToDouble(sList);
 
@@ -117,25 +126,67 @@ public class ProjectResult
 					boolean normal = LillieforsNormality
 							.isTrueForAlpha(this.signiLillie);
 
-					double lillieStatLeft = LillieforsNormality.statistics;
-					double lillieStatRight = 0.0d;
 					if (normal == true)
 					{
-						LillieforsNormality.compute(right, this.rangesLillie, false);
+						LillieforsNormality.compute(right, this.rangesLillie,
+								false);
 						normal = LillieforsNormality
 								.isTrueForAlpha(this.signiLillie);
 
-						lillieStatRight = LillieforsNormality.statistics;
 					}
 
 					if (normal == true)
 					{
-						//result.add(1.0d);
-						result.add(lillieStatLeft);
-						//result.add(lillieStatRight);
+						result.add(1.0d);
+						TTest test = new TTest();
+
+						boolean paired = true;
+						if (!fP.equals(sP))
+							paired = this.projectLvPaired;
+
+						double pval = 0.0d;
+
+						if (paired)
+							pval = test.pairedTTest(left, right);
+						else
+							pval = test.tTest(left, right);
+
+						if (paired)
+							result.add(1.0d);
+						else
+							result.add(-1.0d);
+
+						result.add(pval);
+
 					} else
 					{
-						result.add(0.0d);
+						result.add(-1.0d);
+					
+						boolean paired = true;
+						if (!fP.equals(sP))
+							paired = this.projectLvPaired;
+
+						double pval = 0.0d;
+
+						if (paired)
+						{
+							WilcoxonSignedRankTest test = new WilcoxonSignedRankTest();
+							pval = test.wilcoxonSignedRankTest(left, right, true);	
+						}
+						else
+						{
+							MannWhitneyUTest test = new MannWhitneyUTest();
+							pval = test.mannWhitneyUTest(left, right);
+						}
+							
+
+						if (paired)
+							result.add(1.0d);
+						else
+							result.add(-1.0d);
+
+						result.add(pval);
+
 					}
 
 					// ----

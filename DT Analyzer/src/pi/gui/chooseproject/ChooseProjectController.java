@@ -52,6 +52,7 @@ public class ChooseProjectController implements ActionListener
 				
 				SharedController.getInstance().getFrame().getMenuView().setInChoose(true);
 			}
+
 			if (selected.equals("TWO_POPULATIONS"))
 			{
 				PopulSingleImporterView importer = new PopulSingleImporterView();

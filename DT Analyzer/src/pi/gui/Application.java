@@ -58,47 +58,8 @@ public class Application
 
 	};
 	
-public static double[]rawData2={
-		
-		0,
-		10,
-		10,
-		20,
-		20,
-		30,
-		30,
-		30,
-		30,
-		40,
-		40,
-		40,
-		40,
-		40,
-		40,
-		50,
-		50,
-		50,
-		50,
-		50,
-		50,
-		50,
-		60,
-		60,
-		60,
-		60,
-		60,
-		60,
-		70,
-		70,
-		70,
-		80,
-		90
-	};
 	
 	public static void main(String[] args) {
-		
-		//Application.lilieTest();
-		LillieforsNormality.compute(rawData2, 10, false);
 		
 		
 		OurFrame ourFrame = new OurFrame();

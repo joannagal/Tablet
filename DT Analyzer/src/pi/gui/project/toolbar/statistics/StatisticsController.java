@@ -11,7 +11,6 @@ import pi.project.Project;
 import pi.shared.SharedController;
 import pi.statistics.logic.ProjectResult;
 import pi.statistics.logic.StatMapper;
-import pi.statistics.tests.LillieforsNormality;
 
 public class StatisticsController implements ActionListener
 {
@@ -127,9 +126,30 @@ public class StatisticsController implements ActionListener
 		{
 			result = map.get(figure).get(element)
 					.get(StatMapper.statisticNames[i]);
-			if (result.isEmpty())
-				continue;
-			String label = Double.toString(result.get(0));
+			if (result.isEmpty()) continue;
+			
+			if (result.size() < 3) {where++; continue;}
+			
+			String label = "";
+			
+			boolean isT = true;
+			if (result.get(0) < 0.0d) isT = false;
+			
+			boolean isPaired = true;
+			if (result.get(1) < 0.0d) isPaired = false;
+			
+			if (isT) 
+			{
+				if (isPaired) label = "T (P): ";
+				else label = "T (U): ";
+			}
+			else
+			{
+				if (isPaired) label = "W: ";
+				else label = "MWW: ";
+			}
+			
+			label += Double.toString(result.get(2));
 
 			view.getModel().setValueAt(label, where, column);
 			view.getModel().setValueAt(StatMapper.statisticNames[i], where, 0);

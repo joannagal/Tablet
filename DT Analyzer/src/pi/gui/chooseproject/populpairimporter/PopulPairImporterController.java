@@ -37,15 +37,10 @@ public class PopulPairImporterController implements ActionListener
 			int sizeSecondBefore = paths.get(2).size();
 			int sizeSecondAfter = paths.get(2).size();
 
-			if ((sizeFirstBefore > 0)
-					&& (sizeFirstAfter > 0)
-					&& (sizeSecondBefore > 0)
-					&& (sizeSecondAfter > 0)
-					&& (sizeFirstBefore == sizeFirstAfter) 
-					&& (sizeFirstAfter == sizeSecondBefore)
-					&& (sizeSecondBefore == sizeSecondAfter)
-					)
+			if ( ( (sizeFirstBefore > 0) && (sizeFirstAfter > 0) && (sizeFirstBefore == sizeFirstAfter) ) ||
+					( (sizeSecondBefore > 0) && (sizeSecondAfter > 0) && (sizeSecondBefore == sizeSecondAfter) ) )
 			{
+	
 				Project project = new Project();
 				project.setName("New Project");
 				project.setPath(null);

@@ -47,12 +47,17 @@ public class PopulationView extends JPanel
 				|| (type == Project.SPECIMEN_SINGLE))
 		{
 			this.specimenView = new SpecimenView(this, type);
-			this.specimenView.setSpecimen(population.getSpecimen().get(0));
+			
+			if (population.getSpecimen().size() == 0) this.specimenView.setSpecimen(null);
+			else this.specimenView.setSpecimen(population.getSpecimen().get(0));
+			
 			this.add(this.specimenView, c);
 		} else
-		{
+		{	
 			this.specimenView = new SpecimenView(this, type);
-			this.specimenView.setSpecimen(population.getSpecimen().get(0));
+			
+			if (population.getSpecimen().size() == 0) this.specimenView.setSpecimen(null);
+			else this.specimenView.setSpecimen(population.getSpecimen().get(0));
 
 			this.listView = new PopulationListView(this);
 
