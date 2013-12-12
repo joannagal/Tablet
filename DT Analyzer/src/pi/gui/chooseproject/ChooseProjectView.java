@@ -60,6 +60,7 @@ public class ChooseProjectView extends JDialog
 		panel.add(projectLabel);
 
 		oneSignalButton = new JRadioButton("Single singal");
+		oneSignalButton.setSelected(true);
 		oneSignalButton.setFont(new Font("Arial", Font.BOLD, 14));
 		twoSignalsButton = new JRadioButton("Signal pair analyzis");
 		twoSignalsButton.setFont(new Font("Arial", Font.BOLD, 14));

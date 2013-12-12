@@ -41,8 +41,16 @@ public class FigureInterpreter
 			return;
 		if (figure.getBounds() == null)
 			return;
+		
+		System.out.printf("----FIG\n");
 
-		int test = this.circleTest(figure);
+		int test = this.lineTest(figure);
+		if (test != -1)
+		{
+			figure.setType(test);
+			return;
+		}
+		test = this.circleTest(figure);
 		if (test != -1)
 		{
 			figure.setType(test);
@@ -54,22 +62,10 @@ public class FigureInterpreter
 			figure.setType(test);
 			return;
 		}
-		test = this.lineTest(figure);
-		if (test != -1)
-		{
-			figure.setType(test);
-			return;
-		}
+		
 		
 		figure.setType(Figure.ZIGZAG);
-		
-		/*test = this.zigzagTest(figure);
-		if (test != -1)
-		{
-			figure.setType(test);
-			//figure.setType(Figure.ZIGZAG);
-			return;
-		}*/
+
 	}
 
 	public int zigzagTest(Figure figure)
@@ -204,9 +200,9 @@ public class FigureInterpreter
 		int correct = 0;
 		double dist = 0.0d;
 		if (figure.getBounds().height > figure.getBounds().width)
-			dist = figure.getBounds().height / 30.0d;
+			dist = figure.getBounds().height / 100.0d;
 		else
-			dist = figure.getBounds().width / 30.0d;
+			dist = figure.getBounds().width / 100.0d;
 
 		if (accX == 0)
 		{
@@ -236,10 +232,11 @@ public class FigureInterpreter
 
 		// height / width musi byc > 0.65 drawing bounds
 
-		double accept = 0.65d;
+		double accept = 0.8d;
 
 		double result = (double) correct / (double) total;
-		// System.out.printf("--- %f\n", result);
+		
+		//System.out.printf("--- %f\n", result);
 
 		if (result > accept)
 		{
@@ -392,7 +389,11 @@ public class FigureInterpreter
 	{
 
 		if (!this.isSquare(figure))
+		{
+			System.out.printf("-- FAIL\n");
 			return -1;
+		}
+		
 
 		double scale = 1.0d;
 		scale = (double) figure.getBounds().width
@@ -464,7 +465,7 @@ public class FigureInterpreter
 
 		div = 0;
 		int accepted = 0;
-		int accRange = (int) (dist * 0.2d);
+		int accRange = (int) (dist * 0.20d);
 		Double accPercent = 0.5d;
 
 		int current = 0;
@@ -523,6 +524,8 @@ public class FigureInterpreter
 
 		double result = (double) accepted / (double) div;
 
+		System.out.printf("------ %f\n", result);
+		
 		if (result > accPercent)
 		{
 			// parse visited
@@ -556,10 +559,10 @@ public class FigureInterpreter
 	public boolean isSquare(Figure figure)
 	{
 		if ((!this.isInRange(figure.getBounds().width,
-				figure.getBounds().height, 0.2d * figure.getBounds().height))
+				figure.getBounds().height, 0.33d * figure.getBounds().height))
 				|| (!this.isInRange(figure.getBounds().height,
 						figure.getBounds().width,
-						0.2d * figure.getBounds().width)))
+						0.33d * figure.getBounds().width)))
 		{
 			return false;
 		}
