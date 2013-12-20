@@ -9,16 +9,16 @@ import java.util.Iterator;
 
 import pi.inputs.drawing.autofinder.FigureExtractor;
 import pi.inputs.drawing.autofinder.FigureInterpreter;
+import pi.inputs.drawing.autofinder.Linearizer;
 import pi.utilities.Range;
 
 public class Drawing
 {
 	private String label = "";
 	private String origin = null;
-	
-	
+
 	private Rectangle content;
-	
+
 	private ArrayList<PacketData> packet;
 	private ArrayList<Figure> figure;
 
@@ -32,21 +32,22 @@ public class Drawing
 	private int maxPressure = 1024;
 	private int totalTime = 0;
 	private int breakFigureDistance = 128;
-	
+
 	private int outOrgX = 0;
 	private int outOrgY = 0;
 	private int outExtX = 0;
 	private int outExtY = 0;
-	
+
 	FigureExtractor extractor = new FigureExtractor();
 	FigureInterpreter interpreter = new FigureInterpreter();
+	Linearizer linearizer = new Linearizer();
 
 	public Drawing(String path) throws Exception
 	{
 		this.createFromFile(path);
 		this.recalculate(true);
 	}
-	
+
 	public Drawing()
 	{
 
@@ -57,22 +58,24 @@ public class Drawing
 		if ((!bounds) && (!this.isWithExtract()))
 			return;
 		this.clearStuff();
-		
-		//if (bounds)
-		//{
-		//this.setBounds();
+
 		this.calculateBounds();
 		this.calculateBreakFigureDistance();
-		
+
 		double width = this.outOrgY - this.outOrgX;
 		width = width / 5;
-		this.setBreakFigureDistance((int)width);
-		//}
+		this.setBreakFigureDistance((int) width);
 
-		extractor.extract(this);
+		this.extractor.extract(this);
+		this.interpreter.interprate(this);
+		this.linearize(20);
 
-		interpreter.interprate(this);
 		this.createStatus();
+	}
+
+	public void linearize(int level)
+	{
+		linearizer.linearize(this);
 	}
 
 	public void createStatus()
@@ -97,7 +100,7 @@ public class Drawing
 				tab[fig]++;
 				this.getCompleteFigure()[fig] = this.figure.get(i);
 			}
-				
+
 		}
 
 		for (int i = 0; i < 8; i++)
@@ -130,7 +133,7 @@ public class Drawing
 		Figure newFigure = extractor.getFigure(this, new Range(left, right));
 		newFigure.setType(type);
 		this.figure.add(newFigure);
-		
+
 		this.createStatus();
 	}
 
@@ -143,7 +146,7 @@ public class Drawing
 		byte[] data = new byte[(int) size];
 
 		this.origin = file.getName();
-		
+
 		insputStream.read(data);
 		insputStream.close();
 
@@ -152,7 +155,7 @@ public class Drawing
 
 		System.out.printf("-----------\n");
 		System.out.printf("%d ", fileNameLength);
-		
+
 		if (fileNameLength > 0)
 		{
 			shift += 4;
@@ -160,16 +163,16 @@ public class Drawing
 			for (int i = 0; i < fileNameLength; i++)
 				fileName[i] = data[shift + i];
 			shift += fileNameLength;
-			
+
 			String str = new String(fileName, "UTF-8");
 			System.out.printf("%s \n", str);
-			
+
 		} else
 			shift += 4;
 
 		int dateLength = this.getInt(data, shift);
 		System.out.printf("%d ", dateLength);
-		
+
 		if (dateLength > 0)
 		{
 			shift += 4;
@@ -178,10 +181,10 @@ public class Drawing
 			for (int i = 0; i < dateLength; i++)
 				date[i] = data[shift + i];
 			shift += dateLength;
-			
+
 			String str = new String(date, "UTF-8");
 			System.out.printf("%s \n", str);
-			
+
 		} else
 			shift += 4;
 
@@ -194,30 +197,28 @@ public class Drawing
 			for (int i = 0; i < memoLength; i++)
 				memo[i] = data[shift + i];
 			shift += memoLength;
-			
+
 			String str = new String(memo, "UTF-8");
 			System.out.printf("%s \n", str);
 		} else
 			shift += 4;
-		
-		
 
 		this.outOrgX = this.getInt(data, shift);
 		shift += 4;
-		this.outOrgY =this.getInt(data, shift);
+		this.outOrgY = this.getInt(data, shift);
 		shift += 4;
 		this.outExtX = this.getInt(data, shift);
 		shift += 4;
 		this.outExtY = this.getInt(data, shift);
 		shift += 4;
-		
-		System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX,outExtY);
+
+		System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX, outExtY);
 
 		int numPackages = this.getInt(data, shift);
 		shift += 4;
 
 		System.out.printf("PACKAGES:  %d\n", numPackages);
-	
+
 		this.setPressureAvoid(64);
 		this.setMaxPressure(1024);
 
@@ -247,14 +248,14 @@ public class Drawing
 
 	public void setBounds()
 	{
-		this.setContent(new Rectangle(this.outOrgX, this.outExtY, this.outOrgY, this.outExtX));
+		this.setContent(new Rectangle(this.outOrgX, this.outExtY, this.outOrgY,
+				this.outExtX));
 	}
-	
+
 	public void calculateBounds()
 	{
-		//if (this.figure == null)
-		//	return;
-			
+		// if (this.figure == null)
+		// return;
 
 		int min_x = 1000000;
 		int max_x = -1000000;
@@ -265,7 +266,7 @@ public class Drawing
 		int prop;
 
 		int size = this.packet.size();
-		
+
 		for (int i = 0; i < size; i++)
 		{
 			if (packet.get(i).getPkX() > max_x)
@@ -281,7 +282,7 @@ public class Drawing
 
 		width = max_x - min_x;
 		height = max_y - min_y;
-		prop = width / 30;
+		prop = width / 50;
 
 		this.setContent(new Rectangle(min_x - prop, min_y - prop, width + 2
 				* prop, height + 2 * prop));
@@ -291,9 +292,9 @@ public class Drawing
 	public void calculateBreakFigureDistance()
 	{
 		double width = this.content.width;
-		
+
 		width = width / 5;
-		this.setBreakFigureDistance((int)width);
+		this.setBreakFigureDistance((int) width);
 	}
 
 	public int getInt(byte[] data, int position)
@@ -441,7 +442,6 @@ public class Drawing
 	{
 		this.completeFigure = completeFigure;
 	}
-
 
 	public int getOutOrgX()
 	{

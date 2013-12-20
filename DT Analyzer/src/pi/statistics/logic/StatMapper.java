@@ -13,7 +13,7 @@ public class StatMapper
 
 	public static String[] attributeNames =
 	{ "Figure Standards", "Pressure", "Momentary Speed", "Acceleration",
-			"Direction Change (f'')", "Azimuth", "Altitude" };
+			"Direction Change (f'')", "Azimuth", "Altitude",  "Dev. from Average" };
 
 	public static String[] statisticNames =
 	{ "Min", "Max", "Amplitude", "Average", "Median", "Variance",

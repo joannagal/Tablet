@@ -91,6 +91,9 @@ public class PopulationView extends JPanel
 		for (int i = 0; i < specimen.size(); i++)
 		{
 			Drawing drawing = specimen.get(i).getBefore();
+			
+			//drawing.recalculate(true);
+			
 			if (specimen.get(i).getName() == null)
 				name = "";
 			else
@@ -109,6 +112,7 @@ public class PopulationView extends JPanel
 			if (drawing != null)
 			{
 				drawing.setLabel(pref + ": After: " + name + " " + surname);
+				//drawing.recalculate(true);
 			}
 		}
 		

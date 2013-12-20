@@ -293,6 +293,7 @@ public class PopImporter extends DefaultHandler
 		}
 
 		input.createStatus();
+		input.linearize(10);
 	}
 
 	public void initFigure(Attributes attributes)

@@ -1,21 +1,28 @@
 package pi.inputs.drawing.autofinder;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
 
 import pi.inputs.drawing.Drawing;
+import pi.inputs.drawing.Figure;
 import pi.inputs.drawing.PacketData;
+import pi.inputs.drawing.Segment;
+import pi.utilities.Range;
 
-public class Linearize
+public class Linearizer
 {
 	public void linearize(Drawing drawing)
 	{
-		/*ArrayList <Figure> figure = drawing.getFigure();
+		
+		ArrayList <Figure> figure = drawing.getFigure();
 		Iterator <Figure> itFig = figure.iterator();
 		Iterator <Segment> itSeg;
 		Figure fig;
 		Segment seg;
 		
-		ArrayList <PacketData> packet;
+		ArrayList <PacketData> packet = drawing.getPacket();
+		Range range;
 		int size;
 		
 		while (itFig.hasNext())
@@ -28,13 +35,14 @@ public class Linearize
 			while (itSeg.hasNext())
 			{
 				seg = itSeg.next();
-				packet = seg.getPacket();
-				if ((packet == null) || (packet.size() < 2)) continue;
+				range = seg.getRange();
+				
+				if ((range == null) || (range.getInterval() < 2)) continue;
 				
 				size = packet.size();
 				ArrayList <PacketData> linear = new ArrayList <PacketData> (size);
 				
-				for (int i = 0; i < size; i++)
+				for (int i = range.getLeft(); i <= range.getRight(); i++)
 				{
 					linear.add(packet.get(i).getCopy());
 				}
@@ -42,13 +50,13 @@ public class Linearize
 				this.linearizeVectorDynamic(linear, 10);
 				seg.setLinearized(linear);
 			}		
-		}*/
+		}
 	}
 	
 	
 	public void linearizeVectorDynamic(ArrayList <PacketData> input, int steps)
 	{
-		/*int size = input.size();
+		int size = input.size();
 		PacketData pckg = null;
 		int div = steps;
 		
@@ -90,7 +98,7 @@ public class Linearize
 			
 			// should fing intel. dist ----------
 			angle = this.getAngle((double)sX, (double)sY);
-			distance = Linearize.getDistance(input.get(i), input.get(i + (div + minFlag)));
+			distance = Linearizer.getDistance(input.get(i), input.get(i + (div + minFlag)));
 			
 			tX = input.get(i + (div + minFlag)).getPkX() - contX;
 			tY = input.get(i + (div + minFlag)).getPkY() - contY;
@@ -116,7 +124,7 @@ public class Linearize
 			}
 
 		
-		}*/
+		}
 		
 		
 	}

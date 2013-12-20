@@ -177,8 +177,18 @@ public class Graph extends JPanel implements MouseMotionListener
 	public void setDrawing(Drawing drawing)
 	{
 		if (drawing != null)
+		{
 			this.selection.setRange(drawing.getTotalTime(),
 					drawing.getTotalTime() + 1);
+			
+			// DEB
+			
+			System.out.printf("-DEBUG ---\n");
+			//drawing.recalculate(true);
+			//System.out.printf("-%d %d\n", drawing.);
+			//drawing.linearize(10);
+			
+		}
 		else
 			this.selection.setRange(100, 101);
 		this.drawing = drawing;

@@ -8,6 +8,7 @@ import pi.statistics.logic.extenders.AccelerationResult;
 import pi.statistics.logic.extenders.AltitudeResult;
 import pi.statistics.logic.extenders.AzimuthResult;
 import pi.statistics.logic.extenders.ChangeDirectionResult;
+import pi.statistics.logic.extenders.DFAverage;
 import pi.statistics.logic.extenders.FigureStandardsResult;
 import pi.statistics.logic.extenders.MSpeedResult;
 import pi.statistics.logic.extenders.PressureResult;
@@ -53,6 +54,10 @@ public class FigureResult
 		AltitudeResult altitude = new AltitudeResult(this.figure.getParent().getPacket(), this.figure.getSegment());
 		altitude.calculateResult();
 		this.value.put("Altitude", altitude);
+		
+		DFAverage dfaverage = new DFAverage(this.figure.getParent().getPacket(), this.figure.getSegment());
+		dfaverage.calculateResult();
+		this.value.put("Dev. from Average", dfaverage);
 	}
 
 	public Map<String, AttributeResult> getValue()

@@ -49,7 +49,7 @@ public class DrawingAdapter
 		{
 			this.drawSegment(graphics, graph.getDrawing().getPacket(),
 					new Range(0, graph.getDrawing().getPacket().size() - 1),
-					time, true);
+					time, true, false);
 		}
 
 		for (int i = 0; i < size; i++)
@@ -118,15 +118,30 @@ public class DrawingAdapter
 		while (it.hasNext())
 		{
 			seg = it.next();
-
 			this.drawSegment(graphics, figure.getParent().getPacket(),
-					seg.getRange(), time, false);
-
+					seg.getRange(), time, false, false);
 		}
+
+		/*if (true)// linearized
+		{
+			it = figure.getSegment().iterator();
+
+			while (it.hasNext())
+			{
+				seg = it.next();
+				if (seg.getLinearized() != null)
+				{
+					Range range = new Range(0, seg.getLinearized().size() - 1);
+					this.drawSegment(graphics, seg.getLinearized(), range,
+							time, false, true);
+				}
+			}
+		}*/
+
 	}
 
 	public void drawSegment(Graphics graphics, ArrayList<PacketData> packet,
-			Range range, int time, boolean isAll)
+			Range range, int time, boolean isAll, boolean isLinearized)
 	{
 		Transformations transform = graph.getTranform();
 		PacketData pck;
@@ -147,7 +162,11 @@ public class DrawingAdapter
 
 		transform.transformToCanvas(pck.getPkX(), pck.getPkY(), A);
 
-		if (isAll)
+		if (isLinearized)
+		{
+			graphics.setColor(scheme.getLinearizedColor());
+			tools.setStroke(stroke[0]);
+		} else if (isAll)
 		{
 			graphics.setColor(scheme.getAllColor());
 			tools.setStroke(stroke[0]);
@@ -161,35 +180,38 @@ public class DrawingAdapter
 
 			transform.transformToCanvas(pck.getPkX(), pck.getPkY(), B);
 
-			if (!isAll)
+			if (!isLinearized)
 			{
-				if (this.thicknessShow)
+				if (!isAll)
 				{
-					tools.setStroke(stroke[transform.transformToPressure(pck
-							.getPkPressure())]);
+					if (this.thicknessShow)
+					{
+						tools.setStroke(stroke[transform.transformToPressure(pck
+								.getPkPressure())]);
 
-					graphics.setColor(getGradientColor(this.graph.getDrawing()
-					 .getPressureAvoid(), 1024, pck.getPkPressure()));
+						graphics.setColor(getGradientColor(this.graph.getDrawing()
+								.getPressureAvoid(), 1024, pck.getPkPressure()));
+					} else
+					{
+						tools.setStroke(stroke[0]);
+						graphics.setColor(drawColor);
+					}
+
 				} else
 				{
-					tools.setStroke(stroke[0]);
-					graphics.setColor(drawColor);
+					Range selection = graph.getSelection();
+					if ((pck.getPkTime() >= selection.getLeft())
+							&& (pck.getPkTime() <= selection.getRight()))
+					{
+						graphics.setColor(scheme.getSelectionColor());
+					} else
+						graphics.setColor(scheme.getAllColor());
 				}
-
-			} else
-			{
-				Range selection = graph.getSelection();
-				if ((pck.getPkTime() >= selection.getLeft())
-						&& (pck.getPkTime() <= selection.getRight()))
-				{
-					graphics.setColor(scheme.getSelectionColor());
-				} else
-					graphics.setColor(scheme.getAllColor());
 			}
 
 			graphics.drawLine(A.x, A.y, B.x, B.y);
 
-			if (!isAll)
+			if ((!isAll) && (!isLinearized))
 			{
 				if (this.drawingAngleShow)
 				{

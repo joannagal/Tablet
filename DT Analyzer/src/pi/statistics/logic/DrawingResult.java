@@ -19,6 +19,7 @@ public class DrawingResult
 	public void calculateResult()
 	{
 		this.value = new HashMap<String, FigureResult>();
+		this.drawing.linearize(10);
 		
 		for (int i = 0; i < 8; i++)
 		{
