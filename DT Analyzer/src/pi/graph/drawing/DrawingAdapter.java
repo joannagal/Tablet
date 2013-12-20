@@ -164,12 +164,18 @@ public class DrawingAdapter
 			if (!isAll)
 			{
 				if (this.thicknessShow)
+				{
 					tools.setStroke(stroke[transform.transformToPressure(pck
 							.getPkPressure())]);
-				else
-					tools.setStroke(stroke[0]);
 
-				graphics.setColor(drawColor);
+					graphics.setColor(getGradientColor(this.graph.getDrawing()
+					 .getPressureAvoid(), 1024, pck.getPkPressure()));
+				} else
+				{
+					tools.setStroke(stroke[0]);
+					graphics.setColor(drawColor);
+				}
+
 			} else
 			{
 				Range selection = graph.getSelection();
@@ -199,6 +205,44 @@ public class DrawingAdapter
 			A.y = B.y;
 		}
 
+	}
+
+	public Color getGradientColor(double min, double max, double value)
+	{
+		double d = max - min;
+		value -= min;
+
+		double R = 0.0d;
+		double G = 0.0d;
+		double B = 0.0d;
+
+		double firstStep = d * 0.33d;
+		double secondStep = d * 0.66d;
+
+		if ((value < 0.0d) || (d < 0.0d))
+		{
+			R = 0.0d;
+			G = 0.0d;
+			B = 0.0d;
+		} else if (value < firstStep)
+		{
+			double p = value / firstStep;
+			B = 255.0d * (1.0d - p);
+			G = 255.0d * p;
+		} else if (value < secondStep)
+		{
+			double p = (value - firstStep) / (secondStep - firstStep);
+			G = 255.0d;
+			R = 255.0d * p;
+		} else
+		{
+			double p = (value - secondStep) / (d - secondStep);
+			G = 255.0d * (1.0d - p);
+			R = 255.0d;
+		}
+
+		Color result = new Color((int) R, (int) G, (int) B);
+		return result;
 	}
 
 	public void recalculate()

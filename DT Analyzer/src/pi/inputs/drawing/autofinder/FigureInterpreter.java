@@ -372,7 +372,7 @@ public class FigureInterpreter
 		double resultDown = (double) downAccu / (double) total;
 		double resultUp = (double) upAccu / (double) total;
 
-		// System.out.printf("--- %f %f\n", resultDown, resultUp);
+		System.out.printf("--- UP %f DOWN %f\n", resultDown, resultUp);
 
 		if ((resultDown > resultUp) && (resultDown > accPercent))
 		{
