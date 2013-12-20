@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pi.inputs.drawing.Figure;
-import pi.statistics.logic.extenders.Acceleration;
-import pi.statistics.logic.extenders.ChangeDirection;
-import pi.statistics.logic.extenders.FigureStandards;
+import pi.statistics.logic.extenders.AccelerationResult;
+import pi.statistics.logic.extenders.AltitudeResult;
+import pi.statistics.logic.extenders.AzimuthResult;
+import pi.statistics.logic.extenders.ChangeDirectionResult;
+import pi.statistics.logic.extenders.FigureStandardsResult;
 import pi.statistics.logic.extenders.MSpeedResult;
 import pi.statistics.logic.extenders.PressureResult;
 
@@ -32,18 +34,25 @@ public class FigureResult
 		mSpeed.calculateResult();
 		this.value.put("Momentary Speed", mSpeed);
 		
-		Acceleration acceleration = new Acceleration(mSpeed.getForAcceleration(), mSpeed.getFreq());
+		AccelerationResult acceleration = new AccelerationResult(mSpeed.getForAcceleration(), mSpeed.getFreq());
 		acceleration.calculateResult();
 		this.value.put("Acceleration", acceleration);
 		
-		FigureStandards standards = new FigureStandards(this.figure.getParent().getPacket(), this.figure.getSegment());
+		FigureStandardsResult standards = new FigureStandardsResult(this.figure.getParent().getPacket(), this.figure.getSegment());
 		standards.calculateResult();
 		this.value.put("Figure Standards", standards);
 		
-		ChangeDirection direction = new ChangeDirection(this.figure.getParent().getPacket(), this.figure.getSegment());
+		ChangeDirectionResult direction = new ChangeDirectionResult(this.figure.getParent().getPacket(), this.figure.getSegment());
 		direction.calculateResult();
 		this.value.put("Direction Change (f'')", direction);
-
+		
+		AzimuthResult azimuth = new AzimuthResult(this.figure.getParent().getPacket(), this.figure.getSegment());
+		azimuth.calculateResult();
+		this.value.put("Azimuth", azimuth);
+		
+		AltitudeResult altitude = new AltitudeResult(this.figure.getParent().getPacket(), this.figure.getSegment());
+		altitude.calculateResult();
+		this.value.put("Altitude", altitude);
 	}
 
 	public Map<String, AttributeResult> getValue()

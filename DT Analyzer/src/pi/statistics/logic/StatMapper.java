@@ -13,7 +13,7 @@ public class StatMapper
 
 	public static String[] attributeNames =
 	{ "Figure Standards", "Pressure", "Momentary Speed", "Acceleration",
-			"Direction Change (f'')" };
+			"Direction Change (f'')", "Azimuth", "Altitude" };
 
 	public static String[] statisticNames =
 	{ "Min", "Max", "Amplitude", "Average", "Median", "Variance",
@@ -21,31 +21,25 @@ public class StatMapper
 			"Breaks Amount", "FFT Freq" };
 
 	static Map<String, Map<String, Map<String, Map<String, LinkedList<Double>>>>> getMap(
-			String [] where)
+			String[] where)
 	{
 		Map<String, Map<String, Map<String, Map<String, LinkedList<Double>>>>> map = new HashMap<String, Map<String, Map<String, Map<String, LinkedList<Double>>>>>();
-		
-		//System.out.printf("START\n");
-		
+
 		for (int i = 0; i < where.length; i++)
 		{
-			//System.out.printf("- MAP %s\n", where[i]);
-			
 			Map<String, Map<String, Map<String, LinkedList<Double>>>> toAdd = new HashMap<String, Map<String, Map<String, LinkedList<Double>>>>();
 			map.put(where[i], toAdd);
 			StatMapper.initFigureMap(toAdd);
 		}
-		
+
 		return map;
 	}
 
 	public static void initFigureMap(
 			Map<String, Map<String, Map<String, LinkedList<Double>>>> sideMap)
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < figureNames.length; i++)
 		{
-			//System.out.printf("-- FIG %s\n", figureNames[i]);
-			
 			Map<String, Map<String, LinkedList<Double>>> figureMap = new HashMap<String, Map<String, LinkedList<Double>>>();
 			sideMap.put(figureNames[i], figureMap);
 			StatMapper.initAttributeMap(figureMap);
@@ -55,11 +49,8 @@ public class StatMapper
 	public static void initAttributeMap(
 			Map<String, Map<String, LinkedList<Double>>> figureMap)
 	{
-
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < attributeNames.length; i++)
 		{
-			//System.out.printf("--- ATTR %s\n", attributeNames[i]);
-			
 			Map<String, LinkedList<Double>> attributeMap = new HashMap<String, LinkedList<Double>>();
 			figureMap.put(attributeNames[i], attributeMap);
 			StatMapper.initStatisticMap(attributeMap);
@@ -69,9 +60,8 @@ public class StatMapper
 	public static void initStatisticMap(
 			Map<String, LinkedList<Double>> attributeMap)
 	{
-		for (int i = 0; i < 12; i++)
+		for (int i = 0; i < statisticNames.length; i++)
 		{
-			//System.out.printf("---- STAT %s\n", statisticNames[i]);
 			LinkedList<Double> statistic = new LinkedList<Double>();
 			attributeMap.put(statisticNames[i], statistic);
 		}

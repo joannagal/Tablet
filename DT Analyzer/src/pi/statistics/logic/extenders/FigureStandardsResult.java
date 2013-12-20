@@ -10,12 +10,12 @@ import pi.inputs.drawing.Segment;
 import pi.statistics.logic.AttributeResult;
 import pi.statistics.logic.StatisticResult;
 
-public class FigureStandards extends AttributeResult
+public class FigureStandardsResult extends AttributeResult
 {
 	private ArrayList<PacketData> packet;
 	private LinkedList<Segment> segment;
 
-	public FigureStandards(ArrayList<PacketData> packet,
+	public FigureStandardsResult(ArrayList<PacketData> packet,
 			LinkedList<Segment> segment)
 	{
 		this.packet = packet;

@@ -17,12 +17,12 @@ import pi.statistics.functions.Variance;
 import pi.statistics.logic.AttributeResult;
 import pi.statistics.logic.StatisticResult;
 
-public class Acceleration extends AttributeResult
+public class AccelerationResult extends AttributeResult
 {
-	private ArrayList<ArrayList <Double> > velocity;
+	private ArrayList<ArrayList<Double>> velocity;
 	private double freq = 1.0d / 100.0d;
-	
-	public Acceleration(ArrayList<ArrayList <Double> > velocity, double freq)
+
+	public AccelerationResult(ArrayList<ArrayList<Double>> velocity, double freq)
 	{
 		this.velocity = velocity;
 		this.freq = freq;
@@ -32,7 +32,7 @@ public class Acceleration extends AttributeResult
 	public void calculateResult()
 	{
 		this.value = new HashMap<String, StatisticResult>();
-		
+
 		StatisticResult histogramResult = new StatisticResult();
 		StatisticResult dependencyResult = new StatisticResult();
 		StatisticResult minResult = new StatisticResult();
@@ -42,17 +42,17 @@ public class Acceleration extends AttributeResult
 		StatisticResult fft = new StatisticResult();
 		StatisticResult median = new StatisticResult();
 		StatisticResult fftFreq = new StatisticResult();
-		
+
 		Min.init(minResult);
 		Max.init(maxResult);
 		Amplitude.init(amplitudeResult);
 		Average.init(avgResult);
 
 		int size = 0;
-		
+
 		for (int i = 0; i < this.velocity.size(); i++)
 		{
-			ArrayList <Double> data = this.velocity.get(i);
+			ArrayList<Double> data = this.velocity.get(i);
 			double dv, dt, a;
 			for (int j = 2; j < data.size() - 1; j += 2)
 			{
@@ -66,22 +66,22 @@ public class Acceleration extends AttributeResult
 				size++;
 			}
 		}
-		
+
 		Average.finish();
-		
+
 		Collector.init(histogramResult, size);
 		DependencyCollector.init(dependencyResult, size * 2 + 1);
-		
+
 		StatisticResult varianceResult = new StatisticResult();
 		Variance.init(varianceResult, avgResult.getValue().get(0));
 
 		Median.init(median, size);
-		
-		DependencyCollector.iterate( 0.0d , 0.0d );
-		
+
+		DependencyCollector.iterate(0.0d, 0.0d);
+
 		for (int i = 0; i < this.velocity.size(); i++)
 		{
-			ArrayList <Double> data = this.velocity.get(i);
+			ArrayList<Double> data = this.velocity.get(i);
 			double dv, dt, a;
 
 			for (int j = 2; j < data.size() - 1; j += 2)
@@ -90,21 +90,21 @@ public class Acceleration extends AttributeResult
 				dv = data.get(j + 1) - data.get(j - 1);
 				a = dv / dt;
 				Collector.iterate(a);
-				DependencyCollector.iterate( data.get(j), a);
+				DependencyCollector.iterate(data.get(j), a);
 				Variance.iterate(a);
 				Median.iterate(a);
 			}
 		}
-		
+
 		Variance.finish();
 		Median.finish();
-		
+
 		FFT.init(fft, histogramResult.getValue(), freq);
 		FFTFreq.init(fftFreq, fft.getValue());
-		
+
 		StatisticResult standardDevResult = new StatisticResult();
 		StandardDev.init(standardDevResult, varianceResult.getValue().get(0));
-		
+
 		this.value.put("Collector", histogramResult);
 		this.value.put("Dependency Collector", dependencyResult);
 		this.value.put("FFT", fft);
@@ -117,7 +117,5 @@ public class Acceleration extends AttributeResult
 		this.value.put("Median", median);
 		this.value.put("StandardDev", standardDevResult);
 	}
-
-
 
 }

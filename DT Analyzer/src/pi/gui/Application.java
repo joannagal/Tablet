@@ -1,13 +1,11 @@
 package pi.gui;
 
-import pi.statistics.tests.LillieforsNormality;
-
 
 public class Application
 {
 	
 	
-	public static double[] rawData = {
+	/*public static double[] rawData = {
 		42.64538807,
 		84.12958527,
 		60.87592685,
@@ -57,7 +55,7 @@ public class Application
 		58.20706386,
 
 	};
-	
+	*/
 	
 	public static void main(String[] args) {
 		
