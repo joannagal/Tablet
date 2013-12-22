@@ -12,6 +12,8 @@ public class Figure
 	private Drawing parent;
 	private LinkedList<Segment> segment;
 	private Rectangle bounds;
+	
+	private int totalPoints = 0;
 
 	private int type = -1;
 
@@ -105,6 +107,16 @@ public class Figure
 	public void setParent(Drawing parent)
 	{
 		this.parent = parent;
+	}
+
+	public int getTotalPoints()
+	{
+		return totalPoints;
+	}
+
+	public void setTotalPoints(int totalPoints)
+	{
+		this.totalPoints = totalPoints;
 	}
 
 }

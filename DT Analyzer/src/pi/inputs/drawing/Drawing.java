@@ -172,7 +172,6 @@ public class Drawing
 
 		int dateLength = this.getInt(data, shift);
 		System.out.printf("%d ", dateLength);
-
 		if (dateLength > 0)
 		{
 			shift += 4;
@@ -232,15 +231,29 @@ public class Drawing
 		{
 			cnt++;
 			temp = new PacketData();
-			if (this.getInt(data, shift) > maxTime)
-				maxTime = this.getInt(data, shift);
-			temp.setPkTime(this.getInt(data, shift));
+
+			int time = this.getInt(data, shift);
+			// --- TIME BUG IN FILES ------
+			if (time > 1000000)
+			{
+				if (cnt == 1)
+					time = 0;
+				else
+					time = packet.get(cnt - 2).getPkTime() + 10;
+			}
+			// ----------------------------
+			if (time > maxTime)
+				maxTime = time;
+			temp.setPkTime(time);
 			temp.setPkX(this.getInt(data, shift + 4));
 			temp.setPkY(this.getInt(data, shift + 8));
 			temp.setPkPressure(this.getInt(data, shift + 12));
 			temp.setPkAzimuth(this.getInt(data, shift + 16));
 			temp.setPkAltitude(this.getInt(data, shift + 20));
 			packet.add(temp);
+
+			System.out.printf("TIME: %d\n", temp.getPkTime());
+
 			shift += 24;
 		}
 		this.setTotalTime(maxTime);
@@ -292,9 +305,11 @@ public class Drawing
 	public void calculateBreakFigureDistance()
 	{
 		double width = this.content.width;
-
-		width = width / 5;
+		width = width * 0.15d;
 		this.setBreakFigureDistance((int) width);
+
+		System.out.printf("-- %d %d\n", this.content.width,
+				this.getBreakFigureDistance());
 	}
 
 	public int getInt(byte[] data, int position)

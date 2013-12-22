@@ -27,9 +27,13 @@ public class FigureResult
 	{
 		this.value = new HashMap<String, AttributeResult>();
 		
+		if (this.figure.getTotalPoints() < 5) return;
+		
 		PressureResult pressure = new PressureResult(this.figure.getParent().getPacket(), this.figure.getSegment());
 		pressure.calculateResult();
 		this.value.put("Pressure", pressure);
+		
+		System.out.printf("--- FIGURE %d\n", figure.getType());
 		
 		MSpeedResult mSpeed = new MSpeedResult(this.figure.getParent().getPacket(), this.figure.getSegment());
 		mSpeed.calculateResult();

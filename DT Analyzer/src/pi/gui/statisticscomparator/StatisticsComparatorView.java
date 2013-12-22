@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import pi.gui.dependgraph.DependGraph;
 import pi.gui.histogram.Histogram;
 import pi.population.Specimen;
+import pi.shared.SharedController;
 import pi.statistics.logic.StatMapper;
 
 public class StatisticsComparatorView extends JFrame
@@ -120,16 +121,42 @@ public class StatisticsComparatorView extends JFrame
 		this.specimen[1] = second;
 	}
 
+	class ShowThread implements Runnable
+	{
+		private StatisticsComparatorView view;
+		private Specimen first;
+		private Specimen second;
+
+		public ShowThread(StatisticsComparatorView view, Specimen first,
+				Specimen second)
+		{
+			this.view = view;
+			this.first = first;
+			this.second = second;
+		}
+
+		public void run()
+		{
+			SharedController.getInstance().getProgressView().init(1);
+			
+			view.setSpecimen(first, second);
+
+			view.specimen[0].calculateStatistic();
+			if (view.specimen[1] != null)
+				specimen[1].calculateStatistic();
+
+			view.prepare(view.getFigureStr(), view.getElementStr());
+		}
+	}
+
 	public void showWithData(Specimen first, Specimen second)
 	{
-		this.setSpecimen(first, second);
+		ShowThread runnable = new ShowThread(this, first, second);
+		Thread thread = new Thread(runnable);
+		thread.start();
 
-		this.specimen[0].calculateStatistic();
-		if (this.specimen[1] != null)
-			specimen[1].calculateStatistic();
-
-		this.prepare(this.figureStr, this.elementStr);
 	}
+
 
 	public void prepare(String figure, String element)
 	{

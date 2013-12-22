@@ -48,15 +48,15 @@ public class SpecimenView extends JPanel
 				(type == Project.SPECIMEN_SINGLE))
 		{
 			this.before = new DrawingTestView();
-			before.setDrawing(null);
+			before.setDrawing(null, null, true);
 			this.add(this.before, c);
 		} else
 		{
 			this.before = new DrawingTestView();
-			before.setDrawing(null);
+			before.setDrawing(null, null, true);
 
 			this.after = new DrawingTestView();
-			after.setDrawing(null);
+			after.setDrawing(null, null, true);
 
 			this.splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 					this.before, this.after);
@@ -87,21 +87,21 @@ public class SpecimenView extends JPanel
 		{
 		
 			if (specimen != null)
-				this.before.setDrawing(specimen.getBefore());
+				this.before.setDrawing(specimen.getBefore(), specimen, true);
 			else 
-				this.before.setDrawing(null);
+				this.before.setDrawing(null, null, true);
 		}
 		else
 		{
 			if (specimen != null)
 			{
-				this.before.setDrawing(specimen.getBefore());
-				this.after.setDrawing(specimen.getAfter());
+				this.before.setDrawing(specimen.getBefore(), specimen, true);
+				this.after.setDrawing(specimen.getAfter(), specimen, false);
 			}
 			else
 			{
-				this.before.setDrawing(null);
-				this.after.setDrawing(null);
+				this.before.setDrawing(null, null, true);
+				this.after.setDrawing(null, null, true);
 			}
 			
 		}

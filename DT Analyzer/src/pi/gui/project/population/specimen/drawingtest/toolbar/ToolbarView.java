@@ -28,7 +28,6 @@ public class ToolbarView extends JPanel
 		this.pressure = new Pressure(parent.getGraph());
 		this.add(this.pressure);
 		
-
 		this.timeline = new Timeline(parent.getGraph());
 		this.add(this.timeline);
 

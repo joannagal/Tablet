@@ -74,6 +74,7 @@ public class Pressure extends JPanel
 		{
 			this.pressureSlider.setValue(graph.getDrawing().getPressureAvoid());	
 			this.setBorder(BorderFactory.createTitledBorder(String.format("Pressure %d/1024", pressureSlider.getValue())));
+			this.figureExtract.setSelected(false);
 		}
 	}
 	

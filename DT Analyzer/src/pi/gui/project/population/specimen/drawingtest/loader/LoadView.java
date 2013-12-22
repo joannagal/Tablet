@@ -81,10 +81,25 @@ public class LoadView extends JFrame
 			public void actionPerformed(ActionEvent evt)
 			{
 				Drawing drawing;
+				String oldLabel = getParent().getDrawing().getLabel();
+				
 				try
 				{
 					drawing = new Drawing(editPath.getText());
+					drawing.setLabel(oldLabel);
+					boolean before = getParent().isBefore();
+					
+					if (before)
+					{
+						getParent().getSpecimen().setBefore(drawing);
+					}
+					else
+					{
+						getParent().getSpecimen().setAfter(drawing);
+					}
+					
 					getParent().setDrawing(drawing);
+					
 
 				} catch (Exception e)
 				{

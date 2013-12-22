@@ -39,8 +39,12 @@ public class DependGraph extends JPanel
 
 	private double minValue = 0.0d;
 	private double maxValue = 0.0d;
+	
 	private double minTime = 0.0d;
 	private double maxTime = 0.0d;
+	
+	private double lockedMaxTime = 0.0d;
+	private boolean loockedMax = false;
 
 	public void recalculate()
 	{
@@ -69,6 +73,11 @@ public class DependGraph extends JPanel
 			}
 		}
 
+		if (this.loockedMax)
+		{
+			this.maxTime = this.lockedMaxTime;
+		}
+		
 	}
 
 	@Override
@@ -104,6 +113,9 @@ public class DependGraph extends JPanel
 			for (int j = 0; j < size - 1; j += 2)
 			{
 				tmp = data.get(i).get(j);
+				
+				if (tmp > this.lockedMaxTime) break;
+				
 				prop = (tmp - this.minTime) / (this.maxTime - this.minTime);
 				posX = 0.5d + left + width * prop;
 
@@ -211,7 +223,18 @@ public class DependGraph extends JPanel
 		graphics.setColor(this.backgroundColor);
 		graphics.fillRect(0, 0, frame.width - 1, frame.height - 1);
 	}
+	
+	public void setLockedMaxTime(double value)
+	{
+		this.loockedMax = true;
+		this.lockedMaxTime = value;
+	}
 
+	public void disableLockedValue()
+	{
+		this.loockedMax = false;
+	}
+	
 	public ArrayList<ArrayList<Double>> getData()
 	{
 		return data;

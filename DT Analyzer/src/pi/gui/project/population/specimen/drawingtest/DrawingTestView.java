@@ -11,13 +11,15 @@ import javax.swing.JPanel;
 import pi.graph.drawing.Graph;
 import pi.gui.project.population.specimen.drawingtest.toolbar.ToolbarView;
 import pi.inputs.drawing.Drawing;
+import pi.population.Specimen;
 
 public class DrawingTestView extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
 	private Graph graph;
-
+	private Specimen specimen = null;
+	private boolean before = false;
 	private ToolbarView toolbarView;
 
 	public DrawingTestView()
@@ -60,7 +62,15 @@ public class DrawingTestView extends JPanel
 
 	public void setDrawing(Drawing drawing)
 	{
+		this.setDrawing(drawing, specimen, before);
+	}
+	
+	public void setDrawing(Drawing drawing, Specimen specimen, boolean before)
+	{
 		if (drawing != null) drawing.createStatus();
+		
+		this.setSpecimen(specimen);
+		this.setBefore(before);
 		
 		this.graph.setDrawing(drawing);
 		this.graph.recalculate();
@@ -95,6 +105,26 @@ public class DrawingTestView extends JPanel
 	public void setGraph(Graph graph)
 	{
 		this.graph = graph;
+	}
+
+	public Specimen getSpecimen()
+	{
+		return specimen;
+	}
+
+	public void setSpecimen(Specimen specimen)
+	{
+		this.specimen = specimen;
+	}
+
+	public boolean isBefore()
+	{
+		return before;
+	}
+
+	public void setBefore(boolean before)
+	{
+		this.before = before;
 	}
 
 }

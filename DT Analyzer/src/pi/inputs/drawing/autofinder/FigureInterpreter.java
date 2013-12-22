@@ -41,10 +41,16 @@ public class FigureInterpreter
 			return;
 		if (figure.getBounds() == null)
 			return;
-		
-		System.out.printf("----FIG\n");
+
+		System.out.printf("FIG\n");
 
 		int test = this.lineTest(figure);
+		if (test != -1)
+		{
+			figure.setType(test);
+			return;
+		}
+		test = this.brokenLineTest(figure);
 		if (test != -1)
 		{
 			figure.setType(test);
@@ -62,125 +68,110 @@ public class FigureInterpreter
 			figure.setType(test);
 			return;
 		}
-		
-		
-		figure.setType(Figure.ZIGZAG);
 
+		figure.setType(Figure.ZIGZAG);
 	}
 
-	public int zigzagTest(Figure figure)
+	public int brokenLineTest(Figure figure)
 	{
-		if (this.bounds == null)
-			return -1;
-		if ((figure.getBounds().height < 0.65d * this.bounds.height)
-				&& (figure.getBounds().width < 0.65d * this.bounds.width))
+		if (figure.getSegment().size() < 5)
 			return -1;
 
-		boolean horizont = false;
-		double height = figure.getBounds().height;
-		double width = 0.0d;
-		if (figure.getBounds().width > height)
-		{
-			horizont = true;
-			width = height;
-			height = figure.getBounds().width;
-		} else
-			width = figure.getBounds().width;
+		if (!this.isStraight(figure))
+			return -1;
 
-		int total = 0;
-		ArrayList<PacketData> packet;
+		ArrayList<PacketData> packet = figure.getParent().getPacket();
+		if (packet == null)
+			return -1;
+
 		Iterator<Segment> it = figure.getSegment().iterator();
 		Segment seg;
 
-		while (it.hasNext())
+		int packets = figure.getTotalPoints();
+		int packetsDiv = 6;
+		int dimensionDiv = 2 * packetsDiv - 1;
+
+		int x = 0, y = 0;
+		int positive = 0;
+
+		boolean height = true;
+
+		double dDimension = figure.getBounds().height / (double) dimensionDiv;
+		if (figure.getBounds().width > figure.getBounds().height)
 		{
-			seg = it.next();
-			if (seg.getRange() == null)
-				continue;
-			total += seg.getRange().getInterval() + 1;
+			height = false;
+			dDimension = figure.getBounds().width / dimensionDiv;
 		}
 
+		double base = figure.getBounds().y - figure.getBounds().height;
+
 		it = figure.getSegment().iterator();
-		int accept = 0;
-		double accPercent = 0.5d;
-
-		height /= 7;
-		int part = total / 7;
-
-		int current = 0;
-		double a = 0.0d, b = 0.0d, dist;
-		double accDist = width / 5;
-
 		while (it.hasNext())
 		{
 			seg = it.next();
-			packet = figure.getParent().getPacket();
-			if (packet == null)
-				continue;
 
 			for (int i = seg.getRange().getLeft(); i <= seg.getRange()
 					.getRight(); i++)
 			{
-				current++;
-				a = (height / width);
-				for (int j = 1; j <= 7; j++)
+				x = packet.get(i).getPkX();
+				y = packet.get(i).getPkY();
+
+				if (height)
 				{
-					if (current <= j * part + 5)
+					for (int j = 1; j < packetsDiv; j++)
 					{
-						a *= -1;
-						break;
+						if (y < base + (j - 1) * (dDimension * 2.0d))
+							continue;
+						if (y > base + (j) * (dDimension * 2.0d) - dDimension)
+							continue;
+						positive++;
+					}
+
+				} else
+				{
+					for (int j = 1; j < packetsDiv; j++)
+					{
+						if (x < figure.getBounds().x + (j - 1) * dDimension)
+							continue;
+						if (x >= figure.getBounds().x + (j) * dDimension)
+							continue;
+						positive++;
 					}
 				}
-				if (horizont)
-					a *= -1;
-				b = packet.get(seg.getRange().getLeft()).getPkY() - a
-						* packet.get(seg.getRange().getLeft()).getPkX();
 
-				dist = this.getDistanceFromLine(a, b, packet.get(i).getPkX(),
-						packet.get(i).getPkY());
-				if (dist < accDist)
-					accept++;
 			}
 		}
 
-		double result = (double) accept / (double) (total);
+		double accPercent = 0.5d;
+		double result = (double) positive / (double) packets;
+
+		System.out.printf("--- %f\n", result);
 
 		if (result > accPercent)
-		{
-			return Figure.ZIGZAG;
-		}
+			return Figure.BROKENLINE;
 
 		return -1;
 	}
 
 	public int lineTest(Figure figure)
 	{
-		if (this.bounds == null)
-			return -1;
-		if ((figure.getBounds().height < 0.65d * this.bounds.height)
-				&& (figure.getBounds().width < 0.65d * this.bounds.width))
+		if (!this.isStraight(figure))
 			return -1;
 
-		ArrayList<PacketData> packet;
+		ArrayList<PacketData> packet = figure.getParent().getPacket();
 		Iterator<Segment> it = figure.getSegment().iterator();
 		Segment seg;
 
-		int total = 1;
+		int total = figure.getTotalPoints();
 
 		double accX = 0.0d;
 		double accY = 0.0d;
 
 		double bX = 0.0d, bY = 0.0d;
 
-		// gather avg angle
 		while (it.hasNext())
 		{
 			seg = it.next();
-			packet = figure.getParent().getPacket();
-
-			if (packet == null)
-				continue;
-
 			for (int i = seg.getRange().getLeft() + 1; i <= seg.getRange()
 					.getRight(); i++)
 			{
@@ -189,8 +180,6 @@ public class FigureInterpreter
 
 				bX += packet.get(i).getPkX();
 				bY += packet.get(i).getPkY();
-
-				total++;
 			}
 		}
 
@@ -200,9 +189,9 @@ public class FigureInterpreter
 		int correct = 0;
 		double dist = 0.0d;
 		if (figure.getBounds().height > figure.getBounds().width)
-			dist = figure.getBounds().height / 100.0d;
+			dist = figure.getBounds().height / 70.0d;
 		else
-			dist = figure.getBounds().width / 100.0d;
+			dist = figure.getBounds().width / 70.0d;
 
 		if (accX == 0)
 		{
@@ -216,9 +205,6 @@ public class FigureInterpreter
 			while (it.hasNext())
 			{
 				seg = it.next();
-				packet = figure.getParent().getPacket();
-				if (packet == null)
-					continue;
 
 				for (int i = seg.getRange().getLeft() + 1; i <= seg.getRange()
 						.getRight(); i++)
@@ -230,22 +216,19 @@ public class FigureInterpreter
 			}
 		}
 
-		// height / width musi byc > 0.65 drawing bounds
-
 		double accept = 0.8d;
 
 		double result = (double) correct / (double) total;
-		
-		//System.out.printf("--- %f\n", result);
+
+		// System.out.printf("--- %f\n", result);
 
 		if (result > accept)
 		{
 			this.figureCnt++;
-			if (this.figureCnt == 3)
+			if (this.figureCnt == 2)
 				return -1;
 
 			return Figure.FIRSTLINE + this.figureCnt;
-
 		}
 
 		return -1;
@@ -268,26 +251,21 @@ public class FigureInterpreter
 		Point m = new Point(0, 0);
 		int div = 0;
 
-		ArrayList<PacketData> packet;
+		ArrayList<PacketData> packet = figure.getParent().getPacket();;
 		Iterator<Segment> it = figure.getSegment().iterator();
 		Segment seg;
 
-		int total = 0;
+		int total = figure.getTotalPoints();
 
 		while (it.hasNext())
 		{
 			seg = it.next();
-			packet = figure.getParent().getPacket();
-			if (packet == null)
-				continue;
-
 			for (int i = seg.getRange().getLeft(); i <= seg.getRange()
 					.getRight(); i++)
 			{
 				m.x += packet.get(i).getPkX();
 				m.y += packet.get(i).getPkY();
 				div++;
-				total++;
 			}
 		}
 
@@ -329,7 +307,7 @@ public class FigureInterpreter
 		}
 
 		Double accRange = (base * 0.5d);
-		Double accPercent = 0.5d;
+		Double accPercent = 0.45d;
 		int downAccu = 0;
 		int upAccu = 0;
 		int current = 0;
@@ -339,11 +317,6 @@ public class FigureInterpreter
 		while (it.hasNext())
 		{
 			seg = it.next();
-			packet = figure.getParent().getPacket();
-
-			if (packet == null)
-				continue;
-
 			for (int i = seg.getRange().getLeft(); i <= seg.getRange()
 					.getRight(); i++)
 			{
@@ -372,7 +345,7 @@ public class FigureInterpreter
 		double resultDown = (double) downAccu / (double) total;
 		double resultUp = (double) upAccu / (double) total;
 
-		System.out.printf("--- UP %f DOWN %f\n", resultDown, resultUp);
+		// System.out.printf("--- UP %f DOWN %f\n", resultDown, resultUp);
 
 		if ((resultDown > resultUp) && (resultDown > accPercent))
 		{
@@ -390,10 +363,9 @@ public class FigureInterpreter
 
 		if (!this.isSquare(figure))
 		{
-			System.out.printf("-- FAIL\n");
+			// System.out.printf("-- FAIL\n");
 			return -1;
 		}
-		
 
 		double scale = 1.0d;
 		scale = (double) figure.getBounds().width
@@ -403,20 +375,16 @@ public class FigureInterpreter
 		Point m = new Point(0, 0);
 		int div = 0;
 
-		ArrayList<PacketData> packet;
+		ArrayList<PacketData> packet = figure.getParent().getPacket();
 		Iterator<Segment> it = figure.getSegment().iterator();
 		Segment seg;
 
-		int total = 0;
+		int total = figure.getTotalPoints();
 		double scalledY = 0.0d;
 
 		while (it.hasNext())
 		{
 			seg = it.next();
-			packet = figure.getParent().getPacket();
-
-			if (packet == null)
-				continue;
 
 			for (int i = seg.getRange().getLeft(); i <= seg.getRange()
 					.getRight(); i++)
@@ -424,7 +392,6 @@ public class FigureInterpreter
 				m.x += packet.get(i).getPkX();
 				m.y += packet.get(i).getPkY();
 				div++;
-				total++;
 			}
 		}
 
@@ -441,10 +408,6 @@ public class FigureInterpreter
 		while (it.hasNext())
 		{
 			seg = it.next();
-			packet = figure.getParent().getPacket();
-
-			if (packet == null)
-				continue;
 
 			for (int i = seg.getRange().getLeft(); i <= seg.getRange()
 					.getRight(); i++)
@@ -477,11 +440,6 @@ public class FigureInterpreter
 		while (it.hasNext())
 		{
 			seg = it.next();
-			packet = figure.getParent().getPacket();
-
-			if (packet == null)
-				continue;
-
 			for (int i = seg.getRange().getLeft(); i <= seg.getRange()
 					.getRight(); i++)
 			{
@@ -524,8 +482,8 @@ public class FigureInterpreter
 
 		double result = (double) accepted / (double) div;
 
-		System.out.printf("------ %f\n", result);
-		
+		// System.out.printf("------ %f\n", result);
+
 		if (result > accPercent)
 		{
 			// parse visited
@@ -554,6 +512,19 @@ public class FigureInterpreter
 		}
 
 		return -1;
+	}
+
+	public boolean isStraight(Figure figure)
+	{
+		if (this.bounds == null)
+			return false;
+		if ((figure.getBounds().height < 0.65d * this.bounds.height)
+				&& (figure.getBounds().width < 0.65d * this.bounds.width))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	public boolean isSquare(Figure figure)
@@ -627,3 +598,46 @@ public class FigureInterpreter
 	}
 
 }
+
+/*
+ * 
+ * public int zigzagTest(Figure figure) { if (this.bounds == null) return -1; if
+ * ((figure.getBounds().height < 0.65d * this.bounds.height) &&
+ * (figure.getBounds().width < 0.65d * this.bounds.width)) return -1;
+ * 
+ * boolean horizont = false; double height = figure.getBounds().height; double
+ * width = 0.0d; if (figure.getBounds().width > height) { horizont = true; width
+ * = height; height = figure.getBounds().width; } else width =
+ * figure.getBounds().width;
+ * 
+ * int total = 0; ArrayList<PacketData> packet; Iterator<Segment> it =
+ * figure.getSegment().iterator(); Segment seg;
+ * 
+ * while (it.hasNext()) { seg = it.next(); if (seg.getRange() == null) continue;
+ * total += seg.getRange().getInterval() + 1; }
+ * 
+ * it = figure.getSegment().iterator(); int accept = 0; double accPercent =
+ * 0.5d;
+ * 
+ * height /= 7; int part = total / 7;
+ * 
+ * int current = 0; double a = 0.0d, b = 0.0d, dist; double accDist = width / 5;
+ * 
+ * while (it.hasNext()) { seg = it.next(); packet =
+ * figure.getParent().getPacket(); if (packet == null) continue;
+ * 
+ * for (int i = seg.getRange().getLeft(); i <= seg.getRange() .getRight(); i++)
+ * { current++; a = (height / width); for (int j = 1; j <= 7; j++) { if (current
+ * <= j * part + 5) { a *= -1; break; } } if (horizont) a *= -1; b =
+ * packet.get(seg.getRange().getLeft()).getPkY() - a
+ * packet.get(seg.getRange().getLeft()).getPkX();
+ * 
+ * dist = this.getDistanceFromLine(a, b, packet.get(i).getPkX(),
+ * packet.get(i).getPkY()); if (dist < accDist) accept++; } }
+ * 
+ * double result = (double) accept / (double) (total);
+ * 
+ * if (result > accPercent) { return Figure.ZIGZAG; }
+ * 
+ * return -1; }
+ */

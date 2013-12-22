@@ -25,6 +25,8 @@ public class FigureExtractor
 		int left = 0;
 		boolean firstAccept = true;
 		
+		int points = 0;
+		
 		for (int i = range.getLeft(); i <= range.getRight(); i++)
 		{
 			
@@ -49,6 +51,7 @@ public class FigureExtractor
 				{
 					Segment newSegment = new Segment();
 					newSegment.setRange(new Range(left, i));
+					points += i - left + 1;
 					segment.add(newSegment);	
 					
 				}
@@ -58,6 +61,7 @@ public class FigureExtractor
 		
 		if (segment.size() > 0)
 		{
+			newFigure.setTotalPoints(points);
 			newFigure.calculateBounds();
 			return newFigure;
 		}

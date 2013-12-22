@@ -304,17 +304,21 @@ public class PopImporter extends DefaultHandler
 		if (type != "")
 			figure.setType(Integer.parseInt(type));
 
+		String points = attributes.getValue("points"); 
+		if (points != null)
+			figure.setTotalPoints(Integer.parseInt(points));
+		
 		String bounds = attributes.getValue("bounds");
 		if (bounds != "")
 		{
-			String[] points = bounds.split(" ");
+			String[] coords = bounds.split(" ");
 
-			if (points.length >= 4)
+			if (coords.length >= 4)
 			{
-				int x = Integer.parseInt(points[0]);
-				int y = Integer.parseInt(points[1]);
-				int w = Integer.parseInt(points[2]);
-				int h = Integer.parseInt(points[3]);
+				int x = Integer.parseInt(coords[0]);
+				int y = Integer.parseInt(coords[1]);
+				int w = Integer.parseInt(coords[2]);
+				int h = Integer.parseInt(coords[3]);
 				figure.setBounds(new Rectangle(x, y, w, h));
 			}
 		}

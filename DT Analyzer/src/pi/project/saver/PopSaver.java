@@ -207,10 +207,10 @@ public class PopSaver {
 			out.writeAttribute("segments",
 					String.valueOf(fig.getSegment().size()));
 		
-
+		out.writeAttribute("points", String.valueOf(fig.getTotalPoints()));
+		
 		if (fig.getBounds() != null)
 			out.writeAttribute("bounds", rectangleToString(fig.getBounds()));
-		
 		else System.out.printf("UUUPSSS!! %s\n", String.valueOf(fig.getType()));
 
 		for (Segment s : fig.getSegment()) {

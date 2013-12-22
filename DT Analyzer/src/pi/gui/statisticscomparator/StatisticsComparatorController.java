@@ -93,6 +93,7 @@ public class StatisticsComparatorController implements ActionListener
 		this.view.getdGraph().draw();
 
 		this.view.getFftGraph().setData(this.toFFT);
+		this.view.getFftGraph().setLockedMaxTime(10.0d);
 		this.view.getFftGraph().recalculate();
 		this.view.getFftGraph().draw();
 	}
