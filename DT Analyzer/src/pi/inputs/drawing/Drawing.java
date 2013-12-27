@@ -153,8 +153,8 @@ public class Drawing
 		int shift = 0;
 		int fileNameLength = this.getInt(data, shift);
 
-		System.out.printf("-----------\n");
-		System.out.printf("%d ", fileNameLength);
+		//System.out.printf("-----------\n");
+		//System.out.printf("%d ", fileNameLength);
 
 		if (fileNameLength > 0)
 		{
@@ -164,14 +164,14 @@ public class Drawing
 				fileName[i] = data[shift + i];
 			shift += fileNameLength;
 
-			String str = new String(fileName, "UTF-8");
-			System.out.printf("%s \n", str);
+			//String str = new String(fileName, "UTF-8");
+			//System.out.printf("%s \n", str);
 
 		} else
 			shift += 4;
 
 		int dateLength = this.getInt(data, shift);
-		System.out.printf("%d ", dateLength);
+		//System.out.printf("%d ", dateLength);
 		if (dateLength > 0)
 		{
 			shift += 4;
@@ -181,14 +181,14 @@ public class Drawing
 				date[i] = data[shift + i];
 			shift += dateLength;
 
-			String str = new String(date, "UTF-8");
-			System.out.printf("%s \n", str);
+			//String str = new String(date, "UTF-8");
+			//System.out.printf("%s \n", str);
 
 		} else
 			shift += 4;
 
 		int memoLength = this.getInt(data, shift);
-		System.out.printf("%d ", memoLength);
+		//System.out.printf("%d ", memoLength);
 		if (memoLength > 0)
 		{
 			shift += 4;
@@ -197,8 +197,8 @@ public class Drawing
 				memo[i] = data[shift + i];
 			shift += memoLength;
 
-			String str = new String(memo, "UTF-8");
-			System.out.printf("%s \n", str);
+			//String str = new String(memo, "UTF-8");
+			//System.out.printf("%s \n", str);
 		} else
 			shift += 4;
 
@@ -211,12 +211,12 @@ public class Drawing
 		this.outExtY = this.getInt(data, shift);
 		shift += 4;
 
-		System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX, outExtY);
+		//System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX, outExtY);
 
 		int numPackages = this.getInt(data, shift);
 		shift += 4;
 
-		System.out.printf("PACKAGES:  %d\n", numPackages);
+		//System.out.printf("PACKAGES:  %d\n", numPackages);
 
 		this.setPressureAvoid(64);
 		this.setMaxPressure(1024);
@@ -252,7 +252,7 @@ public class Drawing
 			temp.setPkAltitude(this.getInt(data, shift + 20));
 			packet.add(temp);
 
-			System.out.printf("TIME: %d\n", temp.getPkTime());
+			//System.out.printf("TIME: %d\n", temp.getPkTime());
 
 			shift += 24;
 		}
@@ -308,8 +308,8 @@ public class Drawing
 		width = width * 0.15d;
 		this.setBreakFigureDistance((int) width);
 
-		System.out.printf("-- %d %d\n", this.content.width,
-				this.getBreakFigureDistance());
+		//System.out.printf("-- %d %d\n", this.content.width,
+		//		this.getBreakFigureDistance());
 	}
 
 	public int getInt(byte[] data, int position)

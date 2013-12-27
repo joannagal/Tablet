@@ -170,4 +170,14 @@ public class PopulationView extends JPanel
 		this.listView = listView;
 	}
 
+	public boolean isFirstPopulation()
+	{
+		return firstPopulation;
+	}
+
+	public void setFirstPopulation(boolean firstPopulation)
+	{
+		this.firstPopulation = firstPopulation;
+	}
+
 }

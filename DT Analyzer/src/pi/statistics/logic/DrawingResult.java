@@ -24,6 +24,7 @@ public class DrawingResult
 		for (int i = 0; i < 8; i++)
 		{
 			if (this.drawing.getCompleteFigure()[i] == null) continue;
+			if (!StatMapper.figureAvaible.get(StatMapper.figureNames[i])) continue;
 			
 			FigureResult figResult = new FigureResult(this.drawing.getCompleteFigure()[i]);
 			

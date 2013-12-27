@@ -61,9 +61,7 @@ public class StatisticsController implements ActionListener
 
 		System.out.printf("POLICZONE : %f\n", LillieforsNormality.statistics);*/
 		
-		//  -------------------------------------
-		
-		System.out.printf("PREV ----- %d %d\n", first.size(), second.size());
+		//  ------------------------------------
 		
 		ArrayList <ArrayList <Double>> toHist = new ArrayList <ArrayList <Double>>(2);
 		
@@ -72,8 +70,6 @@ public class StatisticsController implements ActionListener
 		
 		if (toHist.get(0).size() < 2) return;
 		if (toHist.get(1).size() < 2) return;
-		
-		System.out.printf("OK ----- %d %d\n", toHist.get(0).size(), toHist.get(1).size());
 		
 		this.view.getHistogram().setData(toHist);
 		this.view.getHistogram().recalculate();

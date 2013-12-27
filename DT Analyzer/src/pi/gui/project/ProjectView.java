@@ -17,7 +17,6 @@ public class ProjectView extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
-	private Project project = null;
 	private ProjectController controller;
 
 	private ToolbarView toolbar;
@@ -83,13 +82,23 @@ public class ProjectView extends JPanel
 	public void addSpecimenPair(Drawing firstBefore, Drawing firstAfter,
 			Drawing secondBefore, Drawing secondAfter)
 	{
-		this.first.addSpecimen(firstBefore, firstAfter);
-		this.second.addSpecimen(secondBefore, secondAfter);
+		if (firstBefore != null)
+			this.first.addSpecimen(firstBefore, firstAfter);
+		if (secondBefore != null)
+			this.second.addSpecimen(secondBefore, secondAfter);
 	}
 
 	public void deleteSpecimen(int index)
 	{
 		this.first.deleteSpecimen(index);
+	}
+
+	public void deleteSpecimen(int index, boolean first)
+	{
+		if (first)
+			this.first.deleteSpecimen(index);
+		else
+			this.second.deleteSpecimen(index);
 	}
 
 	public void deletePair(int index)

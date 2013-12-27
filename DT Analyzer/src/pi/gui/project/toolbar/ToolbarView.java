@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import pi.gui.project.toolbar.statistics.ChooserView;
 import pi.gui.project.toolbar.statistics.StatisticsView;
 import pi.project.Project;
 
@@ -20,8 +21,9 @@ public class ToolbarView extends JPanel
 	private JButton statisticsButton = new JButton("Statistics");
 	private JButton compareButton = new JButton("Compare");
 
-	private StatisticsView statisticsView = new StatisticsView();
-
+	
+	private ChooserView chooserView = new ChooserView();
+	
 	public ToolbarView(Project project)
 	{
 		controller = new ToolbarController(this);
@@ -49,14 +51,15 @@ public class ToolbarView extends JPanel
 		this.add(this.statisticsButton);
 	}
 
-	public StatisticsView getStatisticsView()
+	public ChooserView getChooserView()
 	{
-		return statisticsView;
+		return chooserView;
 	}
 
-	public void setStatisticsView(StatisticsView statisticsView)
+	public void setChooserView(ChooserView chooserView)
 	{
-		this.statisticsView = statisticsView;
+		this.chooserView = chooserView;
 	}
+
 
 }

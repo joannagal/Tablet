@@ -19,7 +19,6 @@ public class ProjectResult
 	private Map<String, PopulationResult> value;
 
 	private boolean projectLvPaired = false;
-	private double signiPairedTTest = 0.05d;
 	private double signiLillie = 0.05d;
 	private int rangesLillie = 5;
 
@@ -105,22 +104,29 @@ public class ProjectResult
 					if ((fList.size() < 2) || (sList.size() < 2))
 						continue;
 
-					// System.out.printf("SIZE: %d %s\n", fList.size(),
-					// sList.size());
-
 					// ----- PERFORM ACTION WITH THIS LISTS :D
-					// DUMMY ACTION;
 					result = map.get(StatMapper.figureNames[i])
 							.get(StatMapper.attributeNames[j])
 							.get(StatMapper.statisticNames[k]);
 
 					// To [] double
-
+					
+					double[] left;
+					double[] right;
+					
 					if (fList.size() != sList.size())
-						continue;
-
-					double[] left = this.listToDouble(fList);
-					double[] right = this.listToDouble(sList);
+					{
+						int length = fList.size();
+						if (sList.size() < length) length = sList.size();
+						
+						left = this.listToDouble(fList, length);
+						right = this.listToDouble(sList, length);
+					}
+					else
+					{
+						left = this.listToDouble(fList);
+						right = this.listToDouble(sList);
+					}
 
 					LillieforsNormality.compute(left, this.rangesLillie, false);
 					boolean normal = LillieforsNormality
@@ -195,9 +201,9 @@ public class ProjectResult
 		}
 	}
 
-	public double[] listToDouble(LinkedList<Double> list)
+	public double[] listToDouble(LinkedList<Double> list, int length)
 	{
-		double[] result = new double[list.size()];
+		double[] result = new double[length];
 		Iterator<Double> it = list.iterator();
 		Double value = 0.0d;
 		int place = 0;
@@ -206,9 +212,15 @@ public class ProjectResult
 			value = it.next();
 			result[place] = value;
 			place++;
+			if (place >= length) break;
 		}
 
 		return result;
+	}
+	
+	public double[] listToDouble(LinkedList<Double> list)
+	{
+		return this.listToDouble(list, list.size());
 	}
 
 	public void calculateResult()

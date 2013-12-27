@@ -11,14 +11,44 @@ public class StatMapper
 	{ "ZigZag", "Circle-Left", "Circle-Right", "First Line", "Second Line",
 			"Broken Line", "Spiral-In", "Spiral-Out" };
 
+	public static Map<String, Boolean> figureAvaible = new HashMap<String, Boolean>(
+			figureNames.length);
+
 	public static String[] attributeNames =
 	{ "Figure Standards", "Pressure", "Momentary Speed", "Acceleration",
-			"Direction Change (f'')", "Azimuth", "Altitude",  "Dev. from Average" };
+			"Direction Change (f'')", "Azimuth", "Altitude",
+			"Dev. from Average" };
+
+	public static Map<String, Boolean> attributeAvaible = new HashMap<String, Boolean>(
+			figureNames.length);
 
 	public static String[] statisticNames =
 	{ "Min", "Max", "Amplitude", "Average", "Median", "Variance",
 			"StandardDev", "Drawing time", "Drawing length", "Avg Speed",
 			"Breaks Amount", "FFT Freq" };
+
+	public static Map<String, Boolean> statisticAvaible = new HashMap<String, Boolean>(
+			figureNames.length);
+
+	static
+	{
+		for (int i = 0; i < figureNames.length; i++)
+			figureAvaible.put(figureNames[i], true);
+		
+		for (int i = 0; i < attributeNames.length; i++)
+			attributeAvaible.put(attributeNames[i], true);
+		
+		for (int i = 0; i < statisticNames.length; i++)
+			statisticAvaible.put(statisticNames[i], true);
+		
+		statisticAvaible.put("Min", false);
+		statisticAvaible.put("Max", false);
+		statisticAvaible.put("Amplitude", false);
+		statisticAvaible.put("Median", false);
+	}
+
+	// amplitude if min, max
+	// stdev, variance if average
 
 	static Map<String, Map<String, Map<String, Map<String, LinkedList<Double>>>>> getMap(
 			String[] where)

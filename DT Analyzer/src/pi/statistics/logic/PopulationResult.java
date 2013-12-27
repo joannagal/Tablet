@@ -151,11 +151,11 @@ public class PopulationResult
 
 		LinkedList<Double> diffList;
 
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < StatMapper.figureNames.length; i++)
 		{
-			for (int j = 0; j < 5; j++)
+			for (int j = 0; j < StatMapper.attributeNames.length; j++)
 			{
-				for (int k = 0; k < 12; k++)
+				for (int k = 0; k < StatMapper.statisticNames.length; k++)
 				{
 					beforeList = beforeMap.get(StatMapper.figureNames[i])
 							.get(StatMapper.attributeNames[j])

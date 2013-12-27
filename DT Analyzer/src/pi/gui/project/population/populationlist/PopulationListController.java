@@ -8,8 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import pi.gui.project.population.populationlist.importers.populationpair.PopulationPairView;
-import pi.gui.project.population.populationlist.importers.populationsingle.PopulationSingleView;
+import pi.gui.project.population.populationlist.importer.PopulationSingleView;
 import pi.population.Specimen;
 import pi.project.Project;
 import pi.shared.SharedController;
@@ -40,18 +39,11 @@ public class PopulationListController
 				{
 					int type = SharedController.getInstance().getProject()
 							.getType();
-
-					if (type == Project.POPULATION_PAIR)
-					{
-						PopulationPairView importer = new PopulationPairView();
-						importer.setVisible(true);
-					}
-					else if (type == Project.POPULATION_SINGLE)
-					{
-						PopulationSingleView importer = new PopulationSingleView();
-						importer.setVisible(true);
-					}
 					
+					PopulationSingleView importer = new PopulationSingleView();
+					importer.showWithProjectType(type, view.getPopulationView().isFirstPopulation());
+
+
 				} else if (action.equals("DEL"))
 				{
 					int type = SharedController.getInstance().getProject()
@@ -67,47 +59,59 @@ public class PopulationListController
 
 						Project project = SharedController.getInstance()
 								.getProject();
+						
+						String temp = null;
+						String msg = null;
+						
+						boolean first = view.getPopulationView().isFirstPopulation();
 
-						String temp = project.getFirstPopulation().getName();
-						if (temp == null)
-							temp = "First Population";
-						temp += ": " + String.format("%d. ", index + 1);
-						String first = temp;
-						temp = project.getFirstPopulation().getSpecimen()
-								.get(index).getName();
-						if (temp == null)
-							temp = "Name";
-						first += temp;
-						temp = project.getFirstPopulation().getSpecimen()
-								.get(index).getSurname();
-						if (temp == null)
-							temp = "Surname";
-						first += " " + temp + "\n";
-
-						temp = project.getSecondPopulation().getName();
-						if (temp == null)
-							temp = "Second Population";
-						temp += ": " + String.format("%d. ", index + 1);
-						String second = temp;
-						temp = project.getSecondPopulation().getSpecimen()
-								.get(index).getName();
-						if (temp == null)
-							temp = "Name";
-						second += temp;
-						temp = project.getSecondPopulation().getSpecimen()
-								.get(index).getSurname();
-						if (temp == null)
-							temp = "Surname";
-						second += " " + temp + "\n";
+						if (first) 
+						{
+							temp = project.getFirstPopulation().getName();
+							if (temp == null)
+								temp = "First Population";
+							
+							temp += ": " + String.format("%d. ", index + 1);
+							msg = temp;
+							temp = project.getFirstPopulation().getSpecimen()
+									.get(index).getName();
+							if (temp == null)
+								temp = "Name";
+							msg += temp;
+							temp = project.getFirstPopulation().getSpecimen()
+									.get(index).getSurname();
+							if (temp == null)
+								temp = "Surname";
+							msg += " " + temp + "\n";
+						}
+						else 
+						{
+							temp = project.getSecondPopulation().getName();
+							if (temp == null)
+								temp = "Second Population";
+							
+							temp += ": " + String.format("%d. ", index + 1);
+							msg = temp;
+							temp = project.getSecondPopulation().getSpecimen()
+									.get(index).getName();
+							if (temp == null)
+								temp = "Name";
+							msg += temp;
+							temp = project.getSecondPopulation().getSpecimen()
+									.get(index).getSurname();
+							if (temp == null)
+								temp = "Surname";
+							msg += " " + temp + "\n";
+						}
 
 						int result = JOptionPane.showConfirmDialog(null,
-								"Delete pair:\n" + first + second,
-								"Delete pair?", JOptionPane.YES_NO_OPTION);
+								"Delete:\n" + msg,
+								"Delete specimen?", JOptionPane.YES_NO_OPTION);
 
 						if (result == 0)
 						{
 							SharedController.getInstance().getProjectView()
-									.deletePair(index);
+									.deleteSpecimen(index, first);
 						}
 					} else
 					{
