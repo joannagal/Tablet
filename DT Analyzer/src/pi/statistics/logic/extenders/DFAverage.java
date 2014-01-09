@@ -19,6 +19,7 @@ import pi.statistics.functions.Min;
 import pi.statistics.functions.StandardDev;
 import pi.statistics.functions.Variance;
 import pi.statistics.logic.AttributeResult;
+import pi.statistics.logic.StatMapper;
 import pi.statistics.logic.StatisticResult;
 
 public class DFAverage extends AttributeResult
@@ -37,6 +38,11 @@ public class DFAverage extends AttributeResult
 	{
 		this.value = new HashMap<String, StatisticResult>();
 
+		boolean[] avaible = new boolean[StatMapper.statisticNames.length];
+		for (int i = 0; i < avaible.length; i++)
+			avaible[i] = StatMapper.statisticAvaible
+					.get(StatMapper.statisticNames[i]);
+
 		StatisticResult histogramResult = new StatisticResult();
 		StatisticResult dependencyResult = new StatisticResult();
 		StatisticResult minResult = new StatisticResult();
@@ -46,11 +52,23 @@ public class DFAverage extends AttributeResult
 		StatisticResult fft = new StatisticResult();
 		StatisticResult median = new StatisticResult();
 		StatisticResult fftFreq = new StatisticResult();
+		StatisticResult varianceResult = new StatisticResult();
+		StatisticResult standardDevResult = new StatisticResult();
 
-		Min.init(minResult);
-		Max.init(maxResult);
-		Amplitude.init(amplitudeResult);
-		Average.init(avgResult);
+		/*
+		 * { "Min", "Max", "Amplitude", "Average", "Median", "Variance",
+		 * "StandardDev", "Drawing time", "Drawing length", "Avg Speed",
+		 * "Breaks Amount", "FFT Freq" };
+		 */
+
+		if (avaible[0])
+			Min.init(minResult);
+		if (avaible[1])
+			Max.init(maxResult);
+		if (avaible[2])
+			Amplitude.init(amplitudeResult);
+		if (avaible[3])
+			Average.init(avgResult);
 
 		int size = 0;
 
@@ -75,23 +93,28 @@ public class DFAverage extends AttributeResult
 				value = this.getDistanceFromLine(packet.get(i),
 						packet.get(i + 1), linearized.get(i - begin));
 
-				Min.iterate(value);
-				Max.iterate(value);
-				Amplitude.iterate(value);
-				Average.iterate(value);
-
+				if (avaible[0])
+					Min.iterate(value);
+				if (avaible[1])
+					Max.iterate(value);
+				if (avaible[3])
+					Average.iterate(value);
 				size++;
 			}
 		}
 
-		Average.finish();
+		if (avaible[2])
+			Amplitude.finish(minResult.getValue().get(0), maxResult.getValue()
+					.get(0));
+		if (avaible[3])
+			Average.finish();
+		if (avaible[4])
+			Median.init(median, size);
+		if (avaible[5])
+			Variance.init(varianceResult, avgResult.getValue().get(0));
 
-		StatisticResult varianceResult = new StatisticResult();
-
-		Variance.init(varianceResult, avgResult.getValue().get(0));
 		DependencyCollector.init(dependencyResult, size * 2 + 1);
 		Collector.init(histogramResult, size);
-		Median.init(median, size);
 
 		it = this.segment.iterator();
 
@@ -133,36 +156,51 @@ public class DFAverage extends AttributeResult
 				value = this.getDistanceFromLine(packet.get(i),
 						packet.get(i + 1), linearized.get(i - begin));
 
+				if (avaible[4])
+					Median.iterate(value);
+				if (avaible[5])
+					Variance.iterate(value);
 				Collector.iterate(value);
-				Median.iterate(value);
 				DependencyCollector.iterate(packet.get(i).getPkTime()
 						- baseTime, value);
-				Variance.iterate(value);
 
 				size++;
 			}
 		}
 
-		Variance.finish();
-		Median.finish();
-
-		FFT.init(fft, histogramResult.getValue(), freq);
-		FFTFreq.init(fftFreq, fft.getValue());
-
-		StatisticResult standardDevResult = new StatisticResult();
-		StandardDev.init(standardDevResult, varianceResult.getValue().get(0));
+		if (avaible[4])
+			Median.finish();
+		if (avaible[5])
+			Variance.finish();
+		if (avaible[6])
+			StandardDev.init(standardDevResult, varianceResult.getValue()
+					.get(0));
+		if (avaible[11])
+			FFT.init(fft, histogramResult.getValue(), freq);
+		if (avaible[11])
+			FFTFreq.init(fftFreq, fft.getValue());
 
 		this.value.put("Collector", histogramResult);
 		this.value.put("Dependency Collector", dependencyResult);
-		this.value.put("FFT", fft);
-		this.value.put("FFT Freq", fftFreq);
-		this.value.put("Min", minResult);
-		this.value.put("Max", maxResult);
-		this.value.put("Amplitude", amplitudeResult);
-		this.value.put("Average", avgResult);
-		this.value.put("Variance", varianceResult);
-		this.value.put("Median", median);
-		this.value.put("StandardDev", standardDevResult);
+
+		if (avaible[0])
+			this.value.put("Min", minResult);
+		if (avaible[1])
+			this.value.put("Max", maxResult);
+		if (avaible[2])
+			this.value.put("Amplitude", amplitudeResult);
+		if (avaible[3])
+			this.value.put("Average", avgResult);
+		if (avaible[4])
+			this.value.put("Median", median);
+		if (avaible[5])
+			this.value.put("Variance", varianceResult);
+		if (avaible[6])
+			this.value.put("StandardDev", standardDevResult);
+		if (avaible[11])
+			this.value.put("FFT", fft);
+		if (avaible[11])
+			this.value.put("FFT Freq", fftFreq);
 	}
 
 	public double getDistanceFromLine(PacketData P0, PacketData P1,

@@ -8,8 +8,7 @@ public class Amplitude
 {
 
 	static StatisticResult result;
-	
-	
+
 	static public void init(StatisticResult input)
 	{
 		result = input;
@@ -29,6 +28,11 @@ public class Amplitude
 		
 		double res = result.getValue().get(2) - result.getValue().get(1);
 		result.getValue().set(0, res);
+	}
+	
+	static public void finish(Double min, Double max)
+	{
+		result.getValue().set(0, max - min);
 	}
 }
 

@@ -19,6 +19,7 @@ import pi.statistics.functions.Min;
 import pi.statistics.functions.StandardDev;
 import pi.statistics.functions.Variance;
 import pi.statistics.logic.AttributeResult;
+import pi.statistics.logic.StatMapper;
 import pi.statistics.logic.StatisticResult;
 
 public class MSpeedResult extends AttributeResult
@@ -40,7 +41,12 @@ public class MSpeedResult extends AttributeResult
 	public void calculateResult()
 	{
 		this.value = new HashMap<String, StatisticResult>();
-		
+
+		boolean[] avaible = new boolean[StatMapper.statisticNames.length];
+		for (int i = 0; i < avaible.length; i++)
+			avaible[i] = StatMapper.statisticAvaible
+					.get(StatMapper.statisticNames[i]);
+
 		StatisticResult histogramResult = new StatisticResult();
 		StatisticResult dependencyResult = new StatisticResult();
 		StatisticResult minResult = new StatisticResult();
@@ -50,81 +56,103 @@ public class MSpeedResult extends AttributeResult
 		StatisticResult fft = new StatisticResult();
 		StatisticResult median = new StatisticResult();
 		StatisticResult fftFreq = new StatisticResult();
-		
-		Min.init(minResult);
-		Max.init(maxResult);
-		Amplitude.init(amplitudeResult);
-		Average.init(avgResult);
+		StatisticResult varianceResult = new StatisticResult();
+		StatisticResult standardDevResult = new StatisticResult();
+
+		/*
+		 * { "Min", "Max", "Amplitude", "Average", "Median", "Variance",
+		 * "StandardDev", "Drawing time", "Drawing length", "Avg Speed",
+		 * "Breaks Amount", "FFT Freq" };
+		 */
+
+		if (avaible[0])
+			Min.init(minResult);
+		if (avaible[1])
+			Max.init(maxResult);
+		if (avaible[2])
+			Amplitude.init(amplitudeResult);
+		if (avaible[3])
+			Average.init(avgResult);
 
 		int size = 0;
 
 		Iterator<Segment> it = this.segment.iterator();
 		Segment seg;
-		
+
 		double value, dist, time;
 		double timeOfFragmentation = 1000.0d * (1.0d / 10.0d);
 
-		while (it.hasNext())
-		{
-			seg = it.next();
-			int prev = seg.getRange().getLeft();
-
-			double sumTime = 0.0d;
-			double sumDist = 0.0d;
-
-			for (int i = seg.getRange().getLeft() + 1; i <= seg.getRange()
-					.getRight(); i++)
+		if ((avaible[0]) || (avaible[1]) || (avaible[3]))
+			while (it.hasNext())
 			{
-				if (((this.packet.get(i).getPkX() == this.packet.get(i - 1)
-						.getPkX()) && (this.packet.get(i).getPkY() == this.packet
-						.get(i - 1).getPkY())))
+				seg = it.next();
+				int prev = seg.getRange().getLeft();
+
+				double sumTime = 0.0d;
+				double sumDist = 0.0d;
+
+				for (int i = seg.getRange().getLeft() + 1; i <= seg.getRange()
+						.getRight(); i++)
 				{
-					continue;
-				}
+					if (((this.packet.get(i).getPkX() == this.packet.get(i - 1)
+							.getPkX()) && (this.packet.get(i).getPkY() == this.packet
+							.get(i - 1).getPkY())))
+					{
+						continue;
+					}
 
-				dist = this.getDistance(this.packet.get(i),
-						this.packet.get(prev));
-				time = this.packet.get(i).getPkTime()
-						- this.packet.get(prev).getPkTime();
+					dist = this.getDistance(this.packet.get(i),
+							this.packet.get(prev));
+					time = this.packet.get(i).getPkTime()
+							- this.packet.get(prev).getPkTime();
 
-				prev = i;
+					prev = i;
 
-				sumTime += time;
-				sumDist += dist;
+					sumTime += time;
+					sumDist += dist;
 
-				if (sumTime >= timeOfFragmentation)
-				{
-					value = sumDist / sumTime;
-					Min.iterate(value);
-					Max.iterate(value);
-					Amplitude.iterate(value);
-					Average.iterate(value);
-					sumTime = 0.0d;
-					sumDist = 0.0d;
-					size++;
-					
-				} else if (i == seg.getRange().getRight())
-				{
-					value = 0.0d;
-					Min.iterate(value);
-					Max.iterate(value);
-					Amplitude.iterate(value);
-					Average.iterate(value);
-					sumTime = 0.0d;
-					sumDist = 0.0d;
-					size++;
+					if (sumTime >= timeOfFragmentation)
+					{
+						value = sumDist / sumTime;
+						if (avaible[0])
+							Min.iterate(value);
+						if (avaible[1])
+							Max.iterate(value);
+						if (avaible[3])
+							Average.iterate(value);
+						sumTime = 0.0d;
+						sumDist = 0.0d;
+						size++;
+
+					} else if (i == seg.getRange().getRight())
+					{
+						value = 0.0d;
+						if (avaible[0])
+							Min.iterate(value);
+						if (avaible[1])
+							Max.iterate(value);
+						if (avaible[3])
+							Average.iterate(value);
+						sumTime = 0.0d;
+						sumDist = 0.0d;
+						size++;
+					}
 				}
 			}
-		}
 
-		Average.finish();
-		
-		StatisticResult varianceResult = new StatisticResult();
-		Variance.init(varianceResult, avgResult.getValue().get(0));
+		if (avaible[2])
+			Amplitude.finish(minResult.getValue().get(0), maxResult.getValue()
+					.get(0));
+		if (avaible[3])
+			Average.finish();
+		if (avaible[4])
+			Median.init(median, size);
+		if (avaible[5])
+			Variance.init(varianceResult, avgResult.getValue().get(0));
+
 		Collector.init(histogramResult, size);
 		DependencyCollector.init(dependencyResult, size * 2 + 1);
-		Median.init(median, size);
-		
+
 		boolean first = true;
 		double baseTime = 0.0d;
 
@@ -142,7 +170,7 @@ public class MSpeedResult extends AttributeResult
 			double sumTime = 0.0d;
 			double sumDist = 0.0d;
 
-			ArrayList <Double> toAdd = new ArrayList<Double>((seg.getRange()
+			ArrayList<Double> toAdd = new ArrayList<Double>((seg.getRange()
 					.getInterval() + 1) * 2);
 
 			for (int i = seg.getRange().getLeft() + 1; i <= seg.getRange()
@@ -182,14 +210,17 @@ public class MSpeedResult extends AttributeResult
 				if (sumTime >= timeOfFragmentation)
 				{
 					value = sumDist / sumTime;
+
+					if (avaible[4])
+						Median.iterate(value);
+					if (avaible[5])
+						Variance.iterate(value);
+
 					Collector.iterate(value);
 					DependencyCollector.iterate(packet.get(i).getPkTime()
 							- baseTime, value);
-					Variance.iterate(value);
-					Median.iterate(value);
-				
-					toAdd.add(packet.get(i).getPkTime()
-							- baseTime);
+
+					toAdd.add(packet.get(i).getPkTime() - baseTime);
 					toAdd.add(value);
 
 					sumTime = 0.0d;
@@ -197,14 +228,17 @@ public class MSpeedResult extends AttributeResult
 				} else if (i == seg.getRange().getRight())
 				{
 					value = 0.0d;
+
+					if (avaible[4])
+						Median.iterate(value);
+					if (avaible[5])
+						Variance.iterate(value);
+
 					Collector.iterate(value);
 					DependencyCollector.iterate(packet.get(i).getPkTime()
 							- baseTime, value);
-					Variance.iterate(value);
-					Median.iterate(value);
-					
-					toAdd.add(packet.get(i).getPkTime()
-							- baseTime);
+
+					toAdd.add(packet.get(i).getPkTime() - baseTime);
 					toAdd.add(value);
 					sumTime = 0.0d;
 					sumDist = 0.0d;
@@ -214,27 +248,40 @@ public class MSpeedResult extends AttributeResult
 			this.toAcceleration.add(toAdd);
 		}
 
-		Variance.finish();
-		Median.finish();
-		
-		FFT.init(fft, histogramResult.getValue(), freq);
-		FFTFreq.init(fftFreq, fft.getValue());
-		
-		StatisticResult standardDevResult = new StatisticResult();
-		StandardDev.init(standardDevResult, varianceResult.getValue().get(0));
+		if (avaible[4])
+			Median.finish();
+		if (avaible[5])
+			Variance.finish();
+		if (avaible[6])
+			StandardDev.init(standardDevResult, varianceResult.getValue()
+					.get(0));
 
+		if (avaible[11])
+			FFT.init(fft, histogramResult.getValue(), freq);
+		if (avaible[11])
+			FFTFreq.init(fftFreq, fft.getValue());
 
 		this.value.put("Collector", histogramResult);
 		this.value.put("Dependency Collector", dependencyResult);
-		this.value.put("FFT", fft);
-		this.value.put("FFT Freq", fftFreq);
-		this.value.put("Min", minResult);
-		this.value.put("Max", maxResult);
-		this.value.put("Amplitude", amplitudeResult);
-		this.value.put("Average", avgResult);
-		this.value.put("Variance", varianceResult);
-		this.value.put("Median", median);
-		this.value.put("StandardDev", standardDevResult);
+
+		if (avaible[0])
+			this.value.put("Min", minResult);
+		if (avaible[1])
+			this.value.put("Max", maxResult);
+		if (avaible[2])
+			this.value.put("Amplitude", amplitudeResult);
+		if (avaible[3])
+			this.value.put("Average", avgResult);
+		if (avaible[4])
+			this.value.put("Median", median);
+		if (avaible[5])
+			this.value.put("Variance", varianceResult);
+		if (avaible[6])
+			this.value.put("StandardDev", standardDevResult);
+		if (avaible[11])
+			this.value.put("FFT", fft);
+		if (avaible[11])
+			this.value.put("FFT Freq", fftFreq);
 	}
 
 	public double getDistance(PacketData A, PacketData B)

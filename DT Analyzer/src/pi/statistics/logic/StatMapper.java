@@ -32,6 +32,8 @@ public class StatMapper
 
 	static
 	{
+		System.out.print("1231 ASDASDAS\n");
+		
 		for (int i = 0; i < figureNames.length; i++)
 			figureAvaible.put(figureNames[i], true);
 		

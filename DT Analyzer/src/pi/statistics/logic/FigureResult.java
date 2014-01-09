@@ -57,7 +57,7 @@ public class FigureResult
 			this.value.put("Acceleration", acceleration);
 		}
 
-		if (StatMapper.attributeAvaible.get("Pressure"))
+		if (StatMapper.attributeAvaible.get("Figure Standards"))
 		{
 			FigureStandardsResult standards = new FigureStandardsResult(
 					this.figure.getParent().getPacket(),

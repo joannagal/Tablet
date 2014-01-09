@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import pi.inputs.drawing.PacketData;
 import pi.inputs.drawing.Segment;
 import pi.statistics.logic.AttributeResult;
+import pi.statistics.logic.StatMapper;
 import pi.statistics.logic.StatisticResult;
 
 public class FigureStandardsResult extends AttributeResult
@@ -26,12 +27,23 @@ public class FigureStandardsResult extends AttributeResult
 	public void calculateResult()
 	{
 		this.value = new HashMap<String, StatisticResult>();
-		
+
+		boolean[] avaible = new boolean[StatMapper.statisticNames.length];
+		for (int i = 0; i < avaible.length; i++)
+			avaible[i] = StatMapper.statisticAvaible
+					.get(StatMapper.statisticNames[i]);
+
 		StatisticResult timeResult = new StatisticResult();
 		StatisticResult lengthResult = new StatisticResult();
 		StatisticResult avgSpeedResult = new StatisticResult();
 		StatisticResult breaksResult = new StatisticResult();
-		
+
+		/*
+		 * { "Min", "Max", "Amplitude", "Average", "Median", "Variance",
+		 * "StandardDev", "Drawing time", "Drawing length", "Avg Speed",
+		 * "Breaks Amount", "FFT Freq" };
+		 */
+
 		double time = 0.0d;
 		double length = 0.0d;
 		double avgSpeed = 0.0d;
@@ -40,20 +52,26 @@ public class FigureStandardsResult extends AttributeResult
 		Segment seg;
 		double dist;
 
+		if ((!avaible[7]) && (!avaible[8]) && (!avaible[10]))
+			return;
+
 		while (it.hasNext())
 		{
 			seg = it.next();
 
-			for (int i = seg.getRange().getLeft() + 1; i <= seg.getRange()
-					.getRight(); i++)
-			{
-				dist = this.getDistance(this.packet.get(i),
-						this.packet.get(i - 1));
-				length += dist;
+			if (avaible[7])
+				time += (this.packet.get(seg.getRange().getRight()).getPkTime() - this.packet
+						.get(seg.getRange().getLeft()).getPkTime());
 
-			}
-			time += (this.packet.get(seg.getRange().getRight()).getPkTime() - this.packet
-					.get(seg.getRange().getLeft()).getPkTime());
+			if (avaible[8])
+				for (int i = seg.getRange().getLeft() + 1; i <= seg.getRange()
+						.getRight(); i++)
+				{
+					dist = this.getDistance(this.packet.get(i),
+							this.packet.get(i - 1));
+					length += dist;
+
+				}
 		}
 
 		if (time > 0.0d)
@@ -70,16 +88,20 @@ public class FigureStandardsResult extends AttributeResult
 		result = new ArrayList<Double>(1);
 		result.add(avgSpeed);
 		avgSpeedResult.setValue(result);
-		
+
 		result = new ArrayList<Double>(1);
 		double breaks = this.segment.size() - 1;
 		result.add(breaks);
 		breaksResult.setValue(result);
 
-		this.value.put("Drawing time", timeResult);
-		this.value.put("Drawing length", lengthResult);
-		this.value.put("Avg Speed", avgSpeedResult);
-		this.value.put("Breaks Amount", breaksResult);
+		if (avaible[7])
+			this.value.put("Drawing time", timeResult);
+		if (avaible[8])
+			this.value.put("Drawing length", lengthResult);
+		if (avaible[9])
+			this.value.put("Avg Speed", avgSpeedResult);
+		if (avaible[10])
+			this.value.put("Breaks Amount", breaksResult);
 	}
 
 	public double getDistance(PacketData A, PacketData B)
