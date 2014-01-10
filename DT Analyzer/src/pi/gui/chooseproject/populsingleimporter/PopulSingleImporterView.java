@@ -4,7 +4,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -33,14 +36,16 @@ public class PopulSingleImporterView extends JFrame
 	private JScrollPane firstBeforePane = new JScrollPane(firstBeforeList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-
+	private LinkedList <File> firstBeforeFiles = new LinkedList<File>();
+	
 	private DefaultListModel<String> secondBeforeListModel = new DefaultListModel<String>();
 	private JList<String> secondBeforeList = new JList<String>(
 			secondBeforeListModel);
 	private JScrollPane secondBeforePane = new JScrollPane(secondBeforeList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-
+	private LinkedList <File> secondBeforeFiles = new LinkedList<File>();
+	
 	private JButton addButton = new JButton("Select");
 	private JButton delButton = new JButton("Delete");
 	private JButton upButton = new JButton("Up");
@@ -50,7 +55,7 @@ public class PopulSingleImporterView extends JFrame
 	private JButton cancelButton = new JButton("Cancel");
 
 	private final JFileChooser fc = new JFileChooser();
-
+	
 	public PopulSingleImporterView()
 	{
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -66,8 +71,8 @@ public class PopulSingleImporterView extends JFrame
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
 		int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
-
 		this.setLocation(x, y);
+		
 		this.setResizable(false);
 		this.setLayout(null);
 
@@ -137,16 +142,29 @@ public class PopulSingleImporterView extends JFrame
 	{
 		ArrayList<ArrayList<String>> paths = new ArrayList<ArrayList<String>>(2);
 
-		int size = this.firstBeforeListModel.getSize();
+		int size = this.firstBeforeFiles.size();
 		ArrayList<String> firstBefore = new ArrayList<String>(size);
-		for (int i = 0; i < size; i++)
-			firstBefore.add(this.firstBeforeListModel.get(i));
+		Iterator <File> it = this.firstBeforeFiles.iterator();
+		File file;
+		
+		while (it.hasNext())
+		{
+			file = it.next();
+			System.out.println(file.getAbsolutePath());
+			firstBefore.add(file.getAbsolutePath());
+		}	
 		paths.add(firstBefore);
 
-		size = this.secondBeforeListModel.getSize();
+		size = this.secondBeforeFiles.size();
 		ArrayList<String> secondBefore = new ArrayList<String>(size);
-		for (int i = 0; i < size; i++)
-			secondBefore.add(this.secondBeforeListModel.get(i));
+		it = this.secondBeforeFiles.iterator();
+		
+		while (it.hasNext())
+		{
+			file = it.next();
+			System.out.println(file.getAbsolutePath());
+			secondBefore.add(file.getAbsolutePath());
+		}	
 		paths.add(secondBefore);
 
 		return paths;
@@ -161,6 +179,17 @@ public class PopulSingleImporterView extends JFrame
 			return this.firstBeforeListModel;
 		else
 			return this.secondBeforeListModel;
+	}
+	
+	public LinkedList<File> getCurrentFileList()
+	{
+		int tab = this.tabbedPane.getSelectedIndex();
+		if (tab == -1)
+			return null;
+		else if (tab == 0)
+			return this.firstBeforeFiles;
+		else
+			return this.secondBeforeFiles;
 	}
 
 	public JList<String> getCurrentList()
@@ -177,6 +206,26 @@ public class PopulSingleImporterView extends JFrame
 	public JFileChooser getFc()
 	{
 		return fc;
+	}
+
+	public LinkedList <File> getFirstBeforeFiles()
+	{
+		return firstBeforeFiles;
+	}
+
+	public void setFirstBeforeFiles(LinkedList <File> firstBeforeFiles)
+	{
+		this.firstBeforeFiles = firstBeforeFiles;
+	}
+
+	public LinkedList <File> getSecondBeforeFiles()
+	{
+		return secondBeforeFiles;
+	}
+
+	public void setSecondBeforeFiles(LinkedList <File> secondBeforeFiles)
+	{
+		this.secondBeforeFiles = secondBeforeFiles;
 	}
 
 }

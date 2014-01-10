@@ -20,8 +20,8 @@ public class PairImporterView extends JFrame
 	private static final long serialVersionUID = 1L;
 	private PairImporterController controller;
 
-	private JLabel firstBefore = new JLabel("First: Before: ");
-	private JLabel firstAfter = new JLabel("First: After: ");
+	private JLabel firstBefore = new JLabel("Signal: Before: ");
+	private JLabel firstAfter = new JLabel("Signal: After: ");
 	
 	private JTextField firstBeforeField = new JTextField();
 	private JTextField firstAfterField = new JTextField();

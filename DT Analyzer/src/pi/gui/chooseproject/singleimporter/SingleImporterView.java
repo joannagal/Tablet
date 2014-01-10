@@ -20,7 +20,7 @@ public class SingleImporterView extends JFrame
 	private static final long serialVersionUID = 1L;
 	private SingleImporterController controller;
 
-	private JLabel firstBefore = new JLabel("First: Before: ");
+	private JLabel firstBefore = new JLabel("Signal: ");
 
 	private JTextField firstBeforeField = new JTextField();
 

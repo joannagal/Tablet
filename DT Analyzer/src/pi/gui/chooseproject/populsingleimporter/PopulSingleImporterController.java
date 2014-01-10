@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -65,16 +67,17 @@ public class PopulSingleImporterController implements ActionListener
 
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
-				DefaultListModel <String> model = this.view.getCurrentListModel();
-				if (model == null) return;
+				LinkedList <File> fileList = this.view.getCurrentFileList();
+				if (fileList == null) return;
 				
 				File [] file = this.view.getFc().getSelectedFiles();
 
 				for (int i = 0; i < file.length; i++)
 				{
-					String path = file[i].getAbsolutePath();
-					model.addElement(path);
+					fileList.add(file[i]);
 				}
+				
+				this.updateListOfFiles();
 			}
 		} 
 		else if (action.equals("DEL"))
@@ -82,49 +85,56 @@ public class PopulSingleImporterController implements ActionListener
 			JList <String> list = this.view.getCurrentList();
 			if (list == null) return;
 			
-			DefaultListModel <String> model = this.view.getCurrentListModel();
-			if (model == null) return;
-			
 			int selection = list.getSelectedIndex();
-			if (selection == -1) return;
+			if (selection < 0) return;
 			
-			model.remove(selection);
+			LinkedList <File> fileList = this.view.getCurrentFileList();
+			if (fileList == null) return;
+			
+			fileList.remove(selection);
+			this.updateListOfFiles();
 		}
 		else if (action.equals("UP"))
 		{
 			JList <String> list = this.view.getCurrentList();
 			if (list == null) return;
 			
-			DefaultListModel <String> model = this.view.getCurrentListModel();
-			if (model == null) return;
-			
 			int selection = list.getSelectedIndex();
 			if (selection < 1) return;
 			
-			String temp = model.get(selection);
-			model.set(selection, model.get(selection - 1));
-			model.set(selection - 1, temp);
+			LinkedList <File> fileList = this.view.getCurrentFileList();
+			if (fileList == null) return;
+			
+			File temp = fileList.get(selection);
+			fileList.set(selection, fileList.get(selection - 1));
+			fileList.set(selection - 1, temp);
 			
 			list.setSelectedIndex(selection - 1);
+			
+			this.updateListOfFiles();
 			
 		}
 		else if (action.equals("DOWN"))
 		{
+
 			JList <String> list = this.view.getCurrentList();
 			if (list == null) return;
 			
-			DefaultListModel <String> model = this.view.getCurrentListModel();
-			if (model == null) return;
+			LinkedList <File> fileList = this.view.getCurrentFileList();
+			if (fileList == null) return;
 			
 			int selection = list.getSelectedIndex();
 			if (selection < 0) return;
-			if (selection >= model.getSize() - 1) return;
+			if (selection >= fileList.size() - 1) return;
 			
-			String temp = model.get(selection);
-			model.set(selection, model.get(selection + 1));
-			model.set(selection + 1, temp);
+			File temp = fileList.get(selection);
+			fileList.set(selection, fileList.get(selection + 1));
+			fileList.set(selection + 1, temp);
 			
 			list.setSelectedIndex(selection + 1);
+			
+			this.updateListOfFiles();
+			
 		}
 		else if (action.equals("CANCEL"))
 		{
@@ -132,5 +142,35 @@ public class PopulSingleImporterController implements ActionListener
 			.setInChoose(false);
 			view.setVisible(false);
 		}
+	}
+	
+	public void updateListOfFiles()
+	{
+		DefaultListModel <String> model = this.view.getCurrentListModel();
+		if (model == null) return;
+	
+		JList <String> list = this.view.getCurrentList();
+		if (list == null) return;
+		
+		LinkedList <File> fileList = this.view.getCurrentFileList();
+		if (fileList == null) return;
+		
+		int selection = list.getSelectedIndex();
+	
+		model.clear();
+
+		Iterator <File> it = fileList.iterator();
+		File file;
+		
+		int number = 0;
+		
+		while (it.hasNext())
+		{
+			file = it.next();
+			number++;
+			model.addElement(Integer.toString(number) + ". " + file.getName());
+		}
+		
+		list.setSelectedIndex(selection);
 	}
 }

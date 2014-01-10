@@ -4,7 +4,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -33,6 +36,7 @@ public class PopulPairImporterView extends JFrame
 	private JScrollPane firstBeforePane = new JScrollPane(firstBeforeList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+	private LinkedList <File> firstBeforeFiles = new LinkedList<File>();
 	
 	private DefaultListModel<String> firstAfterListModel = new DefaultListModel<String>();
 	private JList<String> firstAfterList = new JList<String>(
@@ -40,6 +44,7 @@ public class PopulPairImporterView extends JFrame
 	private JScrollPane firstAfterPane = new JScrollPane(firstAfterList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+	private LinkedList <File> firstAfterFiles = new LinkedList<File>();
 
 	private DefaultListModel<String> secondBeforeListModel = new DefaultListModel<String>();
 	private JList<String> secondBeforeList = new JList<String>(
@@ -47,6 +52,7 @@ public class PopulPairImporterView extends JFrame
 	private JScrollPane secondBeforePane = new JScrollPane(secondBeforeList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+	private LinkedList <File> secondBeforeFiles = new LinkedList<File>();
 
 	private DefaultListModel<String> secondAfterListModel = new DefaultListModel<String>();
 	private JList<String> secondAfterList = new JList<String>(
@@ -54,6 +60,7 @@ public class PopulPairImporterView extends JFrame
 	private JScrollPane secondAfterPane = new JScrollPane(secondAfterList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+	private LinkedList <File> secondAfterFiles = new LinkedList<File>();
 	
 	private JButton addButton = new JButton("Select");
 	private JButton delButton = new JButton("Delete");
@@ -163,30 +170,55 @@ public class PopulPairImporterView extends JFrame
 	{
 		ArrayList<ArrayList<String>> paths = new ArrayList<ArrayList<String>>(4);
 
-		int size = this.firstBeforeListModel.getSize();
+		int size = this.firstBeforeFiles.size();
 		ArrayList<String> firstBefore = new ArrayList<String>(size);
-		for (int i = 0; i < size; i++)
-			firstBefore.add(this.firstBeforeListModel.get(i));
+		Iterator <File> it = this.firstBeforeFiles.iterator();
+		File file;
+		
+		while (it.hasNext())
+		{
+			file = it.next();
+			System.out.println(file.getAbsolutePath());
+			firstBefore.add(file.getAbsolutePath());
+		}	
 		paths.add(firstBefore);
 
-		size = this.firstAfterListModel.getSize();
+		size = this.firstAfterFiles.size();
 		ArrayList<String> firstAfter = new ArrayList<String>(size);
-		for (int i = 0; i < size; i++)
-			firstAfter.add(this.firstAfterListModel.get(i));
+		it = this.firstAfterFiles.iterator();
+		
+		while (it.hasNext())
+		{
+			file = it.next();
+			System.out.println(file.getAbsolutePath());
+			firstAfter.add(file.getAbsolutePath());
+		}	
 		paths.add(firstAfter);
 		
-		size = this.secondBeforeListModel.getSize();
+		size = this.secondBeforeFiles.size();
 		ArrayList<String> secondBefore = new ArrayList<String>(size);
-		for (int i = 0; i < size; i++)
-			secondBefore.add(this.secondBeforeListModel.get(i));
-		paths.add(secondBefore);
+		it = this.secondBeforeFiles.iterator();
 		
-		size = this.secondAfterListModel.getSize();
-		ArrayList<String> secondAfter = new ArrayList<String>(size);
-		for (int i = 0; i < size; i++)
-			secondAfter.add(this.secondAfterListModel.get(i));
-		paths.add(secondAfter);
+		while (it.hasNext())
+		{
+			file = it.next();
+			System.out.println(file.getAbsolutePath());
+			secondBefore.add(file.getAbsolutePath());
+		}	
+		paths.add(secondBefore);
 
+		size = this.secondAfterFiles.size();
+		ArrayList<String> secondAfter = new ArrayList<String>(size);
+		it = this.secondAfterFiles.iterator();
+		
+		while (it.hasNext())
+		{
+			file = it.next();
+			System.out.println(file.getAbsolutePath());
+			secondAfter.add(file.getAbsolutePath());
+		}	
+		paths.add(secondAfter);
+	
 		return paths;
 	}
 
@@ -203,6 +235,21 @@ public class PopulPairImporterView extends JFrame
 			return this.secondBeforeListModel;
 		else
 			return this.secondAfterListModel;
+	}
+	
+	public LinkedList<File> getCurrentFileList()
+	{
+		int tab = this.tabbedPane.getSelectedIndex();
+		if (tab == -1)
+			return null;
+		else if (tab == 0)
+			return this.firstBeforeFiles;
+		else if (tab == 1)
+			return this.firstAfterFiles;
+		else if (tab == 2)
+			return this.secondBeforeFiles;
+		else
+			return this.secondAfterFiles;
 	}
 
 	public JList<String> getCurrentList()
@@ -223,6 +270,46 @@ public class PopulPairImporterView extends JFrame
 	public JFileChooser getFc()
 	{
 		return fc;
+	}
+
+	public LinkedList <File> getFirstBeforeFiles()
+	{
+		return firstBeforeFiles;
+	}
+
+	public void setFirstBeforeFiles(LinkedList <File> firstBeforeFiles)
+	{
+		this.firstBeforeFiles = firstBeforeFiles;
+	}
+
+	public LinkedList <File> getFirstAfterFiles()
+	{
+		return firstAfterFiles;
+	}
+
+	public void setFirstAfterFiles(LinkedList <File> firstAfterFiles)
+	{
+		this.firstAfterFiles = firstAfterFiles;
+	}
+
+	public LinkedList <File> getSecondBeforeFiles()
+	{
+		return secondBeforeFiles;
+	}
+
+	public void setSecondBeforeFiles(LinkedList <File> secondBeforeFiles)
+	{
+		this.secondBeforeFiles = secondBeforeFiles;
+	}
+
+	public LinkedList <File> getSecondAfterFiles()
+	{
+		return secondAfterFiles;
+	}
+
+	public void setSecondAfterFiles(LinkedList <File> secondAfterFiles)
+	{
+		this.secondAfterFiles = secondAfterFiles;
 	}
 
 }
