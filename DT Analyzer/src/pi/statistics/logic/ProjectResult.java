@@ -92,6 +92,8 @@ public class ProjectResult
 		{
 			for (int j = 0; j < StatMapper.attributeNames.length; j++)
 			{
+				SharedController.getInstance().getProgressView().increase();
+				
 				for (int k = 0; k < StatMapper.statisticNames.length; k++)
 				{
 					fList = fMap.get(StatMapper.figureNames[i])

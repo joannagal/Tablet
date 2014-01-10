@@ -36,10 +36,10 @@ public class Specimen
 	
 	private SpecimenResult result = null;
 
-	public void calculateStatistic()
+	public void calculateStatistic(boolean projectLevel)
 	{
 		result = new SpecimenResult(this);
-		result.calculateResult();
+		result.calculateResult(projectLevel);
 	}
 	
 	public String getName()

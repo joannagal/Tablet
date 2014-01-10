@@ -16,18 +16,18 @@ public class SpecimenResult
 		this.specimen = specimen;
 	}
 	
-	public void calculateResult()
+	public void calculateResult(boolean projectLevel)
 	{
 		this.value = new HashMap <String, DrawingResult>();
 		
 		DrawingResult before = new DrawingResult(this.specimen.getBefore());
-		before.calculateResult();
+		before.calculateResult(projectLevel);
 		getValue().put("Before", before);
 		
 		if (this.specimen.getAfter() != null)
 		{
 			DrawingResult after = new DrawingResult(this.specimen.getAfter());
-			after.calculateResult();
+			after.calculateResult(projectLevel);
 			getValue().put("After", after);
 		}
 		SharedController.getInstance().getProgressView().increase();

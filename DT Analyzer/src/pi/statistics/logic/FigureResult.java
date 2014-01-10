@@ -23,7 +23,7 @@ public class FigureResult
 		this.setFigure(figure);
 	}
 
-	public void calculateResult()
+	public void calculateResult(boolean projectLevel)
 	{
 		this.value = new HashMap<String, AttributeResult>();
 
@@ -34,7 +34,7 @@ public class FigureResult
 		{
 			PressureResult pressure = new PressureResult(this.figure
 					.getParent().getPacket(), this.figure.getSegment());
-			pressure.calculateResult();
+			pressure.calculateResult(projectLevel);
 			this.value.put("Pressure", pressure);
 		}
 
@@ -43,7 +43,7 @@ public class FigureResult
 		
 		if (StatMapper.attributeAvaible.get("Momentary Speed"))
 		{
-			mSpeed.calculateResult();
+			mSpeed.calculateResult(projectLevel);
 			this.value.put("Momentary Speed", mSpeed);
 		}
 
@@ -53,7 +53,7 @@ public class FigureResult
 		{
 			AccelerationResult acceleration = new AccelerationResult(
 					mSpeed.getForAcceleration(), mSpeed.getFreq());
-			acceleration.calculateResult();
+			acceleration.calculateResult(projectLevel);
 			this.value.put("Acceleration", acceleration);
 		}
 
@@ -62,7 +62,7 @@ public class FigureResult
 			FigureStandardsResult standards = new FigureStandardsResult(
 					this.figure.getParent().getPacket(),
 					this.figure.getSegment());
-			standards.calculateResult();
+			standards.calculateResult(projectLevel);
 			this.value.put("Figure Standards", standards);
 		}
 
@@ -71,7 +71,7 @@ public class FigureResult
 			ChangeDirectionResult direction = new ChangeDirectionResult(
 					this.figure.getParent().getPacket(),
 					this.figure.getSegment());
-			direction.calculateResult();
+			direction.calculateResult(projectLevel);
 			this.value.put("Direction Change (f'')", direction);
 		}
 
@@ -79,7 +79,7 @@ public class FigureResult
 		{
 			AzimuthResult azimuth = new AzimuthResult(this.figure.getParent()
 					.getPacket(), this.figure.getSegment());
-			azimuth.calculateResult();
+			azimuth.calculateResult(projectLevel);
 			this.value.put("Azimuth", azimuth);
 		}
 
@@ -87,7 +87,7 @@ public class FigureResult
 		{
 			AltitudeResult altitude = new AltitudeResult(this.figure
 					.getParent().getPacket(), this.figure.getSegment());
-			altitude.calculateResult();
+			altitude.calculateResult(projectLevel);
 			this.value.put("Altitude", altitude);
 		}
 
@@ -95,7 +95,7 @@ public class FigureResult
 		{
 			DFAverage dfaverage = new DFAverage(this.figure.getParent()
 					.getPacket(), this.figure.getSegment());
-			dfaverage.calculateResult();
+			dfaverage.calculateResult(projectLevel);
 			this.value.put("Dev. from Average", dfaverage);
 		}
 	}

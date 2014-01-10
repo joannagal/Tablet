@@ -16,7 +16,7 @@ public class DrawingResult
 		drawing.createStatus();
 	}
 	
-	public void calculateResult()
+	public void calculateResult(boolean projectLevel)
 	{
 		this.value = new HashMap<String, FigureResult>();
 		this.drawing.linearize(10);
@@ -30,7 +30,7 @@ public class DrawingResult
 			
 			String label = StatMapper.figureNames[i];
 			
-			figResult.calculateResult();
+			figResult.calculateResult(projectLevel);
 			value.put(label, figResult);
 		}
 		

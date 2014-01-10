@@ -30,9 +30,32 @@ public class StatMapper
 	public static Map<String, Boolean> statisticAvaible = new HashMap<String, Boolean>(
 			figureNames.length);
 
+	public static int getFigureAvaibles()
+	{
+		int result = 0;
+		for (int i = 0; i < figureNames.length; i++)
+			if (figureAvaible.get(figureNames[i])) result++;
+		return result;
+	}
+	
+	public static int getAttributeAvaibles()
+	{
+		int result = 0;
+		for (int i = 0; i < attributeNames.length; i++)
+			if (attributeAvaible.get(attributeNames[i])) result++;
+		return result;
+	}
+	
+	public static int getStatisticAvaibles()
+	{
+		int result = 0;
+		for (int i = 0; i < statisticNames.length; i++)
+			if (statisticAvaible.get(statisticNames[i])) result++;
+		return result;
+	}
+	
 	static
 	{
-		System.out.print("1231 ASDASDAS\n");
 		
 		for (int i = 0; i < figureNames.length; i++)
 			figureAvaible.put(figureNames[i], true);

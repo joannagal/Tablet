@@ -36,7 +36,7 @@ public class PopulationResult
 		for (int i = 0; i < size; i++)
 		{
 			Specimen specimen = this.population.getSpecimen().get(i);
-			specimen.calculateStatistic();
+			specimen.calculateStatistic(true);
 			value.put(String.format("%d", i), specimen.getResult());
 		}
 
@@ -66,7 +66,6 @@ public class PopulationResult
 		}
 
 		int size = this.population.getSpecimen().size();
-		System.out.printf("POPUL SIZE: %d\n", size);
 
 		for (int i = 0; i < size; i++)
 		{

@@ -141,9 +141,9 @@ public class StatisticsComparatorView extends JFrame
 			
 			view.setSpecimen(first, second);
 
-			view.specimen[0].calculateStatistic();
+			view.specimen[0].calculateStatistic(false);
 			if (view.specimen[1] != null)
-				specimen[1].calculateStatistic();
+				specimen[1].calculateStatistic(false);
 
 			view.prepare(view.getFigureStr(), view.getElementStr());
 		}

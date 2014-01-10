@@ -108,13 +108,17 @@ public class DependGraph extends JPanel
 		for (int i = 0; i < data.size(); i++)
 		{
 			int size = data.get(i).size();
+			
 			graphics.setColor(this.drawColor[i]);
 
 			for (int j = 0; j < size - 1; j += 2)
 			{
 				tmp = data.get(i).get(j);
 				
-				if (tmp > this.lockedMaxTime) break;
+				if (this.loockedMax)
+				{
+					if (tmp > this.lockedMaxTime) break;
+				}
 				
 				prop = (tmp - this.minTime) / (this.maxTime - this.minTime);
 				posX = 0.5d + left + width * prop;

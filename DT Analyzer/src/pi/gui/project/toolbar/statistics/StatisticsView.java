@@ -161,20 +161,29 @@ public class StatisticsView extends JFrame
 		public void run()
 		{
 			Project project = SharedController.getInstance().getProject();
-			int specimens = project.getFirstPopulation().getSpecimen().size();
+			int specimens = project.getFirstPopulation().getSpecimen().size();	
+			
+			int columns = 1;
+			
 			if (project.getSecondPopulation() != null)
 			{
+				columns = 5;
 				specimens += project.getSecondPopulation().getSpecimen().size();
 			}
+			
+			int figures = StatMapper.getFigureAvaibles();
+			int attributes = StatMapper.getAttributeAvaibles();
+			int total = figures * attributes * columns;
 
-			SharedController.getInstance().getProgressView().init(specimens);
+			SharedController.getInstance().getProgressView().init(specimens + total);
 			project.calculateStatistic();
 
 			view.prepare(view.getFigureStr(), view.getElementStr());
-
 			view.report.changeSelection(0, 1, false, false);
-
+			
+			SharedController.getInstance().getProgressView().close();
 			view.setVisible(true);
+		
 		}
 	}
 

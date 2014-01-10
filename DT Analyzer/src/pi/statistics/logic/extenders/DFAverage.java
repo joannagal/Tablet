@@ -34,14 +34,23 @@ public class DFAverage extends AttributeResult
 	}
 
 	@Override
-	public void calculateResult()
+	public void calculateResult(boolean projectLevel)
 	{
 		this.value = new HashMap<String, StatisticResult>();
 
 		boolean[] avaible = new boolean[StatMapper.statisticNames.length];
 		for (int i = 0; i < avaible.length; i++)
-			avaible[i] = StatMapper.statisticAvaible
-					.get(StatMapper.statisticNames[i]);
+		{
+			if (!projectLevel)
+			{
+				avaible[i] = true;
+			}
+			else
+			{
+				avaible[i] = StatMapper.statisticAvaible
+						.get(StatMapper.statisticNames[i]);
+			}
+		}
 
 		StatisticResult histogramResult = new StatisticResult();
 		StatisticResult dependencyResult = new StatisticResult();
@@ -54,12 +63,6 @@ public class DFAverage extends AttributeResult
 		StatisticResult fftFreq = new StatisticResult();
 		StatisticResult varianceResult = new StatisticResult();
 		StatisticResult standardDevResult = new StatisticResult();
-
-		/*
-		 * { "Min", "Max", "Amplitude", "Average", "Median", "Variance",
-		 * "StandardDev", "Drawing time", "Drawing length", "Avg Speed",
-		 * "Breaks Amount", "FFT Freq" };
-		 */
 
 		if (avaible[0])
 			Min.init(minResult);
@@ -113,16 +116,20 @@ public class DFAverage extends AttributeResult
 		if (avaible[5])
 			Variance.init(varianceResult, avgResult.getValue().get(0));
 
-		DependencyCollector.init(dependencyResult, size * 2 + 1);
-		Collector.init(histogramResult, size);
+		if (avaible[11])
+			Collector.init(histogramResult, size);
 
+		if (!projectLevel)
+		{
+			DependencyCollector.init(dependencyResult, size * 2 + 2);
+			DependencyCollector.iterate(0.0d, 0.0d);
+		}
+		
 		it = this.segment.iterator();
 
 		boolean first = true;
 		double baseTime = 0.0d;
 		double freq = 1.0d / 100.0d;
-
-		DependencyCollector.iterate(0.0d, 0.0d);
 
 		while (it.hasNext())
 		{
@@ -160,9 +167,13 @@ public class DFAverage extends AttributeResult
 					Median.iterate(value);
 				if (avaible[5])
 					Variance.iterate(value);
-				Collector.iterate(value);
-				DependencyCollector.iterate(packet.get(i).getPkTime()
-						- baseTime, value);
+
+				if (avaible[11])
+					Collector.iterate(value);
+				
+				if (!projectLevel)
+					DependencyCollector.iterate(packet.get(i).getPkTime()
+							- baseTime, value);	
 
 				size++;
 			}
@@ -175,13 +186,16 @@ public class DFAverage extends AttributeResult
 		if (avaible[6])
 			StandardDev.init(standardDevResult, varianceResult.getValue()
 					.get(0));
-		if (avaible[11])
-			FFT.init(fft, histogramResult.getValue(), freq);
-		if (avaible[11])
-			FFTFreq.init(fftFreq, fft.getValue());
 
-		this.value.put("Collector", histogramResult);
-		this.value.put("Dependency Collector", dependencyResult);
+		if (avaible[11])
+		{
+			this.value.put("Collector", histogramResult);
+			FFT.init(fft, histogramResult.getValue(), freq);
+			FFTFreq.init(fftFreq, fft.getValue());
+		}
+
+		if (!projectLevel)
+			this.value.put("Dependency Collector", dependencyResult);
 
 		if (avaible[0])
 			this.value.put("Min", minResult);

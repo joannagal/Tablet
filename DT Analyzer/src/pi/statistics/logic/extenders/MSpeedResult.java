@@ -38,14 +38,23 @@ public class MSpeedResult extends AttributeResult
 	}
 
 	@Override
-	public void calculateResult()
+	public void calculateResult(boolean projectLevel)
 	{
 		this.value = new HashMap<String, StatisticResult>();
 
 		boolean[] avaible = new boolean[StatMapper.statisticNames.length];
 		for (int i = 0; i < avaible.length; i++)
-			avaible[i] = StatMapper.statisticAvaible
-					.get(StatMapper.statisticNames[i]);
+		{
+			if (!projectLevel)
+			{
+				avaible[i] = true;
+			}
+			else
+			{
+				avaible[i] = StatMapper.statisticAvaible
+						.get(StatMapper.statisticNames[i]);
+			}
+		}
 
 		StatisticResult histogramResult = new StatisticResult();
 		StatisticResult dependencyResult = new StatisticResult();
@@ -58,12 +67,6 @@ public class MSpeedResult extends AttributeResult
 		StatisticResult fftFreq = new StatisticResult();
 		StatisticResult varianceResult = new StatisticResult();
 		StatisticResult standardDevResult = new StatisticResult();
-
-		/*
-		 * { "Min", "Max", "Amplitude", "Average", "Median", "Variance",
-		 * "StandardDev", "Drawing time", "Drawing length", "Avg Speed",
-		 * "Breaks Amount", "FFT Freq" };
-		 */
 
 		if (avaible[0])
 			Min.init(minResult);
@@ -150,13 +153,17 @@ public class MSpeedResult extends AttributeResult
 		if (avaible[5])
 			Variance.init(varianceResult, avgResult.getValue().get(0));
 
-		Collector.init(histogramResult, size);
-		DependencyCollector.init(dependencyResult, size * 2 + 1);
+		if (avaible[11])
+			Collector.init(histogramResult, size);
 
+		if (!projectLevel)
+		{
+			DependencyCollector.init(dependencyResult, size * 2 + 2);
+			DependencyCollector.iterate(0.0d, 0.0d);
+		}
+		
 		boolean first = true;
 		double baseTime = 0.0d;
-
-		DependencyCollector.iterate(0.0d, 0.0d);
 
 		this.toAcceleration = new ArrayList<ArrayList<Double>>(
 				this.segment.size());
@@ -215,10 +222,13 @@ public class MSpeedResult extends AttributeResult
 						Median.iterate(value);
 					if (avaible[5])
 						Variance.iterate(value);
-
-					Collector.iterate(value);
-					DependencyCollector.iterate(packet.get(i).getPkTime()
-							- baseTime, value);
+					
+					if (avaible[11])
+						Collector.iterate(value);
+					
+					if (!projectLevel)
+						DependencyCollector.iterate(packet.get(i).getPkTime()
+								- baseTime, value);	
 
 					toAdd.add(packet.get(i).getPkTime() - baseTime);
 					toAdd.add(value);
@@ -234,9 +244,12 @@ public class MSpeedResult extends AttributeResult
 					if (avaible[5])
 						Variance.iterate(value);
 
-					Collector.iterate(value);
-					DependencyCollector.iterate(packet.get(i).getPkTime()
-							- baseTime, value);
+					if (avaible[11])
+						Collector.iterate(value);
+					
+					if (!projectLevel)
+						DependencyCollector.iterate(packet.get(i).getPkTime()
+								- baseTime, value);	
 
 					toAdd.add(packet.get(i).getPkTime() - baseTime);
 					toAdd.add(value);
@@ -257,12 +270,14 @@ public class MSpeedResult extends AttributeResult
 					.get(0));
 
 		if (avaible[11])
+		{
+			this.value.put("Collector", histogramResult);
 			FFT.init(fft, histogramResult.getValue(), freq);
-		if (avaible[11])
 			FFTFreq.init(fftFreq, fft.getValue());
+		}
 
-		this.value.put("Collector", histogramResult);
-		this.value.put("Dependency Collector", dependencyResult);
+		if (!projectLevel)
+			this.value.put("Dependency Collector", dependencyResult);
 
 		if (avaible[0])
 			this.value.put("Min", minResult);

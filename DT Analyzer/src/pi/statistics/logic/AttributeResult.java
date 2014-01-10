@@ -9,7 +9,7 @@ public class AttributeResult {
 		protected Map <String, StatisticResult> value;
       
 		
-		public void calculateResult()
+		public void calculateResult(boolean projectLevel)
 		{
 			this.value = new HashMap<String, StatisticResult>();
 		}

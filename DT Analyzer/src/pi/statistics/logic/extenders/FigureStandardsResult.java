@@ -24,26 +24,32 @@ public class FigureStandardsResult extends AttributeResult
 	}
 
 	@Override
-	public void calculateResult()
+	public void calculateResult(boolean projectLevel)
 	{
 		this.value = new HashMap<String, StatisticResult>();
 
 		boolean[] avaible = new boolean[StatMapper.statisticNames.length];
 		for (int i = 0; i < avaible.length; i++)
-			avaible[i] = StatMapper.statisticAvaible
-					.get(StatMapper.statisticNames[i]);
+		{
+			if (!projectLevel)
+			{
+				avaible[i] = true;
+			}
+			else
+			{
+				avaible[i] = StatMapper.statisticAvaible
+						.get(StatMapper.statisticNames[i]);
+			}
+		}
 
 		StatisticResult timeResult = new StatisticResult();
 		StatisticResult lengthResult = new StatisticResult();
 		StatisticResult avgSpeedResult = new StatisticResult();
 		StatisticResult breaksResult = new StatisticResult();
 
-		/*
-		 * { "Min", "Max", "Amplitude", "Average", "Median", "Variance",
-		 * "StandardDev", "Drawing time", "Drawing length", "Avg Speed",
-		 * "Breaks Amount", "FFT Freq" };
-		 */
-
+		double beginDraw = 0.0d;
+		double endDraw = 0.0d;
+		
 		double time = 0.0d;
 		double length = 0.0d;
 		double avgSpeed = 0.0d;
@@ -55,13 +61,23 @@ public class FigureStandardsResult extends AttributeResult
 		if ((!avaible[7]) && (!avaible[8]) && (!avaible[10]))
 			return;
 
+		
+		if (avaible[7])
+		{
+			seg = this.segment.getFirst();
+			if (seg != null)
+			{
+				beginDraw = this.packet.get(seg.getRange().getLeft()).getPkTime();
+				seg = this.segment.getLast();
+				endDraw = this.packet.get(seg.getRange().getRight()).getPkTime();
+				time = endDraw - beginDraw;
+			}
+			
+		}
+		
 		while (it.hasNext())
 		{
 			seg = it.next();
-
-			if (avaible[7])
-				time += (this.packet.get(seg.getRange().getRight()).getPkTime() - this.packet
-						.get(seg.getRange().getLeft()).getPkTime());
 
 			if (avaible[8])
 				for (int i = seg.getRange().getLeft() + 1; i <= seg.getRange()

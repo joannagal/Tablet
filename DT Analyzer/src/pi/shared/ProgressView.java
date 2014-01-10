@@ -42,5 +42,10 @@ public class ProgressView extends JFrame
 		if (this.progress.getValue() == this.progress.getMaximum())
 			this.setVisible(false);
 	}
+	
+	public void close()
+	{
+		this.setVisible(false);
+	}
 
 }
