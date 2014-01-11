@@ -10,6 +10,7 @@ import java.util.Iterator;
 import pi.inputs.drawing.autofinder.FigureExtractor;
 import pi.inputs.drawing.autofinder.FigureInterpreter;
 import pi.inputs.drawing.autofinder.Linearizer;
+import pi.statistics.logic.StatMapper;
 import pi.utilities.Range;
 
 public class Drawing
@@ -22,7 +23,7 @@ public class Drawing
 	private ArrayList<PacketData> packet;
 	private ArrayList<Figure> figure;
 
-	private Figure[] completeFigure = new Figure[8];
+	private Figure[] completeFigure = new Figure[StatMapper.figureNames.length];
 
 	private boolean status = false;
 
@@ -68,11 +69,23 @@ public class Drawing
 
 		this.extractor.extract(this);
 		this.interpreter.interprate(this);
+		
+		this.completeFigures();
+		
 		this.linearize(20);
-
-		this.createStatus();
 	}
-
+	
+	public void completeFigures()
+	{
+		this.createStatus();
+		//System.out.printf("A\n");
+		if (this.status)
+		{
+			//System.out.printf("B\n");
+			this.extractor.createAllFigure(this);
+		}
+	}
+	
 	public void linearize(int level)
 	{
 		linearizer.linearize(this);
@@ -82,19 +95,25 @@ public class Drawing
 	{
 		if (this.figure == null)
 			return;
+		
 		int size = this.figure.size();
+		
+		//System.out.printf("Size: %d\n", size);
 
-		int[] tab = new int[9];
+		int[] tab = new int[StatMapper.figureNames.length + 1];
 		this.status = true;
 
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < StatMapper.figureNames.length; i++)
 			this.getCompleteFigure()[i] = null;
 
 		for (int i = 0; i < size; i++)
 		{
 			int fig = this.figure.get(i).getType();
-			if (fig == -1)
-				tab[8]++;
+			
+			//System.out.printf("%d ", fig);
+			
+			if (fig  < 0)
+				tab[StatMapper.figureNames.length]++;
 			else
 			{
 				tab[fig]++;
@@ -102,17 +121,18 @@ public class Drawing
 			}
 
 		}
-
-		for (int i = 0; i < 8; i++)
+		//System.out.printf("\n ");
+		
+		for (int i = 0; i < StatMapper.figureNames.length; i++)
 		{
-			if (tab[i] != 1)
+			if ((i != Figure.ALLFIGURE) && (tab[i] != 1))
 			{
 				this.status = false;
 				break;
 			}
 		}
 
-		if (tab[8] != 0)
+		if (tab[StatMapper.figureNames.length] != 0)
 			this.status = false;
 	}
 

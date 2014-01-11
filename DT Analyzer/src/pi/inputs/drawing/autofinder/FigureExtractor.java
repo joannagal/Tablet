@@ -68,6 +68,38 @@ public class FigureExtractor
 		else return null;
 	}
 	
+	public void createAllFigure(Drawing drawing)
+	{
+		Figure [] figure = drawing.getCompleteFigure();
+		int points = 0;
+		
+		Figure newFigure = new Figure(drawing);
+		LinkedList <Segment> segment = new LinkedList <Segment> ();
+		newFigure.setSegment(segment);
+		
+		for (int i = 0; i < figure.length; i++)
+		{
+			if (figure[i] == null) continue;
+			Iterator <Segment> it = figure[i].getSegment().iterator();
+			Segment value;
+			points += figure[i].getTotalPoints();
+			
+			while (it.hasNext())
+			{
+				value = it.next();
+				segment.add(value);
+			}
+		}
+
+		if (segment.size() > 0)
+		{
+			newFigure.setTotalPoints(points);
+			figure[Figure.ALLFIGURE] = newFigure;
+			System.out.printf("Done: %d\n", points);
+		}
+		
+	}
+	
 	public void extract(Drawing drawing)
 	{
 		ArrayList <PacketData> packet = drawing.getPacket();

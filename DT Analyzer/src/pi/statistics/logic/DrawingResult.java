@@ -13,7 +13,7 @@ public class DrawingResult
 	public DrawingResult(Drawing drawing)
 	{
 		this.drawing = drawing;
-		drawing.createStatus();
+		//drawing.createStatus();
 	}
 	
 	public void calculateResult(boolean projectLevel)
@@ -21,15 +21,12 @@ public class DrawingResult
 		this.value = new HashMap<String, FigureResult>();
 		this.drawing.linearize(10);
 		
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < StatMapper.figureNames.length; i++)
 		{
-			if (this.drawing.getCompleteFigure()[i] == null) continue;
 			if (!StatMapper.figureAvaible.get(StatMapper.figureNames[i])) continue;
-			
+			if (this.drawing.getCompleteFigure()[i] == null) continue;
 			FigureResult figResult = new FigureResult(this.drawing.getCompleteFigure()[i]);
-			
 			String label = StatMapper.figureNames[i];
-			
 			figResult.calculateResult(projectLevel);
 			value.put(label, figResult);
 		}

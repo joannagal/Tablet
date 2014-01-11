@@ -17,15 +17,16 @@ public class Figure
 
 	private int type = -1;
 
-	public static final int DEFAULT = -1;
-	public static final int ZIGZAG = 0;
-	public static final int CIRCLELEFT = 1;
-	public static final int CIRCLERIGHT = 2;
-	public static final int FIRSTLINE = 3;
-	public static final int SECONDLINE = 4;
-	public static final int BROKENLINE = 5;
-	public static final int SPIRALIN = 6;
-	public static final int SPIRALOUT = 7;
+	public static final int DEFAULT = -2;
+	public static final int ALLFIGURE = 0;
+	public static final int ZIGZAG = 1;
+	public static final int CIRCLELEFT = 2;
+	public static final int CIRCLERIGHT = 3;
+	public static final int FIRSTLINE = 4;
+	public static final int SECONDLINE = 5;
+	public static final int BROKENLINE = 6;
+	public static final int SPIRALIN = 7;
+	public static final int SPIRALOUT = 8;
 	
 	public Figure(Drawing parent)
 	{

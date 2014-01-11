@@ -42,7 +42,7 @@ public class FigureInterpreter
 		if (figure.getBounds() == null)
 			return;
 
-		System.out.printf("FIG\n");
+		//System.out.printf("FIG\n");
 
 		int test = this.lineTest(figure);
 		if (test != -1)
@@ -145,7 +145,7 @@ public class FigureInterpreter
 		double accPercent = 0.5d;
 		double result = (double) positive / (double) packets;
 
-		System.out.printf("--- %f\n", result);
+		//System.out.printf("--- %f\n", result);
 
 		if (result > accPercent)
 			return Figure.BROKENLINE;

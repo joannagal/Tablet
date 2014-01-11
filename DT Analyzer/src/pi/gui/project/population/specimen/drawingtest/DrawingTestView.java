@@ -67,7 +67,7 @@ public class DrawingTestView extends JPanel
 	
 	public void setDrawing(Drawing drawing, Specimen specimen, boolean before)
 	{
-		if (drawing != null) drawing.createStatus();
+		//if (drawing != null) drawing.createStatus();
 		
 		this.setSpecimen(specimen);
 		this.setBefore(before);

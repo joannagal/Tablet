@@ -21,9 +21,14 @@ public class StatisticsController implements ActionListener
 		this.view = view;
 	}
 
-	public void setHistogram(int column, String figure, String attribute,
-			String statistics)
+	public void setDetails(int column, String figure, String attribute,
+			String statistic)
 	{
+		view.getHypoTestEdit().setText("");
+		view.getHypoEqualEdit().setText("");
+		view.getHypoLeftEdit().setText("");
+		view.getHypoRightEdit().setText("");
+		
 		ProjectResult pResult = SharedController.getInstance().getProject()
 				.getResult();
 
@@ -35,32 +40,57 @@ public class StatisticsController implements ActionListener
 			return;
 
 		LinkedList<Double> first = pResult.getValue().get(params[0]).getData()
-				.get(params[1]).get(figure).get(attribute).get(statistics);
+				.get(params[1]).get(figure).get(attribute).get(statistic);
 		LinkedList<Double> second = pResult.getValue().get(params[2]).getData()
-				.get(params[3]).get(figure).get(attribute).get(statistics);
+				.get(params[3]).get(figure).get(attribute).get(statistic);
 
 		if ((first == null) || (second == null))
 			return;
 		
 		//  -------------------------------------
+		// Details
 		
-		/*double[] left = pResult.listToDouble(first);
-		double[] right = pResult.listToDouble(second);
+		String columnName = this.getColumnName(column);
+		if (columnName != null)
+		{
+			Map<String, Map<String, Map<String, LinkedList<Double>>>> map = pResult
+					.getTestResult().get(columnName);
+			
+			System.out.printf("Column Name %s", columnName);
+			
+			if (map != null)
+			{
+				
+				
+				LinkedList<Double> result = map.get(figure).get(attribute).get(statistic);
+				if (result != null)
+				{
+					boolean isT = true;
+					if (result.get(0) < 0.0d) isT = false;
+					
+					boolean isPaired = true;
+					if (result.get(1) < 0.0d) isPaired = false;
+					
+					if (isT) 
+					{
+						if (isPaired) view.getHypoTestEdit().setText("T-Test - Paired");
+						else view.getHypoTestEdit().setText("T-Test - Unpaired");
+					}
+					else
+					{
+						if (isPaired) view.getHypoTestEdit().setText("Wilcoxon Test");
+						else view.getHypoTestEdit().setText("U Mann–Whitney Test");
+					}
+					
+					view.getHypoEqualEdit().setText(Double.toString(result.get(2)));
+				
+					// POKOLOROWAC BACKGROUND :D
+					
+					
+				}
+			}
+		}
 
-		LillieforsNormality.compute(left, 5, true);
-		boolean normal = LillieforsNormality
-				.isTrueForAlpha(0.05d);
-
-		
-		System.out.printf("POLICZONE : %f\n", LillieforsNormality.statistics);
-		
-		
-		LillieforsNormality.compute(right, 5, false);
-		normal = LillieforsNormality
-					.isTrueForAlpha(0.05d);
-
-		System.out.printf("POLICZONE : %f\n", LillieforsNormality.statistics);*/
-		
 		//  ------------------------------------
 		
 		ArrayList <ArrayList <Double>> toHist = new ArrayList <ArrayList <Double>>(2);
@@ -136,13 +166,24 @@ public class StatisticsController implements ActionListener
 			
 			if (isT) 
 			{
-				if (isPaired) label = "T (P): ";
-				else label = "T (U): ";
+				if (isPaired){
+					label = "T (P): ";
+				}
+				else
+				{
+					label = "T (U): ";
+				}
 			}
 			else
 			{
-				if (isPaired) label = "W: ";
-				else label = "MWW: ";
+				if (isPaired)
+				{
+					label = "W: ";
+				}
+				else
+				{
+					label = "MWW: ";
+				}
 			}
 			
 			label += Double.toString(result.get(2));
@@ -169,6 +210,8 @@ public class StatisticsController implements ActionListener
 					view.getElementStr());
 
 			view.getReport().changeSelection(0, 1, false, false);
+			
+			view.changeSelection();
 		}
 
 		if (com.equals("CLOSE"))
@@ -226,6 +269,30 @@ public class StatisticsController implements ActionListener
 			params[2] = "Second";
 			params[3] = "Before";
 		}
+	}
+	
+	public String getColumnName(int column)
+	{
+		String result = "";
+		
+		int projectType = SharedController.getInstance().getProject().getType();
+		
+		//{ "P1AB", "P2AB", "BB", "AA", "dAB", };
+		
+		if (projectType == Project.POPULATION_SINGLE)
+		{
+			if (column == 1) return "BB";
+		}
+		else
+		{
+			if (column == 1) return "P1AB";
+			else if (column == 2) return "P2AB";
+			else if (column == 3) return "BB";
+			else if (column == 4) return "AA";
+			else if (column == 5) return "dAB";
+		}
+		
+		return result;
 	}
 
 	public ArrayList <Double> getArrayFromList(LinkedList <Double> input)

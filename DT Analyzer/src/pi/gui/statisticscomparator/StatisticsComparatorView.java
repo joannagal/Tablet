@@ -36,7 +36,7 @@ public class StatisticsComparatorView extends JFrame
 	private JList<String> elementsList = new JList<String>(
 			StatMapper.attributeNames);
 
-	private String figureStr = "ZigZag";
+	private String figureStr = "All Figures";
 	private String elementStr = "Figure Standards";
 
 	private JButton closeButton = new JButton("Close");

@@ -183,7 +183,7 @@ public class Graph extends JPanel implements MouseMotionListener
 			
 			// DEB
 			
-			System.out.printf("-DEBUG ---\n");
+			//System.out.printf("-DEBUG ---\n");
 			//drawing.recalculate(true);
 			//System.out.printf("-%d %d\n", drawing.);
 			//drawing.linearize(10);

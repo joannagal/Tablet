@@ -3,14 +3,17 @@ package pi.gui.project.toolbar.statistics;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -35,7 +38,7 @@ public class StatisticsView extends JFrame
 	private JList<String> elementsList = new JList<String>(
 			StatMapper.attributeNames);
 
-	private String figureStr = "ZigZag";
+	private String figureStr = "All Figures";
 	private String elementStr = "Figure Standards";
 
 	private JButton closeButton = new JButton("Close");
@@ -59,7 +62,19 @@ public class StatisticsView extends JFrame
 	private JTable report = new JTable();
 	private DefaultTableModel model = new MyTableModel();
 	private JScrollPane reportPane = new JScrollPane(report);
-
+	
+	private JPanel detailPanel = new JPanel();
+	
+	private JLabel hypoTestLabel = new JLabel("Test performed");
+	private JLabel hypoEqualLabel = new JLabel("P-Value");
+	private JLabel hypoRightLabel = new JLabel("Right sided test");
+	private JLabel hypoLeftLabel = new JLabel("Left sided test");
+	
+	private JTextField hypoTestEdit = new JTextField();
+	private JTextField hypoEqualEdit = new JTextField();
+	private JTextField hypoRightEdit = new JTextField();
+	private JTextField hypoLeftEdit = new JTextField();
+	
 	public StatisticsView()
 	{
 		this.setTitle("Statistics");
@@ -91,6 +106,7 @@ public class StatisticsView extends JFrame
 			{
 				prepare(getFigureStr(), getElementsList().getSelectedValue());
 				report.changeSelection(0, 1, false, false);
+				changeSelection();
 			}
 		});
 		this.add(this.elementsList);
@@ -109,43 +125,68 @@ public class StatisticsView extends JFrame
 		this.report.setCellSelectionEnabled(true);
 		this.report.setDragEnabled(false);
 
-		ListSelectionModel cellSelectionModel = this.report.getSelectionModel();
-		cellSelectionModel.addListSelectionListener(new ListSelectionListener()
-		{
-			@Override
-			public void valueChanged(ListSelectionEvent arg0)
-			{
-				int row = report.getSelectedRow();
-				int column = report.getSelectedColumn();
-				//System.out.printf("-- %d %d\n", column, row);
-				
-				if ((row == -1) || (column == -1)) return;
-				
-
-				String figure = getFigureStr();
-				String attribute = getElementStr();
-
-				String statistics = model
-						.getValueAt(row, 0).toString();	
-				
-				//System.out.printf("C:: %s %s %s\n", figure, attribute, statistics);
-				
-				controller.setHistogram(column, figure, attribute, statistics);
-			}
+		this.report.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		    	changeSelection();
+		    }
 		});
-
-		this.reportPane.setBounds(165, 18, 820, 417);
+	
+		this.detailPanel.setBounds(165, 18, 820, 80);
+		this.add(this.detailPanel);
+		
+		this.detailPanel.setLayout(null);
+		this.detailPanel.setBorder(BorderFactory.createTitledBorder("Details"));
+		
+		this.hypoTestLabel.setBounds(10, 25, 110, 15);
+		this.detailPanel.add(this.hypoTestLabel);
+		this.hypoTestEdit.setBounds(125, 23, 150, 20);
+		this.detailPanel.add(this.hypoTestEdit);
+		
+		this.hypoEqualLabel.setBounds(10, 50, 110, 15);
+		this.detailPanel.add(this.hypoEqualLabel);
+		this.hypoEqualEdit.setBounds(125, 48, 150, 20);
+		this.detailPanel.add(this.hypoEqualEdit);
+		
+		this.hypoRightLabel.setBounds(300, 25, 110, 15);
+		this.detailPanel.add(this.hypoRightLabel);
+		this.hypoRightEdit.setBounds(415, 23, 150, 20);
+		this.detailPanel.add(this.hypoRightEdit);
+		
+		this.hypoLeftLabel.setBounds(300, 50, 110, 15);
+		this.detailPanel.add(this.hypoLeftLabel);
+		this.hypoLeftEdit.setBounds(415, 48, 150, 20);
+		this.detailPanel.add(this.hypoLeftEdit);
+	
+		this.reportPane.setBounds(165, 100, 820, 337);
 		this.report.getTableHeader().setReorderingAllowed(false);
 
-		this.histogram.setBounds(165, 18, 820, 417);
+		this.histogram.setBounds(165, 100, 820, 337);
 		this.histogram.recalculate();
 		this.histogram.draw();
 
-		this.tabbedPane.setBounds(165, 18, 820, 417);
+		this.tabbedPane.setBounds(165, 100, 820, 337);
 		this.tabbedPane.add("Results", this.reportPane);
 		this.tabbedPane.add("Histogram", this.histogram);
 		this.add(this.tabbedPane);
 
+	}
+	
+	public void changeSelection()
+	{
+		int row = report.getSelectedRow();
+		int column = report.getSelectedColumn();
+
+		if ((row == -1) || (column == -1)) return;
+		
+
+		String figure = getFigureStr();
+		String attribute = getElementStr();
+
+		String statistics = model
+				.getValueAt(row, 0).toString();	
+		
+		controller.setDetails(column, figure, attribute, statistics);
 	}
 
 	class ShowThread implements Runnable
@@ -313,5 +354,45 @@ public class StatisticsView extends JFrame
 	public void setHistogram(Histogram histogram)
 	{
 		this.histogram = histogram;
+	}
+
+	public JTextField getHypoTestEdit()
+	{
+		return hypoTestEdit;
+	}
+
+	public void setHypoTestEdit(JTextField hypoTestEdit)
+	{
+		this.hypoTestEdit = hypoTestEdit;
+	}
+
+	public JTextField getHypoEqualEdit()
+	{
+		return hypoEqualEdit;
+	}
+
+	public void setHypoEqualEdit(JTextField hypoEqualEdit)
+	{
+		this.hypoEqualEdit = hypoEqualEdit;
+	}
+
+	public JTextField getHypoRightEdit()
+	{
+		return hypoRightEdit;
+	}
+
+	public void setHypoRightEdit(JTextField hypoRightEdit)
+	{
+		this.hypoRightEdit = hypoRightEdit;
+	}
+
+	public JTextField getHypoLeftEdit()
+	{
+		return hypoLeftEdit;
+	}
+
+	public void setHypoLeftEdit(JTextField hypoLeftEdit)
+	{
+		this.hypoLeftEdit = hypoLeftEdit;
 	}
 }

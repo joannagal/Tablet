@@ -8,7 +8,7 @@ public class StatMapper
 {
 
 	public static String[] figureNames =
-	{ "ZigZag", "Circle-Left", "Circle-Right", "First Line", "Second Line",
+	{ "All Figures", "ZigZag", "Circle-Left", "Circle-Right", "First Line", "Second Line",
 			"Broken Line", "Spiral-In", "Spiral-Out" };
 
 	public static Map<String, Boolean> figureAvaible = new HashMap<String, Boolean>(
@@ -58,7 +58,7 @@ public class StatMapper
 	{
 		
 		for (int i = 0; i < figureNames.length; i++)
-			figureAvaible.put(figureNames[i], true);
+			figureAvaible.put(figureNames[i], false);
 		
 		for (int i = 0; i < attributeNames.length; i++)
 			attributeAvaible.put(attributeNames[i], true);
@@ -66,6 +66,7 @@ public class StatMapper
 		for (int i = 0; i < statisticNames.length; i++)
 			statisticAvaible.put(statisticNames[i], true);
 		
+		figureAvaible.put("All Figures", true);
 		statisticAvaible.put("Min", false);
 		statisticAvaible.put("Max", false);
 		statisticAvaible.put("Amplitude", false);

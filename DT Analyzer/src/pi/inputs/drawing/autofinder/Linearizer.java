@@ -14,9 +14,7 @@ public class Linearizer
 {
 	public void linearize(Drawing drawing)
 	{
-		
-		ArrayList <Figure> figure = drawing.getFigure();
-		Iterator <Figure> itFig = figure.iterator();
+		Figure[] figure = drawing.getCompleteFigure();
 		Iterator <Segment> itSeg;
 		Figure fig;
 		Segment seg;
@@ -25,9 +23,10 @@ public class Linearizer
 		Range range;
 		int size;
 		
-		while (itFig.hasNext())
+		for (int i = 0; i < figure.length; i++)
 		{
-			fig = itFig.next();
+			fig = figure[i];
+			if (fig == null) continue;
 			if (fig.getSegment() == null) continue;
 			
 			itSeg = fig.getSegment().iterator();
@@ -42,9 +41,9 @@ public class Linearizer
 				size = packet.size();
 				ArrayList <PacketData> linear = new ArrayList <PacketData> (size);
 				
-				for (int i = range.getLeft(); i <= range.getRight(); i++)
+				for (int j = range.getLeft(); j <= range.getRight(); j++)
 				{
-					linear.add(packet.get(i).getCopy());
+					linear.add(packet.get(j).getCopy());
 				}
 				
 				this.linearizeVectorDynamic(linear, 10);

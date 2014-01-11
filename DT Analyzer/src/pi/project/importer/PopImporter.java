@@ -38,6 +38,7 @@ public class PopImporter extends DefaultHandler
 
 	private int specimenIndex = 0;
 	private int channelIndex = 0;
+	private int channelSize = 0;
 
 	private int rawSize = -1;
 
@@ -236,10 +237,11 @@ public class PopImporter extends DefaultHandler
 		String figures = attributes.getValue("figures");
 		if (figures != null && figures != "")
 		{
-			//System.out.println("ERR Figures: " + figures);
+			channelSize = Integer.parseInt(figures);
 			figureList = new ArrayList<>(Integer.parseInt(figures));
 		} else
 		{
+			channelSize = 0;
 			figureList = new ArrayList<>();
 
 		}
@@ -273,8 +275,6 @@ public class PopImporter extends DefaultHandler
 				input.setOutOrgY(w);
 				input.setOutExtX(h);
 				input.setOutExtY(y);
-				
-				//this.setContent(new Rectangle(this.outOrgX, this.outExtY, this.outOrgY, this.outExtX));
 			}
 		}
 
@@ -287,13 +287,11 @@ public class PopImporter extends DefaultHandler
 		if (id.equals("1"))
 		{
 			spec.setBefore(input);
+	
 		} else if (id.equals("2"))
 		{
 			spec.setAfter(input);
 		}
-
-		input.createStatus();
-		input.linearize(10);
 	}
 
 	public void initFigure(Attributes attributes)
@@ -302,7 +300,10 @@ public class PopImporter extends DefaultHandler
 
 		String type = attributes.getValue("type");
 		if (type != "")
+		{
 			figure.setType(Integer.parseInt(type));
+		}
+			
 
 		String points = attributes.getValue("points"); 
 		if (points != null)
@@ -329,6 +330,10 @@ public class PopImporter extends DefaultHandler
 		figureList.add(channelIndex, figure);
 		channelIndex++;
 
+		if (channelIndex == channelSize)
+		{
+			input.completeFigures();
+		}
 	}
 
 	public void initRawData(Attributes attributes)
@@ -345,7 +350,6 @@ public class PopImporter extends DefaultHandler
 
 	public void finishRawData()
 	{
-
 		//System.out.printf("--- FINISH\n");
 		Iterator<String> it = this.toBuild.iterator();
 		String value;

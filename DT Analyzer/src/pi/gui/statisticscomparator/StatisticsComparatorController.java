@@ -101,28 +101,12 @@ public class StatisticsComparatorController implements ActionListener
 	public void fillColumn(DrawingResult drawingResult, String figure,
 			String element, int column)
 	{
+		System.out.printf("---- F %s\n", figure);
 
 		Map<String, FigureResult> valueFig = drawingResult.getValue();
 		FigureResult figureResult = valueFig.get(figure);
 		if (figureResult != null)
 		{
-			// PRINT FOR CHECK
-			/*
-			 * System.out.printf("START\n"); ArrayList<PacketData> pck =
-			 * figureResult.getFigure().getParent() .getPacket();
-			 * 
-			 * Figure fig = figureResult.getFigure(); Iterator<Segment> it =
-			 * fig.getSegment().iterator(); while (it.hasNext()) {
-			 * System.out.printf("SEGMENT\n"); Segment seg = it.next(); for (int
-			 * i = seg.getRange().getLeft(); i <= seg.getRange() .getRight();
-			 * i++) { System.out.printf("%d %d %d %d %d %d\n", pck.get(i)
-			 * .getPkX(), pck.get(i).getPkY(), pck.get(i) .getPkTime(),
-			 * pck.get(i).getPkPressure(), pck .get(i).getPkAltitude(),
-			 * pck.get(i).getPkAzimuth()); } }
-			 */
-
-			// --------------
-
 			Map<String, AttributeResult> valueAttr = figureResult.getValue();
 			AttributeResult attributeResult = valueAttr.get(element);
 			if (attributeResult != null)
