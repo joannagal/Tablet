@@ -66,7 +66,7 @@ public class PopulationView extends JPanel
 
 			this.splitPane.setOneTouchExpandable(true);
 
-			this.splitPane.setDividerLocation(250);
+			//this.splitPane.setDividerLocation(150);
 			this.add(this.splitPane, c);
 		}
 	}

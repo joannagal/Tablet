@@ -173,8 +173,8 @@ public class Drawing
 		int shift = 0;
 		int fileNameLength = this.getInt(data, shift);
 
-		//System.out.printf("-----------\n");
-		//System.out.printf("%d ", fileNameLength);
+		System.out.printf("-----------\n");
+		System.out.printf("%d ", fileNameLength);
 
 		if (fileNameLength > 0)
 		{
@@ -184,14 +184,14 @@ public class Drawing
 				fileName[i] = data[shift + i];
 			shift += fileNameLength;
 
-			//String str = new String(fileName, "UTF-8");
-			//System.out.printf("%s \n", str);
+			String str = new String(fileName, "UTF-8");
+			System.out.printf("%s \n", str);
 
 		} else
 			shift += 4;
 
 		int dateLength = this.getInt(data, shift);
-		//System.out.printf("%d ", dateLength);
+		System.out.printf("%d ", dateLength);
 		if (dateLength > 0)
 		{
 			shift += 4;
@@ -201,14 +201,14 @@ public class Drawing
 				date[i] = data[shift + i];
 			shift += dateLength;
 
-			//String str = new String(date, "UTF-8");
-			//System.out.printf("%s \n", str);
+			String str = new String(date, "UTF-8");
+			System.out.printf("%s \n", str);
 
 		} else
 			shift += 4;
 
 		int memoLength = this.getInt(data, shift);
-		//System.out.printf("%d ", memoLength);
+		System.out.printf("%d ", memoLength);
 		if (memoLength > 0)
 		{
 			shift += 4;
@@ -217,8 +217,8 @@ public class Drawing
 				memo[i] = data[shift + i];
 			shift += memoLength;
 
-			//String str = new String(memo, "UTF-8");
-			//System.out.printf("%s \n", str);
+			String str = new String(memo, "UTF-8");
+			System.out.printf("%s \n", str);
 		} else
 			shift += 4;
 
@@ -231,15 +231,21 @@ public class Drawing
 		this.outExtY = this.getInt(data, shift);
 		shift += 4;
 
-		//System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX, outExtY);
-
+		System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX, outExtY);
+		
 		int numPackages = this.getInt(data, shift);
 		shift += 4;
+		
+		if (numPackages > 1000000) 
+		{
+			throw new Exception();
+		}
 
-		//System.out.printf("PACKAGES:  %d\n", numPackages);
+		System.out.printf("PACKAGES:  %d\n", numPackages);
 
 		this.setPressureAvoid(64);
 		this.setMaxPressure(1024);
+		
 
 		this.packet = new ArrayList<PacketData>(numPackages);
 		PacketData temp;

@@ -11,6 +11,8 @@ import org.apache.commons.math3.stat.inference.WilcoxonSignedRankTest;
 
 import pi.project.Project;
 import pi.shared.SharedController;
+import pi.statistics.functions.Average;
+import pi.statistics.functions.Variance;
 import pi.statistics.tests.LillieforsNormality;
 
 public class ProjectResult
@@ -147,6 +149,14 @@ public class ProjectResult
 						left = this.listToDouble(fList);
 						right = this.listToDouble(sList);
 					}
+					
+					// ------------------------
+					// LICZ AVG I DEV
+					
+					this.calculateStatistics(result, left);
+					this.calculateStatistics(result, right);
+					
+					// ------------------------
 
 					LillieforsNormality.compute(left, this.rangesLillie, false);
 					boolean normal = LillieforsNormality
@@ -219,6 +229,28 @@ public class ProjectResult
 				}
 			}
 		}
+	}
+	
+	public void calculateStatistics(LinkedList <Double> result, double[] list)
+	{
+		StatisticResult avg = new StatisticResult();
+		StatisticResult var = new StatisticResult();
+		
+		Average.init(avg);
+		for (int i = 0; i < list.length; i++)
+			Average.iterate(list[i]);
+		Average.finish();
+		
+		Variance.init(var, avg.getValue().get(0));
+		
+		for (int i = 0; i < list.length; i++)
+			Variance.iterate(list[i]);
+		
+		Variance.finish();
+		
+		result.add(avg.getValue().get(0));
+		double sd = Math.sqrt(var.getValue().get(0));
+		result.add(sd);
 	}
 
 	public double[] listToDouble(LinkedList<Double> list, int length)

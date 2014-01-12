@@ -106,6 +106,33 @@ public class Graph extends JPanel implements MouseMotionListener
 		this.repaint();
 	}
 
+	public void changeFigure(int x, int y, int type)
+	{
+		if (this.drawing == null)
+			return;
+		if (this.drawing.getFigure() == null)
+			return;
+
+		Point p = new Point();
+		this.tranform.transformToRealPoint(x, y, p);
+
+		ArrayList<Figure> figure = this.drawing.getFigure();
+		int size = figure.size();
+
+		for (int i = 0; i < size; i++)
+		{
+			if (figure.get(i).getBounds() == null)
+				continue;
+			if (this.tranform.isInside(figure.get(i).getBounds(), p))
+			{
+				figure.get(i).setType(type);
+				this.recalculate();
+				this.draw();
+				return;
+			}
+		}
+	}
+	
 	public void deleteFigure(int x, int y)
 	{
 		if (this.drawing == null)

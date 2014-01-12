@@ -28,6 +28,8 @@ public class StatisticsController implements ActionListener
 		view.getHypoEqualEdit().setText("");
 		view.getHypoLeftEdit().setText("");
 		view.getHypoRightEdit().setText("");
+		view.getHypoLeftStatEdit().setText("");
+		view.getHypoRightStatEdit().setText("");
 		
 		ProjectResult pResult = SharedController.getInstance().getProject()
 				.getResult();
@@ -66,10 +68,10 @@ public class StatisticsController implements ActionListener
 				if (result != null)
 				{
 					boolean isT = true;
-					if (result.get(0) < 0.0d) isT = false;
+					if (result.get(4) < 0.0d) isT = false;
 					
 					boolean isPaired = true;
-					if (result.get(1) < 0.0d) isPaired = false;
+					if (result.get(5) < 0.0d) isPaired = false;
 					
 					if (isT) 
 					{
@@ -79,11 +81,21 @@ public class StatisticsController implements ActionListener
 					else
 					{
 						if (isPaired) view.getHypoTestEdit().setText("Wilcoxon Test");
-						else view.getHypoTestEdit().setText("U Mann–Whitney Test");
+						else view.getHypoTestEdit().setText("U Mannï¿½Whitney Test");
 					}
 					
-					view.getHypoEqualEdit().setText(Double.toString(result.get(2)));
-				
+					view.getHypoEqualEdit().setText(Double.toString(result.get(6)));
+					
+					String leftStat = String.format("%.3f", result.get(0));
+					leftStat += " +- ";
+					leftStat += String.format("%.3f", result.get(1));
+					view.getHypoLeftStatEdit().setText(leftStat);
+
+					String rightStat = String.format("%.3f", result.get(2));
+					rightStat += " +- ";
+					rightStat += String.format("%.3f", result.get(3));
+					view.getHypoRightStatEdit().setText(rightStat);
+					
 					// POKOLOROWAC BACKGROUND :D
 					
 					
@@ -159,10 +171,10 @@ public class StatisticsController implements ActionListener
 			String label = "";
 			
 			boolean isT = true;
-			if (result.get(0) < 0.0d) isT = false;
+			if (result.get(4) < 0.0d) isT = false;
 			
 			boolean isPaired = true;
-			if (result.get(1) < 0.0d) isPaired = false;
+			if (result.get(5) < 0.0d) isPaired = false;
 			
 			if (isT) 
 			{
@@ -186,7 +198,7 @@ public class StatisticsController implements ActionListener
 				}
 			}
 			
-			label += Double.toString(result.get(2));
+			label += String.format("%.3f", result.get(6));
 
 			view.getModel().setValueAt(label, where, column);
 			view.getModel().setValueAt(StatMapper.statisticNames[i], where, 0);

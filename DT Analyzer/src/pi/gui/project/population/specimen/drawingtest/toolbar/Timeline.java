@@ -101,7 +101,7 @@ public class Timeline extends JPanel
 				if (getGraph().getDrawing() == null)
 					return;
 				
-				int type = figuresCombo.getSelectedIndex();
+				int type = figuresCombo.getSelectedIndex() + 1;
 				Range range = new Range(getGraph().getSelection().getLeft(),
 						getGraph().getSelection().getRight());
 				

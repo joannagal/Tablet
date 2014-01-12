@@ -67,7 +67,7 @@ public class Transformations
 	
 	public boolean isInside(Rectangle rect, Point p)
 	{
-		int resize = 15;
+		int resize = 150;
 		if (
 				(p.x >= rect.x - resize) &&
 				(p.y >= rect.y - rect.height - resize) &&

@@ -4,12 +4,14 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 
 import pi.graph.drawing.Graph;
+import pi.inputs.drawing.Figure;
 
 
 public class PopUp extends JPopupMenu
@@ -24,6 +26,17 @@ public class PopUp extends JPopupMenu
 	private JMenuItem thick = new JRadioButtonMenuItem("Thickness");
 	private JMenuItem angle = new JRadioButtonMenuItem("Angle");
 	
+	private JMenu changeType = new JMenu("Change Type");
+	private JMenuItem zigzag = new JRadioButtonMenuItem("ZigZag");
+	private JMenuItem circleLeft = new JRadioButtonMenuItem("Circle-Left");
+	private JMenuItem circleRight = new JRadioButtonMenuItem("Circle-Right");
+	private JMenuItem firstLine = new JRadioButtonMenuItem("First Line");
+	private JMenuItem secondLine = new JRadioButtonMenuItem("Second Line");
+	private JMenuItem brokenLine = new JRadioButtonMenuItem("Broken Line");
+	private JMenuItem spiralIn = new JRadioButtonMenuItem("Spiral In");
+	private JMenuItem spiralOut = new JRadioButtonMenuItem("Spiral Out");
+	
+
 	public PopUp(Graph graph)
 	{
 		this.all.setSelected(false);
@@ -67,6 +80,90 @@ public class PopUp extends JPopupMenu
 				getGraph().draw();	
 			}
 		});
+		
+		this.add(new JSeparator());
+		
+		this.add(this.changeType);
+		this.changeType.add(this.zigzag);
+		this.zigzag.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if (point == null) return;
+				getGraph().changeFigure(point.x, point.y, Figure.ZIGZAG);
+			}
+		});
+		
+		this.changeType.add(this.circleLeft);
+		this.circleLeft.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if (point == null) return;
+				getGraph().changeFigure(point.x, point.y, Figure.CIRCLELEFT);
+			}
+		});
+		
+		this.changeType.add(this.circleRight);
+		this.circleRight.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if (point == null) return;
+				getGraph().changeFigure(point.x, point.y, Figure.CIRCLERIGHT);
+			}
+		});
+		
+		this.changeType.add(this.firstLine);
+		this.firstLine.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if (point == null) return;
+				getGraph().changeFigure(point.x, point.y, Figure.FIRSTLINE);
+			}
+		});
+		
+		this.secondLine.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if (point == null) return;
+				getGraph().changeFigure(point.x, point.y, Figure.SECONDLINE);
+			}
+		});
+		
+		this.brokenLine.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if (point == null) return;
+				getGraph().changeFigure(point.x, point.y, Figure.BROKENLINE);
+			}
+		});
+		
+		this.spiralIn.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if (point == null) return;
+				getGraph().changeFigure(point.x, point.y, Figure.SPIRALIN);
+			}
+		});
+		
+		this.spiralOut.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				if (point == null) return;
+				getGraph().changeFigure(point.x, point.y, Figure.SPIRALOUT);
+			}
+		});
+		
+		this.changeType.add(this.secondLine);
+		this.changeType.add(this.brokenLine);
+		this.changeType.add(this.spiralIn);
+		this.changeType.add(this.spiralOut);
 		
 		this.add(new JSeparator());
 		
