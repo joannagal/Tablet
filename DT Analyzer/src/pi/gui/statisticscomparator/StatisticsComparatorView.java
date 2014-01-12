@@ -2,12 +2,15 @@ package pi.gui.statisticscomparator;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -113,6 +116,22 @@ public class StatisticsComparatorView extends JFrame
 
 		this.fftGraph.recalculate();
 		this.fftGraph.draw();
+		
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+			
+				if (specimen[0] != null)
+				{
+					specimen[0].clearMemory();
+				}
+				
+				if (specimen[1] != null)
+				{
+					specimen[1].clearMemory();
+				}
+			}
+		});
+		
 	}
 
 	public void setSpecimen(Specimen first, Specimen second)

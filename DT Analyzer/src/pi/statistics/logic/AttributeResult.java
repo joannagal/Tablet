@@ -8,6 +8,19 @@ public class AttributeResult {
 	
 		protected Map <String, StatisticResult> value;
       
+		public void clearMemory()
+		{	
+			if (this.value != null)
+			{
+				 for (Map.Entry<String, StatisticResult> entry : this.value.entrySet())
+				 {
+					 entry.getValue().clearMemory();
+				 }
+				 
+				 this.value = null;
+			}
+		}
+		
 		
 		public void calculateResult(boolean projectLevel)
 		{

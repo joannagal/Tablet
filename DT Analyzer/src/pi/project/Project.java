@@ -60,6 +60,14 @@ public class Project
 	public static final int POPULATION_SINGLE = 2;
 	public static final int POPULATION_PAIR = 3;
 
+	public void clearMemory()
+	{
+		if (this.result != null)
+		{
+			this.result.clearMemory();
+			this.result = null;
+		}
+	}
 	
 	public void calculateStatistic()
 	{

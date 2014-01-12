@@ -2,6 +2,8 @@ package pi.gui.project.toolbar.statistics;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -9,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -170,6 +173,11 @@ public class StatisticsView extends JFrame
 		this.tabbedPane.add("Histogram", this.histogram);
 		this.add(this.tabbedPane);
 
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				SharedController.getInstance().getProject().clearMemory();
+			}
+		});
 	}
 	
 	public void changeSelection()

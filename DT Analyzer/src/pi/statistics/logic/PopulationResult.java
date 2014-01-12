@@ -26,6 +26,24 @@ public class PopulationResult
 	{
 		this.population = population;
 	}
+	
+	public void clearMemory()
+	{
+		if (this.data != null)
+		{
+			this.data = null;
+		}
+		
+		if (this.value != null)
+		{
+			 for (Map.Entry<String, SpecimenResult> entry : this.value.entrySet())
+			 {
+				 entry.getValue().clearMemory();
+			 }
+			 
+			 this.value = null;
+		}
+	}
 
 	public void calculateResult()
 	{

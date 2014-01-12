@@ -11,6 +11,19 @@ public class SpecimenResult
 	public Specimen specimen;
 	private Map<String, DrawingResult> value;
 	
+	public void clearMemory()
+	{
+		if (this.value != null)
+		{
+			 for (Map.Entry<String, DrawingResult> entry : this.value.entrySet())
+			 {
+				 entry.getValue().clearMemory();
+			 }
+			 
+			 this.value = null;
+		}
+	}
+	
 	public SpecimenResult(Specimen specimen)
 	{
 		this.specimen = specimen;

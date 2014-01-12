@@ -33,6 +33,24 @@ public class ProjectResult
 		this.project = project;
 	}
 
+	public void clearMemory()
+	{
+		if (this.testResult != null)
+		{
+			this.testResult = null;
+		}
+		
+		if (this.value != null)
+		{
+			 for (Map.Entry<String, PopulationResult> entry : this.value.entrySet())
+			 {
+				 entry.getValue().clearMemory();
+			 }
+			 
+			 this.value = null;
+		}
+	}
+	
 	public void doTests()
 	{
 		this.testResult = null;

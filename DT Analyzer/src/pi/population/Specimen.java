@@ -42,6 +42,15 @@ public class Specimen
 		result.calculateResult(projectLevel);
 	}
 	
+	public void clearMemory()
+	{
+		if (this.result != null)
+		{
+			this.result.clearMemory();
+			this.result = null;
+		}
+	}
+	
 	public String getName()
 	{
 		return name;

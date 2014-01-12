@@ -18,6 +18,19 @@ public class FigureResult
 	private Map<String, AttributeResult> value;
 	private Figure figure;
 
+	public void clearMemory()
+	{	
+		if (this.value != null)
+		{
+			 for (Map.Entry<String, AttributeResult> entry : this.value.entrySet())
+			 {
+				 entry.getValue().clearMemory();
+			 }
+			 
+			 this.value = null;
+		}
+	}
+	
 	public FigureResult(Figure figure)
 	{
 		this.setFigure(figure);
