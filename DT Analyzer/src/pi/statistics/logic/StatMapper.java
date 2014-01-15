@@ -67,8 +67,10 @@ public class StatMapper
 			statisticAvaible.put(statisticNames[i], true);
 		
 		figureAvaible.put("All Figures", true);
+		attributeAvaible.put("Direction Change (f'')", false);
+		attributeAvaible.put("Azimuth", false);
+		attributeAvaible.put("Altitude", false);
 		statisticAvaible.put("Min", false);
-		statisticAvaible.put("Max", false);
 		statisticAvaible.put("Amplitude", false);
 		statisticAvaible.put("Median", false);
 	}

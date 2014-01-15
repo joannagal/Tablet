@@ -27,14 +27,14 @@ public class PopUp extends JPopupMenu
 	private JMenuItem angle = new JRadioButtonMenuItem("Angle");
 	
 	private JMenu changeType = new JMenu("Change Type");
-	private JMenuItem zigzag = new JRadioButtonMenuItem("ZigZag");
-	private JMenuItem circleLeft = new JRadioButtonMenuItem("Circle-Left");
-	private JMenuItem circleRight = new JRadioButtonMenuItem("Circle-Right");
-	private JMenuItem firstLine = new JRadioButtonMenuItem("First Line");
-	private JMenuItem secondLine = new JRadioButtonMenuItem("Second Line");
-	private JMenuItem brokenLine = new JRadioButtonMenuItem("Broken Line");
-	private JMenuItem spiralIn = new JRadioButtonMenuItem("Spiral In");
-	private JMenuItem spiralOut = new JRadioButtonMenuItem("Spiral Out");
+	private JMenuItem zigzag = new JMenuItem("ZigZag");
+	private JMenuItem circleLeft = new JMenuItem("Circle-Left");
+	private JMenuItem circleRight = new JMenuItem("Circle-Right");
+	private JMenuItem firstLine = new JMenuItem("First Line");
+	private JMenuItem secondLine = new JMenuItem("Second Line");
+	private JMenuItem brokenLine = new JMenuItem("Broken Line");
+	private JMenuItem spiralIn = new JMenuItem("Spiral In");
+	private JMenuItem spiralOut = new JMenuItem("Spiral Out");
 	
 
 	public PopUp(Graph graph)

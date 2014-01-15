@@ -13,9 +13,9 @@ public class FFTFreq
 		result = input;
 
 		double max[] =
-		{ -1000000.0d, -1000000.0d };
+		{ -1000000.0d, -1000000.0d, -10000000.0d };
 		double freq[] =
-		{ 0.0d, 0.0d };
+		{ 0.0d, 0.0d, 0.0d };
 
 		int size = data.size();
 		for (int i = 0; i < size - 1; i += 2)
@@ -31,13 +31,37 @@ public class FFTFreq
 				max[1] = data.get(i + 1);
 				freq[1] = data.get(i);
 			}
+			
+			if (data.get(i) > 2.5)
+			{
+				if (data.get(i + 1) > max[2])
+				{
+					max[2] = data.get(i + 1);
+					freq[2] = data.get(i);
+				}
+			}
 		}
 
-		if ((freq[0] < 1.000001d) && (freq[1] < 10.0d))
+		/*if (freq[0] < 1.000001d)
 		{
-			if (max[1] > 0.5d * max[0])
+			if (freq[2] < 10.0d)
+			{
+				if (max[2] > 0.33d * max[0])
+					freq[0] = freq[2];
+			}
+			else if (freq[1] < 10.0d)
+			{
+				if (max[1] > 0.33d * max[0])
+					freq[0] = freq[1];
+			}
+			
+		}*/
+		
+		/*(if ((freq[0] < 1.000001d) && (freq[1] < 10.0d))
+		{
+			if (max[1] > 0.33d * max[0])
 				freq[0] = freq[1];
-		}
+		}*/
 
 		input.setValue(new ArrayList<Double>(1));
 		input.getValue().add(freq[0]);

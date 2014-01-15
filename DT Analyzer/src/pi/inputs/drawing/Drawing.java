@@ -88,7 +88,7 @@ public class Drawing
 	
 	public void linearize(int level)
 	{
-		linearizer.linearize(this);
+		linearizer.linearize(this, 10);
 	}
 
 	public void createStatus()
@@ -331,7 +331,7 @@ public class Drawing
 	public void calculateBreakFigureDistance()
 	{
 		double width = this.content.width;
-		width = width * 0.15d;
+		width = width * 0.1d;
 		this.setBreakFigureDistance((int) width);
 
 		//System.out.printf("-- %d %d\n", this.content.width,

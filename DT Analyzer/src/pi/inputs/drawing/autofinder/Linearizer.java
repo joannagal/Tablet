@@ -12,7 +12,7 @@ import pi.utilities.Range;
 
 public class Linearizer
 {
-	public void linearize(Drawing drawing)
+	public void linearize(Drawing drawing, int steps)
 	{
 		Figure[] figure = drawing.getCompleteFigure();
 		Iterator <Segment> itSeg;
@@ -46,7 +46,7 @@ public class Linearizer
 					linear.add(packet.get(j).getCopy());
 				}
 				
-				this.linearizeVectorDynamic(linear, 10);
+				this.linearizeVectorDynamic(linear, steps);
 				seg.setLinearized(linear);
 			}		
 		}

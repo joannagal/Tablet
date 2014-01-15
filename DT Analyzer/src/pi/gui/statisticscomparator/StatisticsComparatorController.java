@@ -146,8 +146,8 @@ public class StatisticsComparatorController implements ActionListener
 						Double value = statistcResult.getValue().get(0);
 						this.view.getModel().setValueAt(Double.toString(value),
 								pos, column);
-						if (column == 1)
-							this.view.getModel().setValueAt( StatMapper.statisticNames[i], pos,
+						//if (column == 1)
+						this.view.getModel().setValueAt( StatMapper.statisticNames[i], pos,
 									0);
 						pos++;
 					}

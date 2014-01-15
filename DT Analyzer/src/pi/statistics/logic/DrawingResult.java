@@ -32,7 +32,7 @@ public class DrawingResult
 	public void calculateResult(boolean projectLevel)
 	{
 		this.value = new HashMap<String, FigureResult>();
-		this.drawing.linearize(10);
+		this.drawing.linearize(30);
 		
 		for (int i = 0; i < StatMapper.figureNames.length; i++)
 		{

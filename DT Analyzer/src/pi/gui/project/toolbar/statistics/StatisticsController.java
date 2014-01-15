@@ -86,14 +86,14 @@ public class StatisticsController implements ActionListener
 					
 					view.getHypoEqualEdit().setText(Double.toString(result.get(6)));
 					
-					String leftStat = String.format("%.3f", result.get(0));
+					String leftStat = String.format("%.6f", result.get(0));
 					leftStat += " +- ";
-					leftStat += String.format("%.3f", result.get(1));
+					leftStat += String.format("%.6f", result.get(1));
 					view.getHypoLeftStatEdit().setText(leftStat);
 
-					String rightStat = String.format("%.3f", result.get(2));
+					String rightStat = String.format("%.6f", result.get(2));
 					rightStat += " +- ";
-					rightStat += String.format("%.3f", result.get(3));
+					rightStat += String.format("%.6f", result.get(3));
 					view.getHypoRightStatEdit().setText(rightStat);
 					
 					// POKOLOROWAC BACKGROUND :D

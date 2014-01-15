@@ -113,6 +113,8 @@ public class Graph extends JPanel implements MouseMotionListener
 		if (this.drawing.getFigure() == null)
 			return;
 
+		this.tranform.recalculate();
+		
 		Point p = new Point();
 		this.tranform.transformToRealPoint(x, y, p);
 
@@ -126,6 +128,7 @@ public class Graph extends JPanel implements MouseMotionListener
 			if (this.tranform.isInside(figure.get(i).getBounds(), p))
 			{
 				figure.get(i).setType(type);
+				this.drawing.completeFigures();
 				this.recalculate();
 				this.draw();
 				return;
@@ -139,6 +142,8 @@ public class Graph extends JPanel implements MouseMotionListener
 			return;
 		if (this.drawing.getFigure() == null)
 			return;
+		
+		this.tranform.recalculate();
 
 		Point p = new Point();
 		this.tranform.transformToRealPoint(x, y, p);

@@ -89,6 +89,8 @@ public class AccelerationResult extends AttributeResult
 				size++;
 			}
 		}
+		
+		if (size == 0) return;
 
 		if (avaible[2])
 			Amplitude.finish(minResult.getValue().get(0), maxResult.getValue()

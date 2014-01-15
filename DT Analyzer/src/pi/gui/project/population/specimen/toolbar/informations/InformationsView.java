@@ -21,7 +21,7 @@ public class InformationsView extends JFrame
 
 	private JLabel name = new JLabel("Name");
 	private JLabel surname = new JLabel("Surname");
-	private JLabel pesel = new JLabel("Pesel");
+	private JLabel pesel = new JLabel("ID");
 	private JLabel sex = new JLabel("Sex");
 	private JLabel birth = new JLabel("Birth dd/MM/yyyy");
 	private JLabel hand = new JLabel("Hand");
