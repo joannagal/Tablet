@@ -47,7 +47,8 @@ public class FigureStatistic {
 		if (result == null) return null;
 		else return result.getValue().get(0);
 	}
-
+	
+	@SuppressWarnings("rawtypes")
 	public static Collection getFigureStatistics(Specimen specimen) {
 		
 		Vector<FigureStatistic> statistics = new Vector<FigureStatistic>
