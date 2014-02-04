@@ -8,7 +8,7 @@ public class StatMapper
 {
 
 	public static String[] figureNames =
-	{ "All Figures", "ZigZag", "Circle-Left", "Circle-Right", "First Line", "Second Line",
+	{ "All Figures", "ZigZag", "Circle-Up", "Circle-Down", "First Line", "Second Line",
 			"Broken Line", "Spiral-In", "Spiral-Out" };
 
 	public static Map<String, Boolean> figureAvaible = new HashMap<String, Boolean>(

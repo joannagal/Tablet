@@ -13,6 +13,7 @@ import pi.inputs.drawing.Figure;
 import pi.inputs.drawing.PacketData;
 import pi.inputs.drawing.Segment;
 import pi.shared.schemes.drawing.DrawingScheme;
+import pi.statistics.logic.StatMapper;
 import pi.utilities.Range;
 
 public class DrawingAdapter
@@ -82,36 +83,9 @@ public class DrawingAdapter
 
 		String figString = "";
 
-		switch (figure.getType())
-		{
-		case Figure.DEFAULT:
-			figString = "UNKNOWN";
-			break;
-		case Figure.ZIGZAG:
-			figString = "ZIGZAG";
-			break;
-		case Figure.CIRCLELEFT:
-			figString = "CIRCLE-LEFT";
-			break;
-		case Figure.CIRCLERIGHT:
-			figString = "CIRCLE-RIGHT";
-			break;
-		case Figure.FIRSTLINE:
-			figString = "FIRST-LINE";
-			break;
-		case Figure.SECONDLINE:
-			figString = "SECOND-LINE";
-			break;
-		case Figure.BROKENLINE:
-			figString = "BROKEN-LINE";
-			break;
-		case Figure.SPIRALIN:
-			figString = "SPIRAL-IN";
-			break;
-		case Figure.SPIRALOUT:
-			figString = "SPIRAL-OUT";
-			break;
-		}
+		figString = StatMapper.figureNames[figure.getType()];
+		
+
 
 		graphics.drawString(figString, tBounds.x, tBounds.y - 5);
 
