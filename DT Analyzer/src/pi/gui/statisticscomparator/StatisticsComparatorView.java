@@ -18,11 +18,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import net.sf.jasperreports.engine.JRException;
+
 import pi.gui.dependgraph.DependGraph;
 import pi.gui.histogram.Histogram;
 import pi.population.Specimen;
 import pi.shared.SharedController;
 import pi.statistics.logic.StatMapper;
+import pi.statistics.logic.report.ReportManager;
 
 public class StatisticsComparatorView extends JFrame
 {
@@ -43,7 +46,12 @@ public class StatisticsComparatorView extends JFrame
 	private String elementStr = "Figure Standards";
 
 	private JButton closeButton = new JButton("Close");
-	private JButton saveButton = new JButton("Save");
+	
+	private JButton reportButton = new JButton("Display report");
+	private JButton saveButton = new JButton("Save report");
+	
+
+	
 	private Histogram histogram = new Histogram();
 	private DependGraph dGraph = new DependGraph();
 	private DependGraph fftGraph = new DependGraph();
@@ -95,6 +103,11 @@ public class StatisticsComparatorView extends JFrame
 		this.closeButton.setBounds(15, 440, 140, 25);
 		this.add(this.closeButton);
 
+		this.reportButton.setActionCommand("DISPLAY");
+		this.reportButton.addActionListener(controller);
+		this.reportButton.setBounds(700, 440, 140, 25);
+		this.add(this.reportButton);
+		
 		this.saveButton.setActionCommand("SAVE");
 		this.saveButton.addActionListener(controller);
 		this.saveButton.setBounds(850, 440, 140, 25);
@@ -156,13 +169,23 @@ public class StatisticsComparatorView extends JFrame
 
 		public void run()
 		{
-			SharedController.getInstance().getProgressView().init(1);
+			SharedController.getInstance().getProgressView().init(2);
 			
 			view.setSpecimen(first, second);
 
 			view.specimen[0].calculateStatistic(false);
 			if (view.specimen[1] != null)
 				specimen[1].calculateStatistic(false);
+			
+			try
+			{
+				SharedController.getInstance().setReportMgr(new ReportManager(first));
+			} catch (JRException e)
+			{
+				e.printStackTrace();
+			}
+			
+			SharedController.getInstance().getProgressView().increase();
 
 			view.prepare(view.getFigureStr(), view.getElementStr());
 		}

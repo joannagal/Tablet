@@ -2,10 +2,18 @@ package pi.statistics.logic.report;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 import pi.population.Specimen;
 import pi.shared.SharedController;
+import pi.statistics.logic.AttributeResult;
+import pi.statistics.logic.DrawingResult;
+import pi.statistics.logic.FigureResult;
+import pi.statistics.logic.StatMapper;
+import pi.statistics.logic.StatisticResult;
 
 public class FigureStatistic {
 
@@ -33,14 +41,73 @@ public class FigureStatistic {
 	private String examination; // Nazwa sekcji {"before", "after"}
 	private String figure; // Nazwa podsekcji {"All Figures", "Zig-Zag",
 							// "Circle-Up"... }
+	
+	public static Double getValue(StatisticResult result)
+	{
+		if (result == null) return null;
+		else return result.getValue().get(0);
+	}
 
-	public static Collection getFigureStatistics() {
-		Vector<FigureStatistic> statistics = new Vector<FigureStatistic>();
+	public static Collection getFigureStatistics(Specimen specimen) {
+		
+		Vector<FigureStatistic> statistics = new Vector<FigureStatistic>
+		(2 * StatMapper.figureNames.length * StatMapper.statisticNames.length);
 
-		// TODO Wype³niæ wektor "statistics" obiektami klasy "FigureStatistic"
-		// reprezentuj¹cymi kolejne wiersze raportu. Dane do nag³ówka wystarczy
-		// dodaæ tylko do pierwszego obiektu, w pozosta³ych mo¿na zostawiæ pola
-		// puste.
+		if (specimen.getResult() == null) return statistics;
+		
+		// Po Examination
+		for (Map.Entry<String, DrawingResult> examEntry : specimen.getResult().getValue().entrySet())
+		{ 
+			// Po figurach
+			for (Map.Entry<String, FigureResult> figureEntry : examEntry.getValue().getValue().entrySet())
+			{
+				// wyciagamy dla kazdej statystyki...
+				for (int i = 0; i < StatMapper.statisticNames.length; i++)
+				{
+					FigureStatistic figure = new FigureStatistic();
+				    figure.setExamination(examEntry.getKey());
+				    figure.setFigure(figureEntry.getKey());
+				    figure.setStatistic(StatMapper.statisticNames[i]);
+				    figure.name = specimen.getName();
+				    figure.surname = specimen.getSurname();
+				    figure.personalID = specimen.getPesel();
+				    figure.sex = specimen.getNamedSex();
+				    figure.birth = specimen.getBirth();
+				    figure.hand = specimen.getNamedHand();
+				    figure.brain = specimen.getNamedBrain();
+				    figure.type = specimen.getNamedOperationType();
+				    figure.number = specimen.getOperationTestNo();
+		
+					// ... kazdy atrybut ...
+					for (Map.Entry<String, AttributeResult> attributeEntry : figureEntry.getValue().getValue().entrySet())
+					{
+						// ... o danej statystyce
+						StatisticResult statisticResult = attributeEntry.getValue().getValue().get(StatMapper.statisticNames[i]);
+						if (attributeEntry.getKey().equals("Figure Standards"))
+							figure.standards = getValue(statisticResult);
+						else if (attributeEntry.getKey().equals("Pressure"))
+							figure.pressure = getValue(statisticResult);
+						else if (attributeEntry.getKey().equals("Momentary Speed"))
+							figure.speed = getValue(statisticResult);
+						else if (attributeEntry.getKey().equals("Acceleration"))
+							figure.acceleration = getValue(statisticResult);
+						else if (attributeEntry.getKey().equals("Direction Change (f'')"))
+							figure.change = getValue(statisticResult);
+						else if (attributeEntry.getKey().equals("Azimuth"))
+							figure.azimuth = getValue(statisticResult);
+						else if (attributeEntry.getKey().equals("Altitude"))
+							figure.altitude = getValue(statisticResult);
+						else if (attributeEntry.getKey().equals("Dev. from Average"))
+							figure.dev = getValue(statisticResult);
+					}
+					
+					statistics.add(figure);
+				}
+				
+
+			}
+		}
+		
 
 		return statistics;
 	}

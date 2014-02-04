@@ -42,6 +42,33 @@ public class Specimen
 		result.calculateResult(projectLevel);
 	}
 	
+	public String getNamedSex()
+	{
+		if (this.sex == null) return "";
+		if (this.sex == true) return "Male";
+		else return "Female";
+	}
+	public String getNamedHand()
+	{
+		if (this.hand == null) return "";
+		if (this.hand == true) return "Right";
+		else return "Left";
+	}
+	
+	public String getNamedBrain()
+	{
+		if (this.brain == null) return "";
+		if (this.brain == true) return "Right";
+		else return "Left";
+	}
+	
+	public String getNamedOperationType()
+	{
+		if (this.operationType == true) return "";
+		if (this.operationType == true) return "P";
+		else return "T";
+	}
+
 	public void clearMemory()
 	{
 		if (this.result != null)

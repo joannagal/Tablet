@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import pi.population.Specimen;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -22,16 +24,16 @@ public class ReportManager {
 	JasperDesign jasperDesign = null;
 	JRBeanCollectionDataSource dataSource = null;
 
-	public ReportManager() throws JRException {
-		initReport();
+	public ReportManager(Specimen specimen) throws JRException {
+		initReport(specimen);
 	}
 
-	public void refreshReport() throws JRException {
-		initReport();
+	public void refreshReport(Specimen specimen) throws JRException {
+		initReport(specimen);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void initReport() throws JRException {
+	private void initReport(Specimen specimen) throws JRException {
 		System.out.println("Init report");
 		long start = System.currentTimeMillis();
 		@SuppressWarnings("rawtypes")
@@ -40,17 +42,23 @@ public class ReportManager {
 		// TODO Sprawdziæ czy klonowanie dataSource jest wydajniejsze od
 		// generowania go na nowo za ka¿dym razem
 		dataSource = new JRBeanCollectionDataSource(
-				FigureStatistic.getFigureStatistics());
+				FigureStatistic.getFigureStatistics(specimen));
 
 		//File file = new File("report3.jrxml");
 		//jasperDesign = JRXmlLoader.load(file);
 		//jasperReport = JasperCompileManager.compileReport(jasperDesign);
 		
-		File file = new File("tymczasowy brak pliku");
+		File file = new File("report3.jasper");
 		jasperReport = (JasperReport) JRLoader.loadObject(file);
 		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
 				dataSource);
-				//dataSource.cloneDataSource());
+		
+		
+		/*File file = new File("tymczasowy brak pliku");
+		jasperReport = (JasperReport) JRLoader.loadObject(file);
+		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
+				dataSource);
+				//dataSource.cloneDataSource());*/
 		
 		long time = System.currentTimeMillis() - start;
 		System.out.println("Czas inicjowania raportu: " + time);
@@ -119,7 +127,7 @@ public class ReportManager {
 		// http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/
 		// http://stackoverflow.com/questions/12178615/eclipse-jasper-report-not-compiling-java-lang-noclassdeffounderror-org-apach
 
-		try {
+		/*try {
 			ReportManager rm = new ReportManager();
 			rm.viewRaport();
 			//rm.saveRaportAsPdf(null);
@@ -127,7 +135,7 @@ public class ReportManager {
 		} catch (JRException e) {
 			System.out.println("Report exception");
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 

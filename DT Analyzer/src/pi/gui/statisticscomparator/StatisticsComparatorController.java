@@ -5,7 +5,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
+
+import net.sf.jasperreports.engine.JRException;
+
 import pi.population.Specimen;
+import pi.shared.SharedController;
 import pi.statistics.logic.AttributeResult;
 import pi.statistics.logic.DrawingResult;
 import pi.statistics.logic.FigureResult;
@@ -168,13 +173,23 @@ public class StatisticsComparatorController implements ActionListener
 			view.prepare(view.getFigureCombo().getSelectedItem().toString(),
 					view.getElementStr());
 		}
-
-		if (action.equals("CLOSE"))
+	
+		else if (action.equals("CLOSE"))
 		{
 			view.setVisible(false);
 		}
-
-		if (action.equals("SAVE"))
+		
+		else if (action.equals("DISPLAY"))
+		{
+			try {
+				SharedController.getInstance().getReportMgr().viewRaport();
+			} catch (JRException ex) {
+				System.out.println("Report exception");
+				ex.printStackTrace();
+			}
+		}
+		
+		else if (action.equals("SAVE"))
 		{
 
 		}
