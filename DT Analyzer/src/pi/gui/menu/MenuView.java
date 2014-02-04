@@ -8,7 +8,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
 public class MenuView extends JMenuBar
 {
 	private static final long serialVersionUID = 1L;
@@ -25,7 +24,7 @@ public class MenuView extends JMenuBar
 	private JMenuItem aboutAppItem;
 
 	private final JFileChooser fc = new JFileChooser();
-	
+
 	private JMenuItem[] menuItemsArray;
 
 	private String[] menuItemEvent = new String[]
@@ -37,9 +36,9 @@ public class MenuView extends JMenuBar
 	public MenuView(JFrame frame)
 	{
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "XML files (*.xml)", "xml");
-	    fc.setFileFilter(filter);
-		
+				"XML files (*.xml)", "xml");
+		fc.setFileFilter(filter);
+
 		this.parent = frame;
 		mainMenu = new JMenu("Application");
 		projectMenu = new JMenu("Project");
@@ -97,7 +96,7 @@ public class MenuView extends JMenuBar
 		this.saveAsProjectItem.setEnabled(value);
 		this.closeProjectItem.setEnabled(value);
 	}
-	
+
 	public void setInChoose(boolean value)
 	{
 		this.projectMenu.setEnabled(!value);

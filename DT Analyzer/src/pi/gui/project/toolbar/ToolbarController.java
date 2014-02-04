@@ -5,11 +5,10 @@ import java.awt.event.ActionListener;
 
 import pi.gui.project.toolbar.informations.InformationsView;
 
-
 public class ToolbarController implements ActionListener
 {
 	private ToolbarView view;
-	
+
 	public ToolbarController(ToolbarView view)
 	{
 		this.view = view;
@@ -24,18 +23,13 @@ public class ToolbarController implements ActionListener
 		{
 			InformationsView info = new InformationsView();
 			info.showWithData();
-		}
-		else if (action.equals("STAT"))
+		} else if (action.equals("STAT"))
 		{
-			//this.view.getStatisticsView().showWithData();
 			this.view.getChooserView().setVisible(true);
-		}
-		else if (action.equals("COMP"))
+		} else if (action.equals("COMP"))
 		{
-			
+
 		}
 	}
-	
-	
 
 }

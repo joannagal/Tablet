@@ -46,9 +46,9 @@ public class StatisticsView extends JFrame
 	private String elementStr = "Figure Standards";
 
 	private JButton closeButton = new JButton("Close");
-	
+
 	private JLabel reportLabel = new JLabel("Select report");
-	private JComboBox <String> reportCombo = new JComboBox<String>();
+	private JComboBox<String> reportCombo = new JComboBox<String>();
 	private JButton reportButton = new JButton("Display report");
 	private JButton saveButton = new JButton("Save report");
 
@@ -70,23 +70,23 @@ public class StatisticsView extends JFrame
 	private JTable report = new JTable();
 	private DefaultTableModel model = new MyTableModel();
 	private JScrollPane reportPane = new JScrollPane(report);
-	
+
 	private JPanel detailPanel = new JPanel();
-	
+
 	private JLabel hypoLeftStatLabel = new JLabel("P1 Avg+-SD");
 	private JLabel hypoRightStatLabel = new JLabel("P2 Avg+-SD");
 	private JLabel hypoTestLabel = new JLabel("Test performed");
 	private JLabel hypoEqualLabel = new JLabel("P-Value");
 	private JLabel hypoRightLabel = new JLabel("Right sided test");
 	private JLabel hypoLeftLabel = new JLabel("Left sided test");
-	
+
 	private JTextField hypoLeftStatEdit = new JTextField();
 	private JTextField hypoRightStatEdit = new JTextField();
 	private JTextField hypoTestEdit = new JTextField();
 	private JTextField hypoEqualEdit = new JTextField();
 	private JTextField hypoRightEdit = new JTextField();
 	private JTextField hypoLeftEdit = new JTextField();
-	
+
 	public StatisticsView()
 	{
 		this.setTitle("Statistics");
@@ -130,15 +130,15 @@ public class StatisticsView extends JFrame
 
 		this.reportLabel.setBounds(450, 440, 140, 25);
 		this.add(this.reportLabel);
-		
+
 		this.reportCombo.setBounds(530, 440, 160, 25);
 		this.add(this.reportCombo);
-		
+
 		this.saveButton.setActionCommand("SAVE");
 		this.saveButton.addActionListener(controller);
 		this.saveButton.setBounds(850, 440, 140, 25);
 		this.add(this.saveButton);
-		
+
 		this.reportButton.setActionCommand("DISPLAY");
 		this.reportButton.addActionListener(controller);
 		this.reportButton.setBounds(700, 440, 140, 25);
@@ -148,50 +148,51 @@ public class StatisticsView extends JFrame
 		this.report.setCellSelectionEnabled(true);
 		this.report.setDragEnabled(false);
 
-		this.report.addMouseListener(new java.awt.event.MouseAdapter() {
-		    @Override
-		    public void mouseClicked(java.awt.event.MouseEvent evt) {
-		    	changeSelection();
-		    }
+		this.report.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent evt)
+			{
+				changeSelection();
+			}
 		});
-	
+
 		this.detailPanel.setBounds(165, 18, 820, 100);
 		this.add(this.detailPanel);
-		
+
 		this.detailPanel.setLayout(null);
 		this.detailPanel.setBorder(BorderFactory.createTitledBorder("Details"));
-		
-		
+
 		this.hypoTestLabel.setBounds(10, 25, 110, 15);
 		this.detailPanel.add(this.hypoTestLabel);
 		this.hypoTestEdit.setBounds(110, 23, 290, 20);
 		this.detailPanel.add(this.hypoTestEdit);
-		
+
 		this.hypoLeftStatLabel.setBounds(10, 50, 90, 15);
 		this.detailPanel.add(this.hypoLeftStatLabel);
 		this.hypoLeftStatEdit.setBounds(110, 48, 290, 20);
 		this.detailPanel.add(this.hypoLeftStatEdit);
-		
+
 		this.hypoRightStatLabel.setBounds(10, 75, 90, 15);
 		this.detailPanel.add(this.hypoRightStatLabel);
 		this.hypoRightStatEdit.setBounds(110, 73, 290, 20);
 		this.detailPanel.add(this.hypoRightStatEdit);
-	
+
 		this.hypoEqualLabel.setBounds(410, 25, 110, 15);
 		this.detailPanel.add(this.hypoEqualLabel);
 		this.hypoEqualEdit.setBounds(520, 23, 290, 20);
 		this.detailPanel.add(this.hypoEqualEdit);
-		
+
 		this.hypoRightLabel.setBounds(410, 50, 110, 15);
 		this.detailPanel.add(this.hypoRightLabel);
 		this.hypoRightEdit.setBounds(520, 48, 290, 20);
 		this.detailPanel.add(this.hypoRightEdit);
-		
+
 		this.hypoLeftLabel.setBounds(410, 75, 110, 15);
 		this.detailPanel.add(this.hypoLeftLabel);
 		this.hypoLeftEdit.setBounds(520, 73, 290, 20);
 		this.detailPanel.add(this.hypoLeftEdit);
-	
+
 		this.reportPane.setBounds(165, 120, 820, 317);
 		this.report.getTableHeader().setReorderingAllowed(false);
 
@@ -204,27 +205,28 @@ public class StatisticsView extends JFrame
 		this.tabbedPane.add("Histogram", this.histogram);
 		this.add(this.tabbedPane);
 
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
+		this.addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e)
+			{
 				SharedController.getInstance().getProject().clearMemory();
 			}
 		});
 	}
-	
+
 	public void changeSelection()
 	{
 		int row = report.getSelectedRow();
 		int column = report.getSelectedColumn();
 
-		if ((row == -1) || (column == -1)) return;
-		
+		if ((row == -1) || (column == -1))
+			return;
 
 		String figure = getFigureStr();
 		String attribute = getElementStr();
 
-		String statistics = model
-				.getValueAt(row, 0).toString();	
-		
+		String statistics = model.getValueAt(row, 0).toString();
+
 		controller.setDetails(column, figure, attribute, statistics);
 	}
 
@@ -241,29 +243,30 @@ public class StatisticsView extends JFrame
 		public void run()
 		{
 			Project project = SharedController.getInstance().getProject();
-			int specimens = project.getFirstPopulation().getSpecimen().size();	
-			
+			int specimens = project.getFirstPopulation().getSpecimen().size();
+
 			int columns = 1;
-			
+
 			if (project.getSecondPopulation() != null)
 			{
 				columns = 5;
 				specimens += project.getSecondPopulation().getSpecimen().size();
 			}
-			
+
 			int figures = StatMapper.getFigureAvaibles();
 			int attributes = StatMapper.getAttributeAvaibles();
 			int total = figures * attributes * columns;
 
-			SharedController.getInstance().getProgressView().init(specimens + total);
+			SharedController.getInstance().getProgressView()
+					.init(specimens + total);
 			project.calculateStatistic();
 
 			view.prepare(view.getFigureStr(), view.getElementStr());
 			view.report.changeSelection(0, 1, false, false);
-			
+
 			SharedController.getInstance().getProgressView().close();
 			view.setVisible(true);
-		
+
 		}
 	}
 
@@ -280,7 +283,7 @@ public class StatisticsView extends JFrame
 		int type = SharedController.getInstance().getProject().getType();
 
 		String[] columns;
-		
+
 		this.figureStr = figure;
 		this.elementStr = element;
 
@@ -300,9 +303,11 @@ public class StatisticsView extends JFrame
 				this.model.addRow(columns);
 
 			controller.set(figure, element);
-			
-			String [] names = {"First population"};
-			DefaultComboBoxModel <String> model = new DefaultComboBoxModel <String>( names );
+
+			String[] names =
+			{ "First population" };
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(
+					names);
 			this.reportCombo.setModel(model);
 
 		} else if (type == Project.POPULATION_PAIR)
@@ -324,9 +329,11 @@ public class StatisticsView extends JFrame
 				this.model.addRow(columns);
 
 			controller.set(figure, element);
-			
-			String [] names = {"First population", "Second population", "Differences"};
-			DefaultComboBoxModel <String> model = new DefaultComboBoxModel <String>( names );
+
+			String[] names =
+			{ "First population", "Second population", "Differences" };
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(
+					names);
 			this.reportCombo.setModel(model);
 		}
 
@@ -443,19 +450,23 @@ public class StatisticsView extends JFrame
 		this.hypoLeftEdit = hypoLeftEdit;
 	}
 
-	public JTextField getHypoLeftStatEdit() {
+	public JTextField getHypoLeftStatEdit()
+	{
 		return hypoLeftStatEdit;
 	}
 
-	public void setHypoLeftStatEdit(JTextField hypoLeftStatEdit) {
+	public void setHypoLeftStatEdit(JTextField hypoLeftStatEdit)
+	{
 		this.hypoLeftStatEdit = hypoLeftStatEdit;
 	}
 
-	public JTextField getHypoRightStatEdit() {
+	public JTextField getHypoRightStatEdit()
+	{
 		return hypoRightStatEdit;
 	}
 
-	public void setHypoRightStatEdit(JTextField hypoRightStatEdit) {
+	public void setHypoRightStatEdit(JTextField hypoRightStatEdit)
+	{
 		this.hypoRightStatEdit = hypoRightStatEdit;
 	}
 }

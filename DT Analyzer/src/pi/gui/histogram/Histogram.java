@@ -68,7 +68,7 @@ public class Histogram extends JPanel
 				if (getData().get(i).get(j) < minValue)
 					minValue = getData().get(i).get(j);
 			}
-			
+
 			size = counter.get(i).size();
 
 			for (int j = 0; j < ranges; j++)
@@ -255,8 +255,6 @@ public class Histogram extends JPanel
 		this.repaint();
 	}
 
-	// ------------------------------------------
-	// SIMPLE DRAWING BORDER
 	public void drawBorder(Graphics graphics)
 	{
 		Rectangle frame = this.getBounds();
@@ -264,8 +262,6 @@ public class Histogram extends JPanel
 		graphics.drawRect(0, 0, frame.width - 1, frame.height - 1);
 	}
 
-	// ------------------------------------------
-	// SIMPLE DRAWING BACKGROUND
 	public void drawBackground(Graphics graphics)
 	{
 		Rectangle frame = this.getBounds();

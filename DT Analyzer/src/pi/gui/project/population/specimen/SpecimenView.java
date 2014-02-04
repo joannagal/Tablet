@@ -28,24 +28,24 @@ public class SpecimenView extends JPanel
 
 	private JSplitPane splitPane;
 	private int type;
-	
+
 	private PopulationView populationView;
-	
+
 	public SpecimenView(PopulationView populationView, int type)
 	{
 		this.populationView = populationView;
 		this.specimen = null;
 		this.setLayout(new GridBagLayout());
 		this.type = type;
-		
+
 		GridBagConstraints c = new GridBagConstraints();
 
 		c.fill = GridBagConstraints.BOTH;
 		c.gridy = 1;
 		c.weighty = 1.0d;
 
-		if ((type == Project.POPULATION_SINGLE) || 
-				(type == Project.SPECIMEN_SINGLE))
+		if ((type == Project.POPULATION_SINGLE)
+				|| (type == Project.SPECIMEN_SINGLE))
 		{
 			this.before = new DrawingTestView();
 			before.setDrawing(null, null, true);
@@ -62,7 +62,7 @@ public class SpecimenView extends JPanel
 					this.before, this.after);
 
 			this.splitPane.setOneTouchExpandable(true);
-			
+
 			Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 			this.splitPane.setDividerLocation(dimension.height);
 			this.add(this.splitPane, c);
@@ -77,33 +77,31 @@ public class SpecimenView extends JPanel
 		this.add(this.toolbar, c);
 
 	}
-	
+
 	public void setSpecimen(Specimen specimen)
 	{
 
 		this.specimen = specimen;
-		if ((type == Project.POPULATION_SINGLE) || 
-				(type == Project.SPECIMEN_SINGLE))
+		if ((type == Project.POPULATION_SINGLE)
+				|| (type == Project.SPECIMEN_SINGLE))
 		{
-		
+
 			if (specimen != null)
 				this.before.setDrawing(specimen.getBefore(), specimen, true);
-			else 
+			else
 				this.before.setDrawing(null, null, true);
-		}
-		else
+		} else
 		{
 			if (specimen != null)
 			{
 				this.before.setDrawing(specimen.getBefore(), specimen, true);
 				this.after.setDrawing(specimen.getAfter(), specimen, false);
-			}
-			else
+			} else
 			{
 				this.before.setDrawing(null, null, true);
 				this.after.setDrawing(null, null, true);
 			}
-			
+
 		}
 	}
 
@@ -121,7 +119,7 @@ public class SpecimenView extends JPanel
 			this.after.redraw();
 		}
 	}
-	
+
 	public JSplitPane getSplitPane()
 	{
 		return this.splitPane;
@@ -151,8 +149,6 @@ public class SpecimenView extends JPanel
 	{
 		return specimen;
 	}
-
-	
 
 	public SpecimenController getController()
 	{

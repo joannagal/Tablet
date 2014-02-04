@@ -8,13 +8,13 @@ public class DependencyCollector
 {
 
 	static StatisticResult result;
-	
+
 	static public void init(StatisticResult input, int size)
 	{
 		result = input;
-		input.setValue(new ArrayList <Double> (size));
+		input.setValue(new ArrayList<Double>(size));
 	}
-	
+
 	static public void iterate(Double argument, Double value)
 	{
 		result.getValue().add(argument);

@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class DrawingScheme
 {
-	
+
 	private Color borderColor;
 	private Color backgroundColor;
 	private Color drawingColor;
@@ -14,27 +14,26 @@ public class DrawingScheme
 	private Color allColor;
 	private Color selectionColor;
 	private Color labelColor;
-	
+
 	public Color getBorderColor()
 	{
 		return borderColor;
 	}
-	
+
 	public void setBorderColor(Color borderColor)
 	{
 		this.borderColor = borderColor;
 	}
-	
+
 	public Color getBackgroundColor()
 	{
 		return backgroundColor;
 	}
-	
+
 	public void setBackgroundColor(Color backgroundColor)
 	{
 		this.backgroundColor = backgroundColor;
 	}
-
 
 	public Color getDrawingColor()
 	{
@@ -105,5 +104,5 @@ public class DrawingScheme
 	{
 		this.labelColor = labelColor;
 	}
-	
+
 }

@@ -11,7 +11,6 @@ import javax.swing.JTextField;
 
 import pi.project.Project;
 
-
 public class PopulationSingleView extends JFrame
 {
 	private static final long serialVersionUID = 1L;
@@ -31,7 +30,7 @@ public class PopulationSingleView extends JFrame
 
 	private boolean firstPopulation = true;
 	private int projectType = 0;
-	
+
 	private final JFileChooser fc = new JFileChooser();
 
 	public PopulationSingleView()
@@ -87,24 +86,23 @@ public class PopulationSingleView extends JFrame
 		this.add(this.cancelButton);
 
 	}
-	
+
 	public void showWithProjectType(int type, boolean firstPopulation)
 	{
 		this.setFirstPopulation(firstPopulation);
 		this.setProjectType(type);
-		
+
 		if (type == Project.POPULATION_PAIR)
 		{
 			this.firstLabel.setText("Specimen: After: ");
-			this.secondLabel.setText("Specimen: Before: ");	
-		}
-		else if (type == Project.POPULATION_SINGLE)
+			this.secondLabel.setText("Specimen: Before: ");
+		} else if (type == Project.POPULATION_SINGLE)
 		{
 			this.firstLabel.setText("First: Before: ");
 			this.secondLabel.setText("Second: Before: ");
-		}
-		else return;
-		
+		} else
+			return;
+
 		this.setVisible(true);
 	}
 
@@ -153,5 +151,4 @@ public class PopulationSingleView extends JFrame
 		this.projectType = projectType;
 	}
 
-	
 }

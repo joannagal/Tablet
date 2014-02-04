@@ -49,16 +49,17 @@ public class InformationsView extends JFrame
 
 	String[] operationStrings =
 	{ "", "P/P", "T/H" };
-	private JComboBox<String> operationField = new JComboBox<String>(operationStrings);
+	private JComboBox<String> operationField = new JComboBox<String>(
+			operationStrings);
 
 	private JTextField firstOperationField = new JTextField();
-	
+
 	private JLabel beforeOriginLabel = new JLabel("Origin Before");
 	private JTextField beforeOriginField = new JTextField();
 
 	private JLabel afterOriginLabel = new JLabel("Origin After");
 	private JTextField afterOriginField = new JTextField();
-	
+
 	private JButton cancelButton = new JButton("Cancel");
 	private JButton okButton = new JButton("OK");
 
@@ -68,7 +69,7 @@ public class InformationsView extends JFrame
 	public InformationsView(SpecimenView specimenView)
 	{
 		this.specimenView = specimenView;
-		
+
 		this.setTitle("Informations");
 		this.setLayout(null);
 		this.setSize(new Dimension(275, 410));
@@ -101,7 +102,6 @@ public class InformationsView extends JFrame
 		this.firstOperation.setBounds(15, 255, 150, 15);
 		this.add(this.firstOperation);
 
-
 		this.nameField.setBounds(80, 13, 170, 19);
 		this.add(this.nameField);
 
@@ -132,17 +132,17 @@ public class InformationsView extends JFrame
 		this.beforeOriginField.setBounds(100, 283, 150, 19);
 		this.beforeOriginField.setEditable(false);
 		this.add(this.beforeOriginField);
-		
+
 		this.beforeOriginLabel.setBounds(15, 283, 150, 15);
 		this.add(this.beforeOriginLabel);
-		
+
 		this.afterOriginField.setBounds(100, 313, 150, 19);
 		this.afterOriginField.setEditable(false);
 		this.add(this.afterOriginField);
-		
+
 		this.afterOriginLabel.setBounds(15, 313, 150, 15);
 		this.add(this.afterOriginLabel);
-		
+
 		this.cancelButton.setBounds(15, 350, 80, 25);
 		this.add(this.cancelButton);
 
@@ -161,9 +161,10 @@ public class InformationsView extends JFrame
 
 	public void showWithData()
 	{
-		if (this.specimenView.getSpecimen() == null) return;
+		if (this.specimenView.getSpecimen() == null)
+			return;
 		Specimen specimen = this.specimenView.getSpecimen();
-		
+
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
 		int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
@@ -180,8 +181,9 @@ public class InformationsView extends JFrame
 		Integer firstOperation = specimen.getOperationTestNo();
 		String beforeOrigin = specimen.getBefore().getOrigin();
 		String afterOrigin = null;
-		if (specimen.getAfter() != null) afterOrigin = specimen.getAfter().getOrigin();
-		
+		if (specimen.getAfter() != null)
+			afterOrigin = specimen.getAfter().getOrigin();
+
 		if (name != null)
 			this.nameField.setText(name);
 		else
@@ -243,13 +245,13 @@ public class InformationsView extends JFrame
 			this.firstOperationField.setText(Integer.toString(firstOperation));
 		else
 			this.firstOperationField.setText("");
-		
+
 		if (beforeOrigin != null)
 			this.beforeOriginField.setText(beforeOrigin);
 
 		if (afterOrigin != null)
 			this.afterOriginField.setText(afterOrigin);
-		
+
 		this.setVisible(true);
 	}
 
@@ -278,30 +280,25 @@ public class InformationsView extends JFrame
 		return birthField;
 	}
 
-
 	public JComboBox<String> getHandField()
 	{
 		return handField;
 	}
-
 
 	public JComboBox<String> getBrainField()
 	{
 		return brainField;
 	}
 
-
 	public JComboBox<String> getOperationField()
 	{
 		return operationField;
 	}
 
-
 	public JTextField getFirstOperationField()
 	{
 		return firstOperationField;
 	}
-
 
 	public SpecimenView getSpecimenView()
 	{
@@ -312,8 +309,5 @@ public class InformationsView extends JFrame
 	{
 		this.specimenView = specimenView;
 	}
-
-
-
 
 }

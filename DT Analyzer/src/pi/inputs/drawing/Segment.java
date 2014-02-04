@@ -7,7 +7,7 @@ import pi.utilities.Range;
 public class Segment
 {
 	private Range range;
-	
+
 	private ArrayList<PacketData> linearized;
 
 	public Range getRange()

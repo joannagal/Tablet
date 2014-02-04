@@ -30,7 +30,7 @@ public class StatisticsController implements ActionListener
 		view.getHypoRightEdit().setText("");
 		view.getHypoLeftStatEdit().setText("");
 		view.getHypoRightStatEdit().setText("");
-		
+
 		ProjectResult pResult = SharedController.getInstance().getProject()
 				.getResult();
 
@@ -48,44 +48,49 @@ public class StatisticsController implements ActionListener
 
 		if ((first == null) || (second == null))
 			return;
-		
-		//  -------------------------------------
-		// Details
-		
+
+
 		String columnName = this.getColumnName(column);
 		if (columnName != null)
 		{
 			Map<String, Map<String, Map<String, LinkedList<Double>>>> map = pResult
 					.getTestResult().get(columnName);
-			
+
 			System.out.printf("Column Name %s", columnName);
-			
+
 			if (map != null)
 			{
-				
-				
-				LinkedList<Double> result = map.get(figure).get(attribute).get(statistic);
+
+				LinkedList<Double> result = map.get(figure).get(attribute)
+						.get(statistic);
 				if (result != null)
 				{
 					boolean isT = true;
-					if (result.get(4) < 0.0d) isT = false;
-					
+					if (result.get(4) < 0.0d)
+						isT = false;
+
 					boolean isPaired = true;
-					if (result.get(5) < 0.0d) isPaired = false;
-					
-					if (isT) 
+					if (result.get(5) < 0.0d)
+						isPaired = false;
+
+					if (isT)
 					{
-						if (isPaired) view.getHypoTestEdit().setText("T-Test - Paired");
-						else view.getHypoTestEdit().setText("T-Test - Unpaired");
-					}
-					else
+						if (isPaired)
+							view.getHypoTestEdit().setText("T-Test - Paired");
+						else
+							view.getHypoTestEdit().setText("T-Test - Unpaired");
+					} else
 					{
-						if (isPaired) view.getHypoTestEdit().setText("Wilcoxon Test");
-						else view.getHypoTestEdit().setText("U Mann�Whitney Test");
+						if (isPaired)
+							view.getHypoTestEdit().setText("Wilcoxon Test");
+						else
+							view.getHypoTestEdit().setText(
+									"U Mann�Whitney Test");
 					}
-					
-					view.getHypoEqualEdit().setText(Double.toString(result.get(6)));
-					
+
+					view.getHypoEqualEdit().setText(
+							Double.toString(result.get(6)));
+
 					String leftStat = String.format("%.6f", result.get(0));
 					leftStat += " +- ";
 					leftStat += String.format("%.6f", result.get(1));
@@ -95,24 +100,24 @@ public class StatisticsController implements ActionListener
 					rightStat += " +- ";
 					rightStat += String.format("%.6f", result.get(3));
 					view.getHypoRightStatEdit().setText(rightStat);
-					
-					// POKOLOROWAC BACKGROUND :D
-					
-					
+
+		
 				}
 			}
 		}
 
-		//  ------------------------------------
-		
-		ArrayList <ArrayList <Double>> toHist = new ArrayList <ArrayList <Double>>(2);
-		
+	
+		ArrayList<ArrayList<Double>> toHist = new ArrayList<ArrayList<Double>>(
+				2);
+
 		toHist.add(this.getArrayFromList(first));
 		toHist.add(this.getArrayFromList(second));
-		
-		if (toHist.get(0).size() < 2) return;
-		if (toHist.get(1).size() < 2) return;
-		
+
+		if (toHist.get(0).size() < 2)
+			return;
+		if (toHist.get(1).size() < 2)
+			return;
+
 		this.view.getHistogram().setData(toHist);
 		this.view.getHistogram().recalculate();
 		this.view.getHistogram().draw();
@@ -160,44 +165,49 @@ public class StatisticsController implements ActionListener
 
 		int where = 0;
 
-		for (int i = 0; i <  StatMapper.statisticNames.length; i++)
+		for (int i = 0; i < StatMapper.statisticNames.length; i++)
 		{
 			result = map.get(figure).get(element)
 					.get(StatMapper.statisticNames[i]);
-			if (result.isEmpty()) continue;
-			
-			if (result.size() < 3) {where++; continue;}
-			
-			String label = "";
-			
-			boolean isT = true;
-			if (result.get(4) < 0.0d) isT = false;
-			
-			boolean isPaired = true;
-			if (result.get(5) < 0.0d) isPaired = false;
-			
-			if (isT) 
+			if (result.isEmpty())
+				continue;
+
+			if (result.size() < 3)
 			{
-				if (isPaired){
+				where++;
+				continue;
+			}
+
+			String label = "";
+
+			boolean isT = true;
+			if (result.get(4) < 0.0d)
+				isT = false;
+
+			boolean isPaired = true;
+			if (result.get(5) < 0.0d)
+				isPaired = false;
+
+			if (isT)
+			{
+				if (isPaired)
+				{
 					label = "T (P): ";
-				}
-				else
+				} else
 				{
 					label = "T (U): ";
 				}
-			}
-			else
+			} else
 			{
 				if (isPaired)
 				{
 					label = "W: ";
-				}
-				else
+				} else
 				{
 					label = "MWW: ";
 				}
 			}
-			
+
 			label += String.format("%.3f", result.get(6));
 
 			view.getModel().setValueAt(label, where, column);
@@ -222,7 +232,7 @@ public class StatisticsController implements ActionListener
 					view.getElementStr());
 
 			view.getReport().changeSelection(0, 1, false, false);
-			
+
 			view.changeSelection();
 		}
 
@@ -282,44 +292,49 @@ public class StatisticsController implements ActionListener
 			params[3] = "Before";
 		}
 	}
-	
+
 	public String getColumnName(int column)
 	{
 		String result = "";
-		
+
 		int projectType = SharedController.getInstance().getProject().getType();
-		
-		//{ "P1AB", "P2AB", "BB", "AA", "dAB", };
-		
+
+		// { "P1AB", "P2AB", "BB", "AA", "dAB", };
+
 		if (projectType == Project.POPULATION_SINGLE)
 		{
-			if (column == 1) return "BB";
-		}
-		else
+			if (column == 1)
+				return "BB";
+		} else
 		{
-			if (column == 1) return "P1AB";
-			else if (column == 2) return "P2AB";
-			else if (column == 3) return "BB";
-			else if (column == 4) return "AA";
-			else if (column == 5) return "dAB";
+			if (column == 1)
+				return "P1AB";
+			else if (column == 2)
+				return "P2AB";
+			else if (column == 3)
+				return "BB";
+			else if (column == 4)
+				return "AA";
+			else if (column == 5)
+				return "dAB";
 		}
-		
+
 		return result;
 	}
 
-	public ArrayList <Double> getArrayFromList(LinkedList <Double> input)
+	public ArrayList<Double> getArrayFromList(LinkedList<Double> input)
 	{
-		
-		ArrayList <Double> output = new ArrayList <Double> (input.size());
-		Iterator <Double> it = input.iterator();
-		
+
+		ArrayList<Double> output = new ArrayList<Double>(input.size());
+		Iterator<Double> it = input.iterator();
+
 		Double value;
 		while (it.hasNext())
 		{
 			value = it.next();
 			output.add(value);
-		}		
+		}
 		return output;
 	}
-	
+
 }

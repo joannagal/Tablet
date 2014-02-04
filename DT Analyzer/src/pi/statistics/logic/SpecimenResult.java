@@ -10,33 +10,33 @@ public class SpecimenResult
 {
 	public Specimen specimen;
 	private Map<String, DrawingResult> value;
-	
+
 	public void clearMemory()
 	{
 		if (this.value != null)
 		{
-			 for (Map.Entry<String, DrawingResult> entry : this.value.entrySet())
-			 {
-				 entry.getValue().clearMemory();
-			 }
-			 
-			 this.value = null;
+			for (Map.Entry<String, DrawingResult> entry : this.value.entrySet())
+			{
+				entry.getValue().clearMemory();
+			}
+
+			this.value = null;
 		}
 	}
-	
+
 	public SpecimenResult(Specimen specimen)
 	{
 		this.specimen = specimen;
 	}
-	
+
 	public void calculateResult(boolean projectLevel)
 	{
-		this.value = new HashMap <String, DrawingResult>();
-		
+		this.value = new HashMap<String, DrawingResult>();
+
 		DrawingResult before = new DrawingResult(this.specimen.getBefore());
 		before.calculateResult(projectLevel);
 		getValue().put("Before", before);
-		
+
 		if (this.specimen.getAfter() != null)
 		{
 			DrawingResult after = new DrawingResult(this.specimen.getAfter());
@@ -44,7 +44,7 @@ public class SpecimenResult
 			getValue().put("After", after);
 		}
 		SharedController.getInstance().getProgressView().increase();
-		
+
 		this.specimen.setResult(this);
 	}
 
@@ -58,5 +58,4 @@ public class SpecimenResult
 		this.value = value;
 	}
 
-	
 }

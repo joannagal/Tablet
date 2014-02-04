@@ -45,8 +45,7 @@ public class AzimuthResult extends AttributeResult
 			if (!projectLevel)
 			{
 				avaible[i] = true;
-			}
-			else
+			} else
 			{
 				avaible[i] = StatMapper.statisticAvaible
 						.get(StatMapper.statisticNames[i]);
@@ -64,7 +63,6 @@ public class AzimuthResult extends AttributeResult
 		StatisticResult fftFreq = new StatisticResult();
 		StatisticResult varianceResult = new StatisticResult();
 		StatisticResult standardDevResult = new StatisticResult();
-
 
 		if (avaible[0])
 			Min.init(minResult);
@@ -106,7 +104,7 @@ public class AzimuthResult extends AttributeResult
 			Median.init(median, size);
 		if (avaible[5])
 			Variance.init(varianceResult, avgResult.getValue().get(0));
-		
+
 		if (avaible[11])
 			Collector.init(histogramResult, size);
 
@@ -115,7 +113,7 @@ public class AzimuthResult extends AttributeResult
 			DependencyCollector.init(dependencyResult, size * 2 + 2);
 			DependencyCollector.iterate(0.0d, 0.0d);
 		}
-	
+
 		it = this.segment.iterator();
 
 		boolean first = true;
@@ -150,10 +148,10 @@ public class AzimuthResult extends AttributeResult
 
 				if (avaible[11])
 					Collector.iterate(value);
-				
+
 				if (!projectLevel)
 					DependencyCollector.iterate(packet.get(i).getPkTime()
-							- baseTime, value);	
+							- baseTime, value);
 
 			}
 		}

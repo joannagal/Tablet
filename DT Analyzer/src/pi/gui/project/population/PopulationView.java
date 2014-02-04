@@ -47,17 +47,21 @@ public class PopulationView extends JPanel
 				|| (type == Project.SPECIMEN_SINGLE))
 		{
 			this.specimenView = new SpecimenView(this, type);
-			
-			if (population.getSpecimen().size() == 0) this.specimenView.setSpecimen(null);
-			else this.specimenView.setSpecimen(population.getSpecimen().get(0));
-			
+
+			if (population.getSpecimen().size() == 0)
+				this.specimenView.setSpecimen(null);
+			else
+				this.specimenView.setSpecimen(population.getSpecimen().get(0));
+
 			this.add(this.specimenView, c);
 		} else
-		{	
+		{
 			this.specimenView = new SpecimenView(this, type);
-			
-			if (population.getSpecimen().size() == 0) this.specimenView.setSpecimen(null);
-			else this.specimenView.setSpecimen(population.getSpecimen().get(0));
+
+			if (population.getSpecimen().size() == 0)
+				this.specimenView.setSpecimen(null);
+			else
+				this.specimenView.setSpecimen(population.getSpecimen().get(0));
 
 			this.listView = new PopulationListView(this);
 
@@ -65,15 +69,15 @@ public class PopulationView extends JPanel
 					this.listView, this.specimenView);
 
 			this.splitPane.setOneTouchExpandable(true);
-
-			//this.splitPane.setDividerLocation(150);
+			
 			this.add(this.splitPane, c);
 		}
 	}
 
 	public void updateLabels()
 	{
-		if (this.listView != null) this.listView.setLabels();
+		if (this.listView != null)
+			this.listView.setLabels();
 
 		ArrayList<Specimen> specimen = this.population.getSpecimen();
 
@@ -91,9 +95,7 @@ public class PopulationView extends JPanel
 		for (int i = 0; i < specimen.size(); i++)
 		{
 			Drawing drawing = specimen.get(i).getBefore();
-			
-			//drawing.recalculate(true);
-			
+
 			if (specimen.get(i).getName() == null)
 				name = "";
 			else
@@ -112,10 +114,9 @@ public class PopulationView extends JPanel
 			if (drawing != null)
 			{
 				drawing.setLabel(pref + ": After: " + name + " " + surname);
-				//drawing.recalculate(true);
 			}
 		}
-		
+
 		this.specimenView.redraw();
 
 	}

@@ -15,24 +15,23 @@ public class ToolbarView extends JPanel
 	private Timeline timeline;
 	private Pressure pressure;
 	private LoadTest loadTest;
-	
+
 	public ToolbarView(DrawingTestView parent)
 	{
 		this.setLayout(new FlowLayout(FlowLayout.LEADING));
 		this.setMinimumSize(new Dimension(50, 50));
-		// --- TIME PANEL
-		
+
 		this.loadTest = new LoadTest(parent);
 		this.add(this.loadTest);
-		
+
 		this.pressure = new Pressure(parent.getGraph());
 		this.add(this.pressure);
-		
+
 		this.timeline = new Timeline(parent.getGraph());
 		this.add(this.timeline);
 
 	}
-	
+
 	public void rebuild(Drawing drawing)
 	{
 		this.timeline.rebuild(drawing);

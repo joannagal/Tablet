@@ -19,18 +19,19 @@ public class FigureResult
 	private Figure figure;
 
 	public void clearMemory()
-	{	
+	{
 		if (this.value != null)
 		{
-			 for (Map.Entry<String, AttributeResult> entry : this.value.entrySet())
-			 {
-				 entry.getValue().clearMemory();
-			 }
-			 
-			 this.value = null;
+			for (Map.Entry<String, AttributeResult> entry : this.value
+					.entrySet())
+			{
+				entry.getValue().clearMemory();
+			}
+
+			this.value = null;
 		}
 	}
-	
+
 	public FigureResult(Figure figure)
 	{
 		this.setFigure(figure);
@@ -53,16 +54,15 @@ public class FigureResult
 
 		MSpeedResult mSpeed = new MSpeedResult(this.figure.getParent()
 				.getPacket(), this.figure.getSegment());
-		
+
 		if (StatMapper.attributeAvaible.get("Momentary Speed"))
 		{
 			mSpeed.calculateResult(projectLevel);
 			this.value.put("Momentary Speed", mSpeed);
 		}
 
-		if (
-			(StatMapper.attributeAvaible.get("Momentary Speed")) &&
-			(StatMapper.attributeAvaible.get("Acceleration")) )
+		if ((StatMapper.attributeAvaible.get("Momentary Speed"))
+				&& (StatMapper.attributeAvaible.get("Acceleration")))
 		{
 			AccelerationResult acceleration = new AccelerationResult(
 					mSpeed.getForAcceleration(), mSpeed.getFreq());

@@ -28,7 +28,7 @@ public class ChooserView extends JFrame
 	private JCheckBox figureCombo[];
 	private JCheckBox attributeCombo[];
 	private JCheckBox statisticsCombo[];
-	
+
 	private StatisticsView statisticsView = new StatisticsView();
 
 	public ChooserView()

@@ -28,38 +28,38 @@ public class PairImporterController implements ActionListener
 
 		if (action.equals("OK"))
 		{
-			if ( (!this.view.getFirstBeforeField().getText().isEmpty()) &&
-					(!this.view.getFirstAfterField().getText().isEmpty()) )
+			if ((!this.view.getFirstBeforeField().getText().isEmpty())
+					&& (!this.view.getFirstAfterField().getText().isEmpty()))
 			{
 				Project project = new Project();
 				project.setName("New Project");
 				project.setPath(null);
 				project.setType(Project.SPECIMEN_PAIR);
-				
+
 				project.setFirstPopulation(new Population());
 				project.setSecondPopulation(null);
-				
-				ArrayList <String> firstBefore = new ArrayList <String> (1);
+
+				ArrayList<String> firstBefore = new ArrayList<String>(1);
 				firstBefore.add(this.view.getFirstBeforeField().getText());
-				
-				ArrayList <String> firstAfter = new ArrayList <String> (1);
+
+				ArrayList<String> firstAfter = new ArrayList<String>(1);
 				firstAfter.add(this.view.getFirstAfterField().getText());
-				
+
 				if (!project.create(firstBefore, firstAfter, null, null))
 				{
 					project = null;
-				}
-				else
+				} else
 				{
-					SharedController.getInstance().getFrame().initProjectView(project);
+					SharedController.getInstance().getFrame()
+							.initProjectView(project);
 					this.view.setVisible(false);
 				}
 
-			}
-			else JOptionPane.showMessageDialog(null, "All fields Should be filled!");
+			} else
+				JOptionPane.showMessageDialog(null,
+						"All fields Should be filled!");
 
-		} 
-		else if (action.equals("LOAD2"))
+		} else if (action.equals("LOAD2"))
 		{
 			int returnVal = this.view.getFc().showOpenDialog(null);
 
@@ -68,8 +68,7 @@ public class PairImporterController implements ActionListener
 				File file = this.view.getFc().getSelectedFile();
 				this.view.getFirstAfterField().setText(file.getAbsolutePath());
 			}
-		} 
-		else if (action.equals("LOAD1"))
+		} else if (action.equals("LOAD1"))
 		{
 			int returnVal = this.view.getFc().showOpenDialog(null);
 
@@ -81,7 +80,7 @@ public class PairImporterController implements ActionListener
 		} else if (action.equals("CANCEL"))
 		{
 			SharedController.getInstance().getFrame().getMenuView()
-			.setInChoose(false);
+					.setInChoose(false);
 			view.setVisible(false);
 		}
 	}

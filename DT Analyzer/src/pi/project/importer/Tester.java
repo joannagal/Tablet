@@ -12,41 +12,38 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import pi.project.Project;
 import pi.project.saver.PopSaver;
 
-public class Tester {
+public class Tester
+{
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void main(String[] args)
+	{
 
-		
-		try {
+		try
+		{
 			PopImporter pi = new PopImporter();
-			
+
 			XMLReader p = XMLReaderFactory.createXMLReader();
 			p.setContentHandler(pi);
 			p.parse("population_ex.xml");
-			
+
 			Project importedProject = pi.getProject();
-			
-			
-			System.out.println("\nZapis: ");
-			
+
+
 			PopSaver ps = new PopSaver(importedProject);
 			ps.save("savedXml.xml");
-				
-			
-			
-		} catch (IOException | SAXException e) {
-			System.out.println("Project load failure");
+
+		} catch (IOException | SAXException e)
+		{
 			e.printStackTrace();
-		} catch (XMLStreamException e) {
+		} catch (XMLStreamException e)
+		{
 			e.printStackTrace();
-			System.out.println("B£¥D ZAPISU");
-		} catch (FactoryConfigurationError e) {
+		} catch (FactoryConfigurationError e)
+		{
 			e.printStackTrace();
-			System.out.println("B£¥D ZAPISU");
 		}
 	}
 

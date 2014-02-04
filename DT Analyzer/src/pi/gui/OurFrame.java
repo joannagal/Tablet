@@ -36,7 +36,7 @@ public class OurFrame extends JFrame
 		this.constraints.fill = GridBagConstraints.BOTH;
 		this.constraints.weightx = 1.0d;
 		this.constraints.weighty = 1.0d;
-		
+
 		this.setTitle("DT Analyzer");
 
 		SharedController.getInstance().setFrame(this);

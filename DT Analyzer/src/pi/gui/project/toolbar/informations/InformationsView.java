@@ -31,7 +31,7 @@ public class InformationsView extends JFrame
 	public InformationsView()
 	{
 		this.setTitle("Project Informations");
-		
+
 		controller = new InformationsController(this);
 
 		int type = SharedController.getInstance().getProject().getType();

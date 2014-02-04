@@ -1,39 +1,29 @@
 package pi.population;
 
-
 import java.util.Date;
 
 import pi.inputs.drawing.Drawing;
 import pi.statistics.logic.SpecimenResult;
 
-
-//-------------------------------------------
-/*
-	KLASA - OSOBNIK
-*/
-//-------------------------------------------
-
 public class Specimen
 {
 	private String name = null;
 	private String surname = null;
-	
+
 	private String pesel = null;
-	private Boolean sex = null; // true - male
-	private Boolean hand = null; // true - right
-	private Boolean brain = null; // true - right
-	private Boolean operationType = null; // true - P
+	private Boolean sex = null;
+	private Boolean hand = null;
+	private Boolean brain = null;
+	private Boolean operationType = null;
 	private int age;
 
 	private Integer operationTestNo = null;
-	
-	// DATA URODZENIA
+
 	private Date birth = null;
 
-	
 	private Drawing before = null;
 	private Drawing after = null;
-	
+
 	private SpecimenResult result = null;
 
 	public void calculateStatistic(boolean projectLevel)
@@ -41,32 +31,45 @@ public class Specimen
 		result = new SpecimenResult(this);
 		result.calculateResult(projectLevel);
 	}
-	
+
 	public String getNamedSex()
 	{
-		if (this.sex == null) return "";
-		if (this.sex == true) return "Male";
-		else return "Female";
+		if (this.sex == null)
+			return "";
+		if (this.sex == true)
+			return "Male";
+		else
+			return "Female";
 	}
+
 	public String getNamedHand()
 	{
-		if (this.hand == null) return "";
-		if (this.hand == true) return "Right";
-		else return "Left";
+		if (this.hand == null)
+			return "";
+		if (this.hand == true)
+			return "Right";
+		else
+			return "Left";
 	}
-	
+
 	public String getNamedBrain()
 	{
-		if (this.brain == null) return "";
-		if (this.brain == true) return "Right";
-		else return "Left";
+		if (this.brain == null)
+			return "";
+		if (this.brain == true)
+			return "Right";
+		else
+			return "Left";
 	}
-	
+
 	public String getNamedOperationType()
 	{
-		if (this.operationType == true) return "";
-		if (this.operationType == true) return "P";
-		else return "T";
+		if (this.operationType == true)
+			return "";
+		if (this.operationType == true)
+			return "P";
+		else
+			return "T";
 	}
 
 	public void clearMemory()
@@ -77,7 +80,7 @@ public class Specimen
 			this.result = null;
 		}
 	}
-	
+
 	public String getName()
 	{
 		return name;
@@ -188,11 +191,13 @@ public class Specimen
 		this.operationType = operationType;
 	}
 
-	public int getAge() {
+	public int getAge()
+	{
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(int age)
+	{
 		this.age = age;
 	}
 
@@ -206,7 +211,4 @@ public class Specimen
 		this.operationTestNo = operationTestNo;
 	}
 
-
-
-	
 }

@@ -39,10 +39,10 @@ public class PopulationListController
 				{
 					int type = SharedController.getInstance().getProject()
 							.getType();
-					
-					PopulationSingleView importer = new PopulationSingleView();
-					importer.showWithProjectType(type, view.getPopulationView().isFirstPopulation());
 
+					PopulationSingleView importer = new PopulationSingleView();
+					importer.showWithProjectType(type, view.getPopulationView()
+							.isFirstPopulation());
 
 				} else if (action.equals("DEL"))
 				{
@@ -59,18 +59,19 @@ public class PopulationListController
 
 						Project project = SharedController.getInstance()
 								.getProject();
-						
+
 						String temp = null;
 						String msg = null;
-						
-						boolean first = view.getPopulationView().isFirstPopulation();
 
-						if (first) 
+						boolean first = view.getPopulationView()
+								.isFirstPopulation();
+
+						if (first)
 						{
 							temp = project.getFirstPopulation().getName();
 							if (temp == null)
 								temp = "First Population";
-							
+
 							temp += ": " + String.format("%d. ", index + 1);
 							msg = temp;
 							temp = project.getFirstPopulation().getSpecimen()
@@ -83,13 +84,12 @@ public class PopulationListController
 							if (temp == null)
 								temp = "Surname";
 							msg += " " + temp + "\n";
-						}
-						else 
+						} else
 						{
 							temp = project.getSecondPopulation().getName();
 							if (temp == null)
 								temp = "Second Population";
-							
+
 							temp += ": " + String.format("%d. ", index + 1);
 							msg = temp;
 							temp = project.getSecondPopulation().getSpecimen()
@@ -105,8 +105,8 @@ public class PopulationListController
 						}
 
 						int result = JOptionPane.showConfirmDialog(null,
-								"Delete:\n" + msg,
-								"Delete specimen?", JOptionPane.YES_NO_OPTION);
+								"Delete:\n" + msg, "Delete specimen?",
+								JOptionPane.YES_NO_OPTION);
 
 						if (result == 0)
 						{

@@ -40,14 +40,13 @@ public class AccelerationResult extends AttributeResult
 			if (!projectLevel)
 			{
 				avaible[i] = true;
-			}
-			else
+			} else
 			{
 				avaible[i] = StatMapper.statisticAvaible
 						.get(StatMapper.statisticNames[i]);
 			}
 		}
-			
+
 		StatisticResult histogramResult = new StatisticResult();
 		StatisticResult dependencyResult = new StatisticResult();
 		StatisticResult minResult = new StatisticResult();
@@ -59,7 +58,7 @@ public class AccelerationResult extends AttributeResult
 		StatisticResult fftFreq = new StatisticResult();
 		StatisticResult varianceResult = new StatisticResult();
 		StatisticResult standardDevResult = new StatisticResult();
-		
+
 		if (avaible[0])
 			Min.init(minResult);
 		if (avaible[1])
@@ -89,8 +88,9 @@ public class AccelerationResult extends AttributeResult
 				size++;
 			}
 		}
-		
-		if (size == 0) return;
+
+		if (size == 0)
+			return;
 
 		if (avaible[2])
 			Amplitude.finish(minResult.getValue().get(0), maxResult.getValue()
@@ -111,7 +111,6 @@ public class AccelerationResult extends AttributeResult
 			DependencyCollector.iterate(0.0d, 0.0d);
 		}
 
-
 		for (int i = 0; i < this.velocity.size(); i++)
 		{
 			ArrayList<Double> data = this.velocity.get(i);
@@ -122,12 +121,12 @@ public class AccelerationResult extends AttributeResult
 				dt = data.get(j) - data.get(j - 2);
 				dv = data.get(j + 1) - data.get(j - 1);
 				a = dv / dt;
-				
+
 				if (avaible[11])
 					Collector.iterate(a);
-				
+
 				if (!projectLevel)
-					DependencyCollector.iterate(data.get(j), a);	
+					DependencyCollector.iterate(data.get(j), a);
 
 				if (avaible[4])
 					Median.iterate(a);

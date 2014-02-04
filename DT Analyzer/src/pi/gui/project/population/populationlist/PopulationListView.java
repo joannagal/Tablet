@@ -42,7 +42,7 @@ public class PopulationListView extends JPanel
 
 		this.list = new JList<String>();
 		this.list.addListSelectionListener(this.controller.getListListener());
-		
+
 		this.add(this.list, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -50,7 +50,7 @@ public class PopulationListView extends JPanel
 		c.gridwidth = 1;
 		c.gridy = 1;
 		c.gridx = 0;
-		
+
 		this.addButton.setActionCommand("ADD");
 		this.addButton.addActionListener(this.controller.getActionListener());
 		this.add(this.addButton, c);
@@ -78,9 +78,9 @@ public class PopulationListView extends JPanel
 	public void setLabels()
 	{
 		int prev = this.list.getSelectedIndex();
-		
-		
-		ArrayList<Specimen> specimen = this.populationView.getPopulation().getSpecimen();
+
+		ArrayList<Specimen> specimen = this.populationView.getPopulation()
+				.getSpecimen();
 
 		String[] labels = new String[specimen.size()];
 		for (int i = 0; i < specimen.size(); i++)
@@ -102,9 +102,11 @@ public class PopulationListView extends JPanel
 		}
 
 		this.list.setListData(labels);
-		
-		if (prev < 0) this.list.setSelectedIndex(0);
-		else this.list.setSelectedIndex(prev);
+
+		if (prev < 0)
+			this.list.setSelectedIndex(0);
+		else
+			this.list.setSelectedIndex(prev);
 	}
 
 	public JList<String> getList()
@@ -126,7 +128,5 @@ public class PopulationListView extends JPanel
 	{
 		this.populationView = populationView;
 	}
-
-
 
 }

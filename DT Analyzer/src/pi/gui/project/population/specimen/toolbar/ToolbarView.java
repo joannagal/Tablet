@@ -19,7 +19,7 @@ public class ToolbarView extends JPanel
 
 	private JButton splitButton = new JButton("Change Split");
 	private JButton viewButton = new JButton("Change view");
-	
+
 	private ToolbarController controller;
 	private SpecimenView specimenView;
 
@@ -37,14 +37,14 @@ public class ToolbarView extends JPanel
 
 		if (this.specimenView.getAfter() != null)
 			this.add(this.splitButton);
-		
+
 		this.add(this.viewButton);
 
 		controller = new ToolbarController(this.specimenView, this);
 
 		this.viewButton.setActionCommand("CHANGE_VIEW");
 		this.viewButton.addActionListener(controller);
-		
+
 		this.splitButton.setActionCommand("CHANGE_SPLIT");
 		this.splitButton.addActionListener(controller);
 
@@ -57,7 +57,7 @@ public class ToolbarView extends JPanel
 		informationsView = new InformationsView(this.specimenView);
 		comparator = new StatisticsComparatorView();
 	}
-	
+
 	public SpecimenView getSpecimenView()
 	{
 		return this.specimenView;

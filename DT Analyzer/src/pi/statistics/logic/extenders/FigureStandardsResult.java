@@ -34,8 +34,7 @@ public class FigureStandardsResult extends AttributeResult
 			if (!projectLevel)
 			{
 				avaible[i] = true;
-			}
-			else
+			} else
 			{
 				avaible[i] = StatMapper.statisticAvaible
 						.get(StatMapper.statisticNames[i]);
@@ -49,7 +48,7 @@ public class FigureStandardsResult extends AttributeResult
 
 		double beginDraw = 0.0d;
 		double endDraw = 0.0d;
-		
+
 		double time = 0.0d;
 		double length = 0.0d;
 		double avgSpeed = 0.0d;
@@ -61,20 +60,21 @@ public class FigureStandardsResult extends AttributeResult
 		if ((!avaible[7]) && (!avaible[8]) && (!avaible[10]))
 			return;
 
-		
 		if (avaible[7])
 		{
 			seg = this.segment.getFirst();
 			if (seg != null)
 			{
-				beginDraw = this.packet.get(seg.getRange().getLeft()).getPkTime();
+				beginDraw = this.packet.get(seg.getRange().getLeft())
+						.getPkTime();
 				seg = this.segment.getLast();
-				endDraw = this.packet.get(seg.getRange().getRight()).getPkTime();
+				endDraw = this.packet.get(seg.getRange().getRight())
+						.getPkTime();
 				time = endDraw - beginDraw;
 			}
-			
+
 		}
-		
+
 		while (it.hasNext())
 		{
 			seg = it.next();

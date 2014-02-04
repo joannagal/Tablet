@@ -34,9 +34,9 @@ public class SingleImporterView extends JFrame
 	public SingleImporterView()
 	{
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "htd and mtb files (*.htd, *.mtb)", "htd", "mtb");
-	    fc.setFileFilter(filter);
-		
+				"htd and mtb files (*.htd, *.mtb)", "htd", "mtb");
+		fc.setFileFilter(filter);
+
 		this.controller = new SingleImporterController(this);
 
 		this.setTitle("Create Specimen: Single");

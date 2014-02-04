@@ -21,9 +21,8 @@ public class ToolbarView extends JPanel
 	private JButton statisticsButton = new JButton("Statistics");
 	private JButton compareButton = new JButton("Compare");
 
-	
 	private ChooserView chooserView = new ChooserView();
-	
+
 	public ToolbarView(Project project)
 	{
 		controller = new ToolbarController(this);
@@ -60,6 +59,5 @@ public class ToolbarView extends JPanel
 	{
 		this.chooserView = chooserView;
 	}
-
 
 }

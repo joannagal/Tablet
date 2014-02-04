@@ -48,9 +48,9 @@ public class ToolbarController implements ActionListener
 		{
 			if (this.specimenView.getSpecimen() != null)
 			{
-				this.toolbarView.getInformationsView().showWithData();	
+				this.toolbarView.getInformationsView().showWithData();
 			}
-			
+
 		}
 
 		if (action.equals("COMPARATOR"))

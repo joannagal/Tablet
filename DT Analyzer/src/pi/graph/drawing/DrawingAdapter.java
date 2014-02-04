@@ -84,8 +84,6 @@ public class DrawingAdapter
 		String figString = "";
 
 		figString = StatMapper.figureNames[figure.getType()];
-		
-
 
 		graphics.drawString(figString, tBounds.x, tBounds.y - 5);
 
@@ -95,23 +93,6 @@ public class DrawingAdapter
 			this.drawSegment(graphics, figure.getParent().getPacket(),
 					seg.getRange(), time, false, false);
 		}
-
-		/*if (true)// linearized
-		{
-			it = figure.getSegment().iterator();
-
-			while (it.hasNext())
-			{
-				seg = it.next();
-				if (seg.getLinearized() != null)
-				{
-					Range range = new Range(0, seg.getLinearized().size() - 1);
-					this.drawSegment(graphics, seg.getLinearized(), range,
-							time, false, true);
-				}
-			}
-		}*/
-
 	}
 
 	public void drawSegment(Graphics graphics, ArrayList<PacketData> packet,
@@ -160,11 +141,12 @@ public class DrawingAdapter
 				{
 					if (this.thicknessShow)
 					{
-						tools.setStroke(stroke[transform.transformToPressure(pck
-								.getPkPressure())]);
+						tools.setStroke(stroke[transform
+								.transformToPressure(pck.getPkPressure())]);
 
-						graphics.setColor(getGradientColor(this.graph.getDrawing()
-								.getPressureAvoid(), 1024, pck.getPkPressure()));
+						graphics.setColor(getGradientColor(this.graph
+								.getDrawing().getPressureAvoid(), 1024, pck
+								.getPkPressure()));
 					} else
 					{
 						tools.setStroke(stroke[0]);

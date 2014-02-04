@@ -22,7 +22,7 @@ public class PairImporterView extends JFrame
 
 	private JLabel firstBefore = new JLabel("Signal: Before: ");
 	private JLabel firstAfter = new JLabel("Signal: After: ");
-	
+
 	private JTextField firstBeforeField = new JTextField();
 	private JTextField firstAfterField = new JTextField();
 
@@ -37,9 +37,9 @@ public class PairImporterView extends JFrame
 	public PairImporterView()
 	{
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "htd and mtb files (*.htd, *.mtb)", "htd", "mtb");
-	    fc.setFileFilter(filter);
-		
+				"htd and mtb files (*.htd, *.mtb)", "htd", "mtb");
+		fc.setFileFilter(filter);
+
 		this.controller = new PairImporterController(this);
 
 		this.setTitle("Create Specimen: Pair");
@@ -58,23 +58,23 @@ public class PairImporterView extends JFrame
 		this.firstAfter.setBounds(15, 45, 150, 20);
 		this.add(this.firstBefore);
 		this.add(this.firstAfter);
-		
+
 		this.firstBeforeField.setBounds(120, 15, 200, 20);
 		this.firstAfterField.setBounds(120, 45, 200, 20);
 		this.add(this.firstBeforeField);
 		this.add(this.firstAfterField);
-		
+
 		this.firstBeforeButton.setBounds(330, 15, 70, 20);
 		this.firstAfterButton.setBounds(330, 45, 70, 20);
 		this.add(this.firstBeforeButton);
 		this.add(this.firstAfterButton);
-		
+
 		this.firstBeforeButton.setActionCommand("LOAD1");
 		this.firstBeforeButton.addActionListener(this.controller);
 
 		this.firstAfterButton.setActionCommand("LOAD2");
 		this.firstAfterButton.addActionListener(this.controller);
-		
+
 		this.okButton.setBounds(300, 75, 100, 30);
 		this.cancelButton.setBounds(17, 75, 100, 30);
 

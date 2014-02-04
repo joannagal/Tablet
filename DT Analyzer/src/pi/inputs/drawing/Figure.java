@@ -12,7 +12,7 @@ public class Figure
 	private Drawing parent;
 	private LinkedList<Segment> segment;
 	private Rectangle bounds;
-	
+
 	private int totalPoints = 0;
 
 	private int type = -1;
@@ -27,7 +27,7 @@ public class Figure
 	public static final int BROKENLINE = 6;
 	public static final int SPIRALIN = 7;
 	public static final int SPIRALOUT = 8;
-	
+
 	public Figure(Drawing parent)
 	{
 		this.parent = parent;
@@ -68,7 +68,6 @@ public class Figure
 		this.setBounds(new Rectangle(min_x, max_y, (max_x - min_x),
 				(max_y - min_y)));
 	}
-
 
 	public int getType()
 	{

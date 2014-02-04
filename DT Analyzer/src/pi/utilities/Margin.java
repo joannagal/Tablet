@@ -1,13 +1,5 @@
 package pi.utilities;
 
-//-------------------------------------------
-/*
-	KLASA MARGIN
-	
-	TRZYMAM TU WARTOSCI MARGINESOW, POTRZEBNE DO RYSOWANIA
-	WYKRESU ECG
-*/
-//-------------------------------------------
 
 public class Margin
 {
@@ -15,12 +7,12 @@ public class Margin
 	private double right;
 	private double top;
 	private double bottom;
-	
+
 	public Margin(double left, double right, double top, double bottom)
 	{
 		set(left, right, top, bottom);
 	}
-	
+
 	public void set(double left, double right, double top, double bottom)
 	{
 		this.setLeft(left);
@@ -68,5 +60,5 @@ public class Margin
 	{
 		this.bottom = bottom;
 	}
-	
+
 }

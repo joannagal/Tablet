@@ -31,11 +31,9 @@ public class Timeline extends JPanel
 	{ "ZigZag", "Circle-Left", "Circle-Right", "First Line", "Second Line",
 			"Broken Line", "Spiral-In", "Spiral-Out" };
 
-	JComboBox <String> figuresCombo = new JComboBox <String> (figures);
+	JComboBox<String> figuresCombo = new JComboBox<String>(figures);
 
-	// petList.setSelectedIndex(0);
-	// petList.addActionListener(this);
-
+	
 	public Timeline(Graph graph)
 	{
 		this.graph = graph;
@@ -44,7 +42,7 @@ public class Timeline extends JPanel
 		this.setMinimumSize(new Dimension(350, 50));
 
 		this.setBorder(BorderFactory.createTitledBorder("Timeline"));
-		
+
 		this.timeSlider = new JSlider();
 		this.timeSlider.addChangeListener(new ChangeListener()
 		{
@@ -53,20 +51,18 @@ public class Timeline extends JPanel
 				if (getGraph().getDrawing() != null)
 				{
 					int pck = timeSlider.getValue();
-					int time = getGraph().getDrawing().getPacket().get(pck).getPkTime();
-					
-					if (time <= getGraph().getSelection()
-							.getLeft())
+					int time = getGraph().getDrawing().getPacket().get(pck)
+							.getPkTime();
+
+					if (time <= getGraph().getSelection().getLeft())
 					{
 						getGraph().getSelection().setRight(
 								getGraph().getSelection().getLeft() + 1);
 					} else
-						getGraph().getSelection().setRight(
-								time);
+						getGraph().getSelection().setRight(time);
 
 					applyNewLabel();
 
-					
 					getGraph().setCurrentTime(time);
 				}
 			}
@@ -82,14 +78,14 @@ public class Timeline extends JPanel
 				if (getGraph().getDrawing() != null)
 				{
 					int pck = timeSlider.getValue();
-					int time = getGraph().getDrawing().getPacket().get(pck).getPkTime();
-					
-					getGraph().getSelection().setRange(time,
-							time + 1);
+					int time = getGraph().getDrawing().getPacket().get(pck)
+							.getPkTime();
+
+					getGraph().getSelection().setRange(time, time + 1);
 
 					getGraph().draw();
 				}
-			
+
 			}
 		});
 
@@ -100,15 +96,16 @@ public class Timeline extends JPanel
 			{
 				if (getGraph().getDrawing() == null)
 					return;
-				
+
 				int type = figuresCombo.getSelectedIndex() + 1;
 				Range range = new Range(getGraph().getSelection().getLeft(),
 						getGraph().getSelection().getRight());
-				
-				if (range.getInterval() < 50) return;
-				
+
+				if (range.getInterval() < 50)
+					return;
+
 				getGraph().getDrawing().createFigure(range, type);
-				
+
 				range = getGraph().getSelection();
 				range.setRight(getGraph().getDrawing().getTotalTime() + 1);
 				range.setLeft(getGraph().getDrawing().getTotalTime());
@@ -118,8 +115,6 @@ public class Timeline extends JPanel
 			}
 		});
 
-
-	
 		this.add(this.figuresCombo);
 
 		this.rebuild(graph.getDrawing());
@@ -144,13 +139,14 @@ public class Timeline extends JPanel
 
 	public void applyNewLabel()
 	{
-		if (getGraph().getDrawing() == null) return;
-		
+		if (getGraph().getDrawing() == null)
+			return;
+
 		int pck = timeSlider.getValue();
 		int time = getGraph().getDrawing().getPacket().get(pck).getPkTime();
 		pck = timeSlider.getMaximum();
 		int max = getGraph().getDrawing().getPacket().get(pck).getPkTime();
-		
+
 		this.setBorder(BorderFactory.createTitledBorder(String.format(
 				"Time %d/%d", time, max)));
 	}

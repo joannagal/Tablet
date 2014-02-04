@@ -35,11 +35,12 @@ public class LoadTest extends JPanel
 		{
 			public void actionPerformed(ActionEvent evt)
 			{
-				Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+				Dimension dimension = Toolkit.getDefaultToolkit()
+						.getScreenSize();
 				int x = (int) ((dimension.getWidth() - loadView.getWidth()) / 2);
 				int y = (int) ((dimension.getHeight() - loadView.getHeight()) / 2);
 				loadView.setLocation(x, y);
-				
+
 				loadView.setVisible(true);
 			}
 		});

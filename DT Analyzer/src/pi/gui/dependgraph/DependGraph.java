@@ -27,11 +27,11 @@ public class DependGraph extends JPanel
 	{ new Color(255, 200, 200, 255), new Color(200, 255, 200, 255),
 			new Color(200, 200, 255, 255), new Color(255, 200, 255, 255),
 			new Color(255, 255, 200, 255), new Color(200, 255, 255, 255), };
-	
+
 	public final static int LINE = 0;
 	public final static int POINT = 1;
 	public final static int MIXED = 2;
-	
+
 	private int type = DependGraph.LINE;
 
 	private final double margin = 30.0d;
@@ -39,10 +39,10 @@ public class DependGraph extends JPanel
 
 	private double minValue = 0.0d;
 	private double maxValue = 0.0d;
-	
+
 	private double minTime = 0.0d;
 	private double maxTime = 0.0d;
-	
+
 	private double lockedMaxTime = 0.0d;
 	private boolean loockedMax = false;
 
@@ -77,7 +77,7 @@ public class DependGraph extends JPanel
 		{
 			this.maxTime = this.lockedMaxTime;
 		}
-		
+
 	}
 
 	@Override
@@ -108,18 +108,19 @@ public class DependGraph extends JPanel
 		for (int i = 0; i < data.size(); i++)
 		{
 			int size = data.get(i).size();
-			
+
 			graphics.setColor(this.drawColor[i]);
 
 			for (int j = 0; j < size - 1; j += 2)
 			{
 				tmp = data.get(i).get(j);
-				
+
 				if (this.loockedMax)
 				{
-					if (tmp > this.lockedMaxTime) break;
+					if (tmp > this.lockedMaxTime)
+						break;
 				}
-				
+
 				prop = (tmp - this.minTime) / (this.maxTime - this.minTime);
 				posX = 0.5d + left + width * prop;
 
@@ -142,12 +143,11 @@ public class DependGraph extends JPanel
 						graphics.drawLine((int) (prevX), (int) (prevY - 1),
 								(int) (posX), (int) (posY + 1));
 					}
-					
-					graphics.setColor(this.drawColor[i]);
-					graphics.fillOval((int)(posX - 3), (int)(posY - 3), 5, 5);
 
-				}
-				else 
+					graphics.setColor(this.drawColor[i]);
+					graphics.fillOval((int) (posX - 3), (int) (posY - 3), 5, 5);
+
+				} else
 				{
 					graphics.drawLine((int) (posX - 1), (int) (posY),
 							(int) (posX + 1), (int) (posY));
@@ -210,8 +210,6 @@ public class DependGraph extends JPanel
 		this.repaint();
 	}
 
-	// ------------------------------------------
-	// SIMPLE DRAWING BORDER
 	public void drawBorder(Graphics graphics)
 	{
 		Rectangle frame = this.getBounds();
@@ -219,15 +217,13 @@ public class DependGraph extends JPanel
 		graphics.drawRect(0, 0, frame.width - 1, frame.height - 1);
 	}
 
-	// ------------------------------------------
-	// SIMPLE DRAWING BACKGROUND
 	public void drawBackground(Graphics graphics)
 	{
 		Rectangle frame = this.getBounds();
 		graphics.setColor(this.backgroundColor);
 		graphics.fillRect(0, 0, frame.width - 1, frame.height - 1);
 	}
-	
+
 	public void setLockedMaxTime(double value)
 	{
 		this.loockedMax = true;
@@ -238,7 +234,7 @@ public class DependGraph extends JPanel
 	{
 		this.loockedMax = false;
 	}
-	
+
 	public ArrayList<ArrayList<Double>> getData()
 	{
 		return data;

@@ -49,13 +49,12 @@ public class PopImporter extends DefaultHandler
 	@Override
 	public void startDocument()
 	{
-		//System.out.println("Start project import");
+
 	}
 
 	@Override
 	public void endDocument()
 	{
-		//System.out.println("Project imported");
 	}
 
 	@Override
@@ -101,7 +100,6 @@ public class PopImporter extends DefaultHandler
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException
 	{
-		//System.out.println("End Element :" + qName);
 		if (rawDataNode)
 		{
 			this.finishRawData();
@@ -174,7 +172,6 @@ public class PopImporter extends DefaultHandler
 		spec.setSurname(attributes.getValue("surname"));
 		spec.setPesel(attributes.getValue("pesel"));
 
-		// birth_date
 		String date = attributes.getValue("birth_date");
 		if (date != null)
 		{
@@ -222,7 +219,6 @@ public class PopImporter extends DefaultHandler
 			spec.setOperationTestNo(Integer.parseInt(firstOperationNo));
 		else
 			spec.setOperationTestNo(null);
-
 
 		popul.getSpecimen().add(specimenIndex, spec);
 		specimenIndex++;
@@ -287,7 +283,7 @@ public class PopImporter extends DefaultHandler
 		if (id.equals("1"))
 		{
 			spec.setBefore(input);
-	
+
 		} else if (id.equals("2"))
 		{
 			spec.setAfter(input);
@@ -303,12 +299,11 @@ public class PopImporter extends DefaultHandler
 		{
 			figure.setType(Integer.parseInt(type));
 		}
-			
 
-		String points = attributes.getValue("points"); 
+		String points = attributes.getValue("points");
 		if (points != null)
 			figure.setTotalPoints(Integer.parseInt(points));
-		
+
 		String bounds = attributes.getValue("bounds");
 		if (bounds != "")
 		{
@@ -350,7 +345,6 @@ public class PopImporter extends DefaultHandler
 
 	public void finishRawData()
 	{
-		//System.out.printf("--- FINISH\n");
 		Iterator<String> it = this.toBuild.iterator();
 		String value;
 		String sum = "";
@@ -358,18 +352,14 @@ public class PopImporter extends DefaultHandler
 		while (it.hasNext())
 		{
 			value = it.next();
-			//System.out.printf("L: %d\n", value.length());
 			sum = sum + value;
 		}
 		String data[] = sum.split(" ");
-
-		//System.out.printf("--- %d %d %d\n", sum.length(), rawSize, data.length);
 
 		ArrayList<PacketData> packets = new ArrayList<>(rawSize);
 
 		for (int i = 0; i < data.length - 1; i += 6)
 		{
-			//System.out.printf("%s ", data[i]);
 
 			PacketData p = new PacketData();
 			p = new PacketData();

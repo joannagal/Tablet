@@ -58,20 +58,18 @@ public class DrawingTestView extends JPanel
 		this.graph.draw();
 	}
 
-	// ----------- GETTERS AND SETTERS
 
 	public void setDrawing(Drawing drawing)
 	{
 		this.setDrawing(drawing, specimen, before);
 	}
-	
+
 	public void setDrawing(Drawing drawing, Specimen specimen, boolean before)
 	{
-		//if (drawing != null) drawing.createStatus();
-		
+
 		this.setSpecimen(specimen);
 		this.setBefore(before);
-		
+
 		this.graph.setDrawing(drawing);
 		this.graph.recalculate();
 		this.toolbarView.rebuild(drawing);
@@ -81,7 +79,7 @@ public class DrawingTestView extends JPanel
 		{
 			this.graph.setCurrentTime(0);
 		}
-			
+
 		this.graph.draw();
 
 	}

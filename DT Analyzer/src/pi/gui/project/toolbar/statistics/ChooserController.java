@@ -18,18 +18,18 @@ public class ChooserController implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		String action = arg0.getActionCommand();
-		
+
 		if (action.equals("OK"))
 		{
 			this.view.getStatisticsView().showWithData();
 			this.view.setVisible(false);
 		}
-		
+
 		if (action.equals("CLOSE"))
 		{
 			this.view.setVisible(false);
 		}
-		
+
 		for (int i = 0; i < StatMapper.figureNames.length; i++)
 			if (action.equals(StatMapper.figureNames[i]))
 			{
@@ -42,14 +42,16 @@ public class ChooserController implements ActionListener
 			if (action.equals(StatMapper.attributeNames[i]))
 			{
 				boolean sel = view.getAttributeCombo()[i].isSelected();
-				
-				if ( (i == 3) && (sel == true))
+
+				if ((i == 3) && (sel == true))
 				{
 					view.getAttributeCombo()[2].setSelected(true);
-					StatMapper.attributeAvaible.put(StatMapper.attributeNames[2], sel);
+					StatMapper.attributeAvaible.put(
+							StatMapper.attributeNames[2], sel);
 				}
-				
-				StatMapper.attributeAvaible.put(StatMapper.attributeNames[i], sel);
+
+				StatMapper.attributeAvaible.put(StatMapper.attributeNames[i],
+						sel);
 				return;
 			}
 
@@ -57,41 +59,49 @@ public class ChooserController implements ActionListener
 			if (action.equals(StatMapper.statisticNames[i]))
 			{
 				boolean sel = view.getStatisticsCombo()[i].isSelected();
-				
-				if ( (i == 2) && (sel == true))
+
+				if ((i == 2) && (sel == true))
 				{
 					view.getStatisticsCombo()[0].setSelected(true);
-					StatMapper.statisticAvaible.put(StatMapper.statisticNames[0], sel);
-					
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[0], sel);
+
 					view.getStatisticsCombo()[1].setSelected(true);
-					StatMapper.statisticAvaible.put(StatMapper.statisticNames[1], sel);
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[1], sel);
 				}
-				
-				if ( (i == 5) && (sel == true))
+
+				if ((i == 5) && (sel == true))
 				{
 					view.getStatisticsCombo()[3].setSelected(true);
-					StatMapper.statisticAvaible.put(StatMapper.statisticNames[3], sel);
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[3], sel);
 				}
-				
-				if ( (i == 6) && (sel == true))
+
+				if ((i == 6) && (sel == true))
 				{
 					view.getStatisticsCombo()[3].setSelected(true);
-					StatMapper.statisticAvaible.put(StatMapper.statisticNames[3], sel);
-					
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[3], sel);
+
 					view.getStatisticsCombo()[5].setSelected(true);
-					StatMapper.statisticAvaible.put(StatMapper.statisticNames[5], sel);
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[5], sel);
 				}
-				
-				if ( (i == 9) && (sel == true))
+
+				if ((i == 9) && (sel == true))
 				{
 					view.getStatisticsCombo()[8].setSelected(true);
-					StatMapper.statisticAvaible.put(StatMapper.statisticNames[8], sel);
-					
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[8], sel);
+
 					view.getStatisticsCombo()[7].setSelected(true);
-					StatMapper.statisticAvaible.put(StatMapper.statisticNames[7], sel);
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[7], sel);
 				}
-				
-				StatMapper.statisticAvaible.put(StatMapper.statisticNames[i], sel);
+
+				StatMapper.statisticAvaible.put(StatMapper.statisticNames[i],
+						sel);
 				return;
 			}
 

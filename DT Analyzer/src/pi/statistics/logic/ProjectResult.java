@@ -41,18 +41,19 @@ public class ProjectResult
 		{
 			this.testResult = null;
 		}
-		
+
 		if (this.value != null)
 		{
-			 for (Map.Entry<String, PopulationResult> entry : this.value.entrySet())
-			 {
-				 entry.getValue().clearMemory();
-			 }
-			 
-			 this.value = null;
+			for (Map.Entry<String, PopulationResult> entry : this.value
+					.entrySet())
+			{
+				entry.getValue().clearMemory();
+			}
+
+			this.value = null;
 		}
 	}
-	
+
 	public void doTests()
 	{
 		this.testResult = null;
@@ -113,7 +114,7 @@ public class ProjectResult
 			for (int j = 0; j < StatMapper.attributeNames.length; j++)
 			{
 				SharedController.getInstance().getProgressView().increase();
-				
+
 				for (int k = 0; k < StatMapper.statisticNames.length; k++)
 				{
 					fList = fMap.get(StatMapper.figureNames[i])
@@ -132,30 +133,30 @@ public class ProjectResult
 							.get(StatMapper.statisticNames[k]);
 
 					// To [] double
-					
+
 					double[] left;
 					double[] right;
-					
+
 					if (fList.size() != sList.size())
 					{
 						int length = fList.size();
-						if (sList.size() < length) length = sList.size();
-						
+						if (sList.size() < length)
+							length = sList.size();
+
 						left = this.listToDouble(fList, length);
 						right = this.listToDouble(sList, length);
-					}
-					else
+					} else
 					{
 						left = this.listToDouble(fList);
 						right = this.listToDouble(sList);
 					}
-					
+
 					// ------------------------
 					// LICZ AVG I DEV
-					
+
 					this.calculateStatistics(result, left);
 					this.calculateStatistics(result, right);
-					
+
 					// ------------------------
 
 					LillieforsNormality.compute(left, this.rangesLillie, false);
@@ -197,7 +198,7 @@ public class ProjectResult
 					} else
 					{
 						result.add(-1.0d);
-					
+
 						boolean paired = true;
 						if (!fP.equals(sP))
 							paired = this.projectLvPaired;
@@ -207,14 +208,13 @@ public class ProjectResult
 						if (paired)
 						{
 							WilcoxonSignedRankTest test = new WilcoxonSignedRankTest();
-							pval = test.wilcoxonSignedRankTest(left, right, true);	
-						}
-						else
+							pval = test.wilcoxonSignedRankTest(left, right,
+									true);
+						} else
 						{
 							MannWhitneyUTest test = new MannWhitneyUTest();
 							pval = test.mannWhitneyUTest(left, right);
 						}
-							
 
 						if (paired)
 							result.add(1.0d);
@@ -230,24 +230,24 @@ public class ProjectResult
 			}
 		}
 	}
-	
-	public void calculateStatistics(LinkedList <Double> result, double[] list)
+
+	public void calculateStatistics(LinkedList<Double> result, double[] list)
 	{
 		StatisticResult avg = new StatisticResult();
 		StatisticResult var = new StatisticResult();
-		
+
 		Average.init(avg);
 		for (int i = 0; i < list.length; i++)
 			Average.iterate(list[i]);
 		Average.finish();
-		
+
 		Variance.init(var, avg.getValue().get(0));
-		
+
 		for (int i = 0; i < list.length; i++)
 			Variance.iterate(list[i]);
-		
+
 		Variance.finish();
-		
+
 		result.add(avg.getValue().get(0));
 		double sd = Math.sqrt(var.getValue().get(0));
 		result.add(sd);
@@ -264,12 +264,13 @@ public class ProjectResult
 			value = it.next();
 			result[place] = value;
 			place++;
-			if (place >= length) break;
+			if (place >= length)
+				break;
 		}
 
 		return result;
 	}
-	
+
 	public double[] listToDouble(LinkedList<Double> list)
 	{
 		return this.listToDouble(list, list.size());

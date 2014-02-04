@@ -45,8 +45,7 @@ public class AltitudeResult extends AttributeResult
 			if (!projectLevel)
 			{
 				avaible[i] = true;
-			}
-			else
+			} else
 			{
 				avaible[i] = StatMapper.statisticAvaible
 						.get(StatMapper.statisticNames[i]);
@@ -105,7 +104,7 @@ public class AltitudeResult extends AttributeResult
 			Median.init(median, size);
 		if (avaible[5])
 			Variance.init(varianceResult, avgResult.getValue().get(0));
-		
+
 		if (avaible[11])
 			Collector.init(histogramResult, size);
 
@@ -114,7 +113,7 @@ public class AltitudeResult extends AttributeResult
 			DependencyCollector.init(dependencyResult, size * 2 + 2);
 			DependencyCollector.iterate(0.0d, 0.0d);
 		}
-		
+
 		it = this.segment.iterator();
 
 		boolean first = true;
@@ -146,13 +145,13 @@ public class AltitudeResult extends AttributeResult
 					Median.iterate(value);
 				if (avaible[5])
 					Variance.iterate(value);
-				
+
 				if (avaible[11])
 					Collector.iterate(value);
-				
+
 				if (!projectLevel)
 					DependencyCollector.iterate(packet.get(i).getPkTime()
-							- baseTime, value);	
+							- baseTime, value);
 
 			}
 		}
@@ -174,7 +173,7 @@ public class AltitudeResult extends AttributeResult
 
 		if (!projectLevel)
 			this.value.put("Dependency Collector", dependencyResult);
-		
+
 		if (avaible[0])
 			this.value.put("Min", minResult);
 		if (avaible[1])

@@ -36,16 +36,16 @@ public class PopulSingleImporterView extends JFrame
 	private JScrollPane firstBeforePane = new JScrollPane(firstBeforeList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-	private LinkedList <File> firstBeforeFiles = new LinkedList<File>();
-	
+	private LinkedList<File> firstBeforeFiles = new LinkedList<File>();
+
 	private DefaultListModel<String> secondBeforeListModel = new DefaultListModel<String>();
 	private JList<String> secondBeforeList = new JList<String>(
 			secondBeforeListModel);
 	private JScrollPane secondBeforePane = new JScrollPane(secondBeforeList,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-	private LinkedList <File> secondBeforeFiles = new LinkedList<File>();
-	
+	private LinkedList<File> secondBeforeFiles = new LinkedList<File>();
+
 	private JButton addButton = new JButton("Select");
 	private JButton delButton = new JButton("Delete");
 	private JButton upButton = new JButton("Up");
@@ -55,13 +55,13 @@ public class PopulSingleImporterView extends JFrame
 	private JButton cancelButton = new JButton("Cancel");
 
 	private final JFileChooser fc = new JFileChooser();
-	
+
 	public PopulSingleImporterView()
 	{
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "htd and mtb files (*.htd, *.mtb)", "htd", "mtb");
-	    fc.setFileFilter(filter);
-		
+				"htd and mtb files (*.htd, *.mtb)", "htd", "mtb");
+		fc.setFileFilter(filter);
+
 		this.controller = new PopulSingleImporterController(this);
 
 		this.setTitle("Create Two Populations: Single");
@@ -72,7 +72,7 @@ public class PopulSingleImporterView extends JFrame
 		int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
 		int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
 		this.setLocation(x, y);
-		
+
 		this.setResizable(false);
 		this.setLayout(null);
 
@@ -144,27 +144,27 @@ public class PopulSingleImporterView extends JFrame
 
 		int size = this.firstBeforeFiles.size();
 		ArrayList<String> firstBefore = new ArrayList<String>(size);
-		Iterator <File> it = this.firstBeforeFiles.iterator();
+		Iterator<File> it = this.firstBeforeFiles.iterator();
 		File file;
-		
+
 		while (it.hasNext())
 		{
 			file = it.next();
 			System.out.println(file.getAbsolutePath());
 			firstBefore.add(file.getAbsolutePath());
-		}	
+		}
 		paths.add(firstBefore);
 
 		size = this.secondBeforeFiles.size();
 		ArrayList<String> secondBefore = new ArrayList<String>(size);
 		it = this.secondBeforeFiles.iterator();
-		
+
 		while (it.hasNext())
 		{
 			file = it.next();
 			System.out.println(file.getAbsolutePath());
 			secondBefore.add(file.getAbsolutePath());
-		}	
+		}
 		paths.add(secondBefore);
 
 		return paths;
@@ -180,7 +180,7 @@ public class PopulSingleImporterView extends JFrame
 		else
 			return this.secondBeforeListModel;
 	}
-	
+
 	public LinkedList<File> getCurrentFileList()
 	{
 		int tab = this.tabbedPane.getSelectedIndex();
@@ -208,22 +208,22 @@ public class PopulSingleImporterView extends JFrame
 		return fc;
 	}
 
-	public LinkedList <File> getFirstBeforeFiles()
+	public LinkedList<File> getFirstBeforeFiles()
 	{
 		return firstBeforeFiles;
 	}
 
-	public void setFirstBeforeFiles(LinkedList <File> firstBeforeFiles)
+	public void setFirstBeforeFiles(LinkedList<File> firstBeforeFiles)
 	{
 		this.firstBeforeFiles = firstBeforeFiles;
 	}
 
-	public LinkedList <File> getSecondBeforeFiles()
+	public LinkedList<File> getSecondBeforeFiles()
 	{
 		return secondBeforeFiles;
 	}
 
-	public void setSecondBeforeFiles(LinkedList <File> secondBeforeFiles)
+	public void setSecondBeforeFiles(LinkedList<File> secondBeforeFiles)
 	{
 		this.secondBeforeFiles = secondBeforeFiles;
 	}

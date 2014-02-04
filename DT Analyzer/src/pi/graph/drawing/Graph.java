@@ -67,12 +67,9 @@ public class Graph extends JPanel implements MouseMotionListener
 	@Override
 	public void mouseMoved(MouseEvent arg0)
 	{
-		// new Point(arg0.getPoint().x, arg0.getPoint().y)
 		popUp.setPoint(arg0.getPoint());
 	}
 
-	// ------------------------------------------
-	// SIMPLE DRAWING BACKGROUND
 	public void drawLabel(Graphics graphics)
 	{
 		if (this.drawing != null)
@@ -82,8 +79,6 @@ public class Graph extends JPanel implements MouseMotionListener
 		}
 	}
 
-	// ------------------------------------------
-	// SIMPLE DRAWING BORDER
 	public void drawBorder(Graphics graphics)
 	{
 		Rectangle frame = this.getBounds();
@@ -91,8 +86,6 @@ public class Graph extends JPanel implements MouseMotionListener
 		graphics.drawRect(0, 0, frame.width - 1, frame.height - 1);
 	}
 
-	// ------------------------------------------
-	// SIMPLE DRAWING BACKGROUND
 	public void drawBackground(Graphics graphics)
 	{
 		Rectangle frame = this.getBounds();
@@ -114,7 +107,7 @@ public class Graph extends JPanel implements MouseMotionListener
 			return;
 
 		this.tranform.recalculate();
-		
+
 		Point p = new Point();
 		this.tranform.transformToRealPoint(x, y, p);
 
@@ -135,14 +128,14 @@ public class Graph extends JPanel implements MouseMotionListener
 			}
 		}
 	}
-	
+
 	public void deleteFigure(int x, int y)
 	{
 		if (this.drawing == null)
 			return;
 		if (this.drawing.getFigure() == null)
 			return;
-		
+
 		this.tranform.recalculate();
 
 		Point p = new Point();
@@ -166,8 +159,6 @@ public class Graph extends JPanel implements MouseMotionListener
 
 	}
 
-	// ------------------------------------------
-	// RECALCULATE ALL GRAPH
 	public void recalculate()
 	{
 		this.setScheme(this.controller.getCurrentScheme().getDrawingScheme());
@@ -212,16 +203,8 @@ public class Graph extends JPanel implements MouseMotionListener
 		{
 			this.selection.setRange(drawing.getTotalTime(),
 					drawing.getTotalTime() + 1);
-			
-			// DEB
-			
-			//System.out.printf("-DEBUG ---\n");
-			//drawing.recalculate(true);
-			//System.out.printf("-%d %d\n", drawing.);
-			//drawing.linearize(10);
-			
-		}
-		else
+
+		} else
 			this.selection.setRange(100, 101);
 		this.drawing = drawing;
 	}

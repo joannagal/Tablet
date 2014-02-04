@@ -34,25 +34,26 @@ public class SingleImporterController implements ActionListener
 				project.setName("New Project");
 				project.setPath(null);
 				project.setType(Project.SPECIMEN_SINGLE);
-				
+
 				project.setFirstPopulation(new Population());
 				project.setSecondPopulation(null);
-				
-				ArrayList <String> firstBefore = new ArrayList <String> (1);
+
+				ArrayList<String> firstBefore = new ArrayList<String>(1);
 				firstBefore.add(this.view.getFirstBeforeField().getText());
-				
+
 				if (!project.create(firstBefore, null, null, null))
 				{
 					project = null;
-				}
-				else
+				} else
 				{
-					SharedController.getInstance().getFrame().initProjectView(project);
+					SharedController.getInstance().getFrame()
+							.initProjectView(project);
 					this.view.setVisible(false);
 				}
 
-			}
-			else JOptionPane.showMessageDialog(null, "All fields Should be filled!");
+			} else
+				JOptionPane.showMessageDialog(null,
+						"All fields Should be filled!");
 
 		} else if (action.equals("LOAD1"))
 		{
@@ -66,7 +67,7 @@ public class SingleImporterController implements ActionListener
 		} else if (action.equals("CANCEL"))
 		{
 			SharedController.getInstance().getFrame().getMenuView()
-			.setInChoose(false);
+					.setInChoose(false);
 			view.setVisible(false);
 		}
 	}

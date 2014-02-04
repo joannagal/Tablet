@@ -18,7 +18,7 @@ public class PopulationSingleController implements ActionListener
 	public PopulationSingleController(PopulationSingleView view)
 	{
 		this.view = view;
-	
+
 	}
 
 	@Override
@@ -31,8 +31,6 @@ public class PopulationSingleController implements ActionListener
 			if ((!this.view.getFirstField().getText().isEmpty())
 					&& (!this.view.getSecondField().getText().isEmpty()))
 			{
-
-				// 1 --------
 				Drawing[] drawing = new Drawing[2];
 				try
 				{
@@ -72,7 +70,7 @@ public class PopulationSingleController implements ActionListener
 								.getProjectView()
 								.addSpecimenPair(null, null, drawing[0],
 										drawing[1]);
-						
+
 					}
 
 				} else if (view.getProjectType() == Project.POPULATION_SINGLE)

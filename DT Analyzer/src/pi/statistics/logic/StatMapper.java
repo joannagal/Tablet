@@ -8,8 +8,8 @@ public class StatMapper
 {
 
 	public static String[] figureNames =
-	{ "All Figures", "ZigZag", "Circle-Up", "Circle-Down", "First Line", "Second Line",
-			"Broken Line", "Spiral-In", "Spiral-Out" };
+	{ "All Figures", "ZigZag", "Circle-Up", "Circle-Down", "First Line",
+			"Second Line", "Broken Line", "Spiral-In", "Spiral-Out" };
 
 	public static Map<String, Boolean> figureAvaible = new HashMap<String, Boolean>(
 			figureNames.length);
@@ -34,38 +34,41 @@ public class StatMapper
 	{
 		int result = 0;
 		for (int i = 0; i < figureNames.length; i++)
-			if (figureAvaible.get(figureNames[i])) result++;
+			if (figureAvaible.get(figureNames[i]))
+				result++;
 		return result;
 	}
-	
+
 	public static int getAttributeAvaibles()
 	{
 		int result = 0;
 		for (int i = 0; i < attributeNames.length; i++)
-			if (attributeAvaible.get(attributeNames[i])) result++;
+			if (attributeAvaible.get(attributeNames[i]))
+				result++;
 		return result;
 	}
-	
+
 	public static int getStatisticAvaibles()
 	{
 		int result = 0;
 		for (int i = 0; i < statisticNames.length; i++)
-			if (statisticAvaible.get(statisticNames[i])) result++;
+			if (statisticAvaible.get(statisticNames[i]))
+				result++;
 		return result;
 	}
-	
+
 	static
 	{
-		
+
 		for (int i = 0; i < figureNames.length; i++)
 			figureAvaible.put(figureNames[i], false);
-		
+
 		for (int i = 0; i < attributeNames.length; i++)
 			attributeAvaible.put(attributeNames[i], true);
-		
+
 		for (int i = 0; i < statisticNames.length; i++)
 			statisticAvaible.put(statisticNames[i], true);
-		
+
 		figureAvaible.put("All Figures", true);
 		attributeAvaible.put("Direction Change (f'')", false);
 		attributeAvaible.put("Azimuth", false);

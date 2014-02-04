@@ -49,7 +49,6 @@ public class InformationsController implements ActionListener
 					.toString();
 			String firstOperation = this.view.getFirstOperationField()
 					.getText();
-	
 
 			if ((name.equals("")) || (name.isEmpty()))
 				specimen.setName(null);

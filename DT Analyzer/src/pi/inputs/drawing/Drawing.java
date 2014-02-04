@@ -69,23 +69,21 @@ public class Drawing
 
 		this.extractor.extract(this);
 		this.interpreter.interprate(this);
-		
+
 		this.completeFigures();
-		
+
 		this.linearize(20);
 	}
-	
+
 	public void completeFigures()
 	{
 		this.createStatus();
-		//System.out.printf("A\n");
 		if (this.status)
 		{
-			//System.out.printf("B\n");
 			this.extractor.createAllFigure(this);
 		}
 	}
-	
+
 	public void linearize(int level)
 	{
 		linearizer.linearize(this, 10);
@@ -95,10 +93,8 @@ public class Drawing
 	{
 		if (this.figure == null)
 			return;
-		
+
 		int size = this.figure.size();
-		
-		//System.out.printf("Size: %d\n", size);
 
 		int[] tab = new int[StatMapper.figureNames.length + 1];
 		this.status = true;
@@ -109,10 +105,8 @@ public class Drawing
 		for (int i = 0; i < size; i++)
 		{
 			int fig = this.figure.get(i).getType();
-			
-			//System.out.printf("%d ", fig);
-			
-			if (fig  < 0)
+
+			if (fig < 0)
 				tab[StatMapper.figureNames.length]++;
 			else
 			{
@@ -121,8 +115,7 @@ public class Drawing
 			}
 
 		}
-		//System.out.printf("\n ");
-		
+
 		for (int i = 0; i < StatMapper.figureNames.length; i++)
 		{
 			if ((i != Figure.ALLFIGURE) && (tab[i] != 1))
@@ -173,9 +166,6 @@ public class Drawing
 		int shift = 0;
 		int fileNameLength = this.getInt(data, shift);
 
-		System.out.printf("-----------\n");
-		System.out.printf("%d ", fileNameLength);
-
 		if (fileNameLength > 0)
 		{
 			shift += 4;
@@ -184,14 +174,11 @@ public class Drawing
 				fileName[i] = data[shift + i];
 			shift += fileNameLength;
 
-			String str = new String(fileName, "UTF-8");
-			System.out.printf("%s \n", str);
-
 		} else
 			shift += 4;
 
 		int dateLength = this.getInt(data, shift);
-		System.out.printf("%d ", dateLength);
+
 		if (dateLength > 0)
 		{
 			shift += 4;
@@ -201,14 +188,11 @@ public class Drawing
 				date[i] = data[shift + i];
 			shift += dateLength;
 
-			String str = new String(date, "UTF-8");
-			System.out.printf("%s \n", str);
-
 		} else
 			shift += 4;
 
 		int memoLength = this.getInt(data, shift);
-		System.out.printf("%d ", memoLength);
+
 		if (memoLength > 0)
 		{
 			shift += 4;
@@ -217,8 +201,6 @@ public class Drawing
 				memo[i] = data[shift + i];
 			shift += memoLength;
 
-			String str = new String(memo, "UTF-8");
-			System.out.printf("%s \n", str);
 		} else
 			shift += 4;
 
@@ -231,21 +213,16 @@ public class Drawing
 		this.outExtY = this.getInt(data, shift);
 		shift += 4;
 
-		System.out.printf("%d %d %d %d\n", outOrgX, outOrgY, outExtX, outExtY);
-		
 		int numPackages = this.getInt(data, shift);
 		shift += 4;
-		
-		if (numPackages > 1000000) 
+
+		if (numPackages > 1000000)
 		{
 			throw new Exception();
 		}
 
-		System.out.printf("PACKAGES:  %d\n", numPackages);
-
 		this.setPressureAvoid(64);
 		this.setMaxPressure(1024);
-		
 
 		this.packet = new ArrayList<PacketData>(numPackages);
 		PacketData temp;
@@ -259,7 +236,7 @@ public class Drawing
 			temp = new PacketData();
 
 			int time = this.getInt(data, shift);
-			// --- TIME BUG IN FILES ------
+
 			if (time > 1000000)
 			{
 				if (cnt == 1)
@@ -267,7 +244,6 @@ public class Drawing
 				else
 					time = packet.get(cnt - 2).getPkTime() + 10;
 			}
-			// ----------------------------
 			if (time > maxTime)
 				maxTime = time;
 			temp.setPkTime(time);
@@ -277,8 +253,6 @@ public class Drawing
 			temp.setPkAzimuth(this.getInt(data, shift + 16));
 			temp.setPkAltitude(this.getInt(data, shift + 20));
 			packet.add(temp);
-
-			//System.out.printf("TIME: %d\n", temp.getPkTime());
 
 			shift += 24;
 		}
@@ -293,9 +267,6 @@ public class Drawing
 
 	public void calculateBounds()
 	{
-		// if (this.figure == null)
-		// return;
-
 		int min_x = 1000000;
 		int max_x = -1000000;
 		int min_y = 1000000;
@@ -334,8 +305,6 @@ public class Drawing
 		width = width * 0.1d;
 		this.setBreakFigureDistance((int) width);
 
-		//System.out.printf("-- %d %d\n", this.content.width,
-		//		this.getBreakFigureDistance());
 	}
 
 	public int getInt(byte[] data, int position)

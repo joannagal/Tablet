@@ -18,18 +18,18 @@ import pi.inputs.drawing.Drawing;
 public class Pressure extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private JSlider pressureSlider;
 	private JCheckBox figureExtract = new JCheckBox("Extract");
 	private Graph graph;
-	
+
 	public Pressure(Graph graph)
 	{
 		this.graph = graph;
 
 		this.setLayout(new FlowLayout(FlowLayout.LEADING));
 		this.setMinimumSize(new Dimension(50, 50));
-		
+
 		this.setBorder(BorderFactory.createTitledBorder("Pressure Ignore"));
 
 		this.pressureSlider = new JSlider();
@@ -39,16 +39,18 @@ public class Pressure extends JPanel
 			{
 				if (getGraph().getDrawing() != null)
 				{
-					getGraph().getDrawing().setPressureAvoid(pressureSlider.getValue());
+					getGraph().getDrawing().setPressureAvoid(
+							pressureSlider.getValue());
 					getGraph().getDrawing().recalculate(false);
 					getGraph().recalculate();
 					getGraph().draw();
-					setBorder(BorderFactory.createTitledBorder(String.format("Pressure %d/1024", pressureSlider.getValue())));
+					setBorder(BorderFactory.createTitledBorder(String.format(
+							"Pressure %d/1024", pressureSlider.getValue())));
 				}
 			}
 		});
 		this.add(this.pressureSlider);
-		
+
 		this.pressureSlider.setMinimum(1);
 		this.pressureSlider.setMaximum(1024);
 		this.pressureSlider.setValue(128);
@@ -60,24 +62,24 @@ public class Pressure extends JPanel
 			{
 				if (getGraph().getDrawing() != null)
 				{
-					getGraph().getDrawing().setWithExtract(figureExtract.isSelected());
+					getGraph().getDrawing().setWithExtract(
+							figureExtract.isSelected());
 				}
 			}
 		});
-		
 
 	}
-	
+
 	public void rebuild(Drawing drawing)
 	{
 		if (drawing != null)
 		{
-			this.pressureSlider.setValue(graph.getDrawing().getPressureAvoid());	
-			this.setBorder(BorderFactory.createTitledBorder(String.format("Pressure %d/1024", pressureSlider.getValue())));
+			this.pressureSlider.setValue(graph.getDrawing().getPressureAvoid());
+			this.setBorder(BorderFactory.createTitledBorder(String.format(
+					"Pressure %d/1024", pressureSlider.getValue())));
 			this.figureExtract.setSelected(false);
 		}
 	}
-	
 
 	public Graph getGraph()
 	{

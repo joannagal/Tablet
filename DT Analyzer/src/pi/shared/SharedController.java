@@ -9,7 +9,6 @@ import pi.shared.schemes.Scheme;
 import pi.shared.schemes.drawing.DrawingScheme;
 import pi.statistics.logic.report.ReportManager;
 
-//-------------------------------------------
 
 public class SharedController
 {
@@ -18,15 +17,15 @@ public class SharedController
 	private Scheme currentScheme;
 	private Scheme whiteScheme;
 	private Scheme blackScheme;
-	
+
 	private Project project = null;
 	private ProjectView projectView = null;
 	private OurFrame frame = null;
 
 	private ProgressView progressView = new ProgressView();
-	
+
 	private ReportManager reportMgr;
-	
+
 	private SharedController()
 	{
 		this.createWhiteScheme();

@@ -15,45 +15,21 @@ import pi.population.Specimen;
 import pi.project.saver.PopSaver;
 import pi.statistics.logic.ProjectResult;
 
-//-------------------------------------------
-/*
- TA KLASA TRZYMA WSZYSTKIE INFO O CALYM 
- POJEDYNCZYM PROJEKCIE 
-
- TA SMIESZNA STRUKTURA DRZEWKA JAK
- PAMIETACIE 
- */
-//-------------------------------------------
-
 public class Project
 {
-	// NAZWA PROJEKTU
+
 	private String name;
 
-	// SCIEZKA PLIKU PROJEKTU
 	private String path;
 
-	// DATA UTWORZENIA PROJEKTU
 	private Date date;
 
-	// PIERWSZA POPULACJA
-	// ONA TWORZONA JEST OBOWIAZKOWO
-	// NO BO NAWET W NAJPROSTSZYM PROJEKCIE
-	// Z JEDNYM LUDKIEM
-	// MUSI ON NALEZEC W KONCU DO POPULACJI
-	// (KTORA ZAWIERA 1 OSOBNIKA)
 	private Population firstPopulation;
 
-	// DRUGA POPULACJA, WIADOMO
-	// TWORZYMY JAK JEST PROJEKT Z DRUGA POPULACJA
 	private Population secondPopulation;
 
-	// --------------------------------
 	private ProjectResult result;
 
-
-	// PO WCZYTANIU USTALAMY TYP PROJEKTU
-	// KOLEJNOSC JAK W TYM PLIKU Z ZALOZENIAMI
 	private int type;
 	public static final int SPECIMEN_SINGLE = 0;
 	public static final int SPECIMEN_PAIR = 1;
@@ -68,45 +44,44 @@ public class Project
 			this.result = null;
 		}
 	}
-	
+
 	public void calculateStatistic()
 	{
 		result = new ProjectResult(this);
 		result.calculateResult();
 	}
 
-	class SaverThread implements Runnable {
-		
+	class SaverThread implements Runnable
+	{
+
 		String path = null;
 		Project project;
-		
+
 		public SaverThread(String path, Project project)
 		{
 			this.path = path;
 			this.project = project;
 		}
-		
-		public void run() 
+
+		public void run()
 		{
 			if (path == null)
 				path = project.getPath();
-			
+
 			PopSaver ps = new PopSaver(this.project);
 			try
 			{
 				ps.save(path);
 				project.setPath(path);
-				
+
 			} catch (FileNotFoundException | UnsupportedEncodingException
 					| XMLStreamException | FactoryConfigurationError e)
 			{
 
-			
 			}
 		}
 	}
-	
-	
+
 	public boolean save(String path)
 	{
 		SaverThread runnable = new SaverThread(path, this);
@@ -142,12 +117,11 @@ public class Project
 					String msg = "Something goes wrong with: "
 							+ firstBefore.get(i);
 					JOptionPane.showMessageDialog(null, msg);
-					
+
 					e.printStackTrace();
 					return false;
 				}
-				
-				
+
 			}
 			this.getFirstPopulation().setName("First Population");
 			this.getFirstPopulation().setSpecimen(specimenArray);
@@ -177,8 +151,6 @@ public class Project
 				}
 			}
 		}
-
-		//
 
 		if (secondBefore != null)
 		{
@@ -284,7 +256,6 @@ public class Project
 	{
 		this.secondPopulation = secondPopulation;
 	}
-
 
 	public int getType()
 	{

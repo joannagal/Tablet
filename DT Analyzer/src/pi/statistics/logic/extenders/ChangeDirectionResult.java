@@ -45,8 +45,7 @@ public class ChangeDirectionResult extends AttributeResult
 			if (!projectLevel)
 			{
 				avaible[i] = true;
-			}
-			else
+			} else
 			{
 				avaible[i] = StatMapper.statisticAvaible
 						.get(StatMapper.statisticNames[i]);
@@ -197,10 +196,10 @@ public class ChangeDirectionResult extends AttributeResult
 
 				if (avaible[11])
 					Collector.iterate(value);
-				
+
 				if (!projectLevel)
 					DependencyCollector.iterate(packet.get(i).getPkTime()
-							- baseTime, value);	
+							- baseTime, value);
 
 				size++;
 				prev = i;
@@ -227,7 +226,7 @@ public class ChangeDirectionResult extends AttributeResult
 
 		if (!projectLevel)
 			this.value.put("Dependency Collector", dependencyResult);
-		
+
 		if (avaible[0])
 			this.value.put("Min", minResult);
 		if (avaible[1])

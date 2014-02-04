@@ -9,11 +9,10 @@ import pi.gui.chooseproject.populsingleimporter.PopulSingleImporterView;
 import pi.gui.chooseproject.singleimporter.SingleImporterView;
 import pi.shared.SharedController;
 
-
 public class ChooseProjectController implements ActionListener
 {
 	ChooseProjectView view;
-	
+
 	public ChooseProjectController(ChooseProjectView view)
 	{
 		this.view = view;
@@ -37,39 +36,43 @@ public class ChooseProjectController implements ActionListener
 			{
 				SingleImporterView importer = new SingleImporterView();
 				importer.setVisible(true);
-				
+
 				this.view.setVisible(false);
-				
-				SharedController.getInstance().getFrame().getMenuView().setInChoose(true);
+
+				SharedController.getInstance().getFrame().getMenuView()
+						.setInChoose(true);
 			}
 
 			if (selected.equals("TWO_SIGNALS"))
 			{
 				PairImporterView importer = new PairImporterView();
 				importer.setVisible(true);
-				
+
 				this.view.setVisible(false);
-				
-				SharedController.getInstance().getFrame().getMenuView().setInChoose(true);
+
+				SharedController.getInstance().getFrame().getMenuView()
+						.setInChoose(true);
 			}
 
 			if (selected.equals("TWO_POPULATIONS"))
 			{
 				PopulSingleImporterView importer = new PopulSingleImporterView();
 				importer.setVisible(true);
-				
+
 				this.view.setVisible(false);
-				
-				SharedController.getInstance().getFrame().getMenuView().setInChoose(true);
+
+				SharedController.getInstance().getFrame().getMenuView()
+						.setInChoose(true);
 			}
 			if (selected.equals("POPULATION_DIFFERENCE"))
 			{
 				PopulPairImporterView importer = new PopulPairImporterView();
 				importer.setVisible(true);
-				
+
 				this.view.setVisible(false);
-				
-				SharedController.getInstance().getFrame().getMenuView().setInChoose(true);
+
+				SharedController.getInstance().getFrame().getMenuView()
+						.setInChoose(true);
 			}
 		}
 

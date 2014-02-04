@@ -1,21 +1,11 @@
 package pi.utilities;
 
-//-------------------------------------------
-/*
-	KLASA RANGE - PRZEDZIAL
-	
-	TRZYMA ONA DWA INTY : LEFT , RIGHT
-	ODPOWIADAJACE NUMEROM PROBEK BEDACYCH
-	KONCAMI PRZEDZIALU.
-*/
-//-------------------------------------------
 
 public class Range
 {
 	private int left;
 	private int right;
 	private int interval;
-
 
 	public Range(int left, int right)
 	{
@@ -27,29 +17,33 @@ public class Range
 
 	private void recalculate()
 	{
-		if ( (this.right < this.left) ||
-			(this.left < -100) || (this.right < -100) )
+		if ((this.right < this.left) || (this.left < -100)
+				|| (this.right < -100))
 		{
 			throw new IllegalArgumentException();
 		}
 
 		interval = right - left;
 	}
-	
+
 	public boolean isIntersecting(Range range)
 	{
-		if (range == null) return false;
-		
-		if ( ((this.left >= range.left) && (this.left < range.right))
-				|| ( (this.right > range.left) && (this.right <= range.right)) ) return true;
-			
+		if (range == null)
+			return false;
+
+		if (((this.left >= range.left) && (this.left < range.right))
+				|| ((this.right > range.left) && (this.right <= range.right)))
+			return true;
+
 		return false;
 	}
-	
+
 	public boolean isInside(Range range)
 	{
-		if (range == null) return false;
-		if ((this.left >= range.left) && (this.right <= range.right)) return true;
+		if (range == null)
+			return false;
+		if ((this.left >= range.left) && (this.right <= range.right))
+			return true;
 		return false;
 	}
 
@@ -59,7 +53,7 @@ public class Range
 		this.right = right;
 		this.recalculate();
 	}
-	
+
 	public void shiftLeft(int value)
 	{
 		this.left += value;

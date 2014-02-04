@@ -46,12 +46,10 @@ public class StatisticsComparatorView extends JFrame
 	private String elementStr = "Figure Standards";
 
 	private JButton closeButton = new JButton("Close");
-	
+
 	private JButton reportButton = new JButton("Display report");
 	private JButton saveButton = new JButton("Save report");
-	
 
-	
 	private Histogram histogram = new Histogram();
 	private DependGraph dGraph = new DependGraph();
 	private DependGraph fftGraph = new DependGraph();
@@ -107,7 +105,7 @@ public class StatisticsComparatorView extends JFrame
 		this.reportButton.addActionListener(controller);
 		this.reportButton.setBounds(700, 440, 140, 25);
 		this.add(this.reportButton);
-		
+
 		this.saveButton.setActionCommand("SAVE");
 		this.saveButton.addActionListener(controller);
 		this.saveButton.setBounds(850, 440, 140, 25);
@@ -129,22 +127,24 @@ public class StatisticsComparatorView extends JFrame
 
 		this.fftGraph.recalculate();
 		this.fftGraph.draw();
-		
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-			
+
+		this.addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e)
+			{
+
 				if (specimen[0] != null)
 				{
 					specimen[0].clearMemory();
 				}
-				
+
 				if (specimen[1] != null)
 				{
 					specimen[1].clearMemory();
 				}
 			}
 		});
-		
+
 	}
 
 	public void setSpecimen(Specimen first, Specimen second)
@@ -170,21 +170,22 @@ public class StatisticsComparatorView extends JFrame
 		public void run()
 		{
 			SharedController.getInstance().getProgressView().init(2);
-			
+
 			view.setSpecimen(first, second);
 
 			view.specimen[0].calculateStatistic(false);
 			if (view.specimen[1] != null)
 				specimen[1].calculateStatistic(false);
-			
+
 			try
 			{
-				SharedController.getInstance().setReportMgr(new ReportManager(first));
+				SharedController.getInstance().setReportMgr(
+						new ReportManager(first));
 			} catch (JRException e)
 			{
 				e.printStackTrace();
 			}
-			
+
 			SharedController.getInstance().getProgressView().increase();
 
 			view.prepare(view.getFigureStr(), view.getElementStr());
@@ -198,7 +199,6 @@ public class StatisticsComparatorView extends JFrame
 		thread.start();
 
 	}
-
 
 	public void prepare(String figure, String element)
 	{

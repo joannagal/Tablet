@@ -46,7 +46,6 @@ public class StatisticsComparatorController implements ActionListener
 		else
 			specResult[1] = null;
 
-		// GOING DOWN
 
 		int pntr = 0;
 
@@ -145,15 +144,15 @@ public class StatisticsComparatorController implements ActionListener
 
 				for (int i = 0; i < StatMapper.statisticNames.length; i++)
 				{
-					statistcResult = valueStat.get(StatMapper.statisticNames[i]);
+					statistcResult = valueStat
+							.get(StatMapper.statisticNames[i]);
 					if (statistcResult != null)
 					{
 						Double value = statistcResult.getValue().get(0);
 						this.view.getModel().setValueAt(Double.toString(value),
 								pos, column);
-						//if (column == 1)
-						this.view.getModel().setValueAt( StatMapper.statisticNames[i], pos,
-									0);
+						this.view.getModel().setValueAt(
+								StatMapper.statisticNames[i], pos, 0);
 						pos++;
 					}
 
@@ -173,22 +172,24 @@ public class StatisticsComparatorController implements ActionListener
 			view.prepare(view.getFigureCombo().getSelectedItem().toString(),
 					view.getElementStr());
 		}
-	
+
 		else if (action.equals("CLOSE"))
 		{
 			view.setVisible(false);
 		}
-		
+
 		else if (action.equals("DISPLAY"))
 		{
-			try {
+			try
+			{
 				SharedController.getInstance().getReportMgr().viewRaport();
-			} catch (JRException ex) {
+			} catch (JRException ex)
+			{
 				System.out.println("Report exception");
 				ex.printStackTrace();
 			}
 		}
-		
+
 		else if (action.equals("SAVE"))
 		{
 

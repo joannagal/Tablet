@@ -25,19 +25,22 @@ import pi.population.Specimen;
 import pi.project.Project;
 import pi.shared.SharedController;
 
-public class PopSaver {
+public class PopSaver
+{
 
 	private Project project;
-	// private String path;
+
 	private XMLStreamWriter out;
 
-	public PopSaver(Project project) {
+	public PopSaver(Project project)
+	{
 		this.project = project;
 	}
 
 	public void save(String path) throws FileNotFoundException,
 			UnsupportedEncodingException, XMLStreamException,
-			FactoryConfigurationError {
+			FactoryConfigurationError
+	{
 		OutputStream outStream = new FileOutputStream(new File(path));
 		out = XMLOutputFactory.newInstance().createXMLStreamWriter(
 				new OutputStreamWriter(outStream, "utf-8"));
@@ -48,28 +51,30 @@ public class PopSaver {
 			out.writeAttribute("name", project.getName());
 		if (project.getPath() != null)
 			out.writeAttribute("path", project.getPath());
-		// --------------
 		int specimens = project.getFirstPopulation().getSpecimen().size();
 		if (project.getSecondPopulation() != null)
 			specimens += project.getSecondPopulation().getSpecimen().size();
-	
+
 		out.writeAttribute("specimens", Integer.toString(specimens));
-		
+
 		SharedController.getInstance().getProgressView().init(specimens);
-		
-		// ---------------
-		if (project.getDate() != null) {
+
+		if (project.getDate() != null)
+		{
 			out.writeAttribute("date", project.getDate().toString());
-		} else {
+		} else
+		{
 			out.writeAttribute("date", "");
 		}
 		out.writeAttribute("type", String.valueOf(project.getType()));
 
-		if (project.getFirstPopulation() != null) {
+		if (project.getFirstPopulation() != null)
+		{
 			savePopul(project.getFirstPopulation(), "1");
 		}
 
-		if (project.getSecondPopulation() != null) {
+		if (project.getSecondPopulation() != null)
+		{
 			savePopul(project.getSecondPopulation(), "2");
 		}
 
@@ -79,36 +84,41 @@ public class PopSaver {
 		out.close();
 	}
 
-	private void savePopul(Population popul, String id) throws XMLStreamException {
+	private void savePopul(Population popul, String id)
+			throws XMLStreamException
+	{
 		out.writeStartElement("POPUL");
-		
-		if (popul.getName() != null) {
+
+		if (popul.getName() != null)
+		{
 			out.writeAttribute("name", popul.getName());
-		} 
-		
+		}
+
 		out.writeAttribute("id", id);
 		out.writeAttribute("specimens",
 				String.valueOf(popul.getSpecimen().size()));
 
-		for (Specimen s : popul.getSpecimen()) {
+		for (Specimen s : popul.getSpecimen())
+		{
 			saveSpecimen(s);
 		}
 
 		out.writeEndElement();
 	}
 
-	private void saveSpecimen(Specimen s) throws XMLStreamException {
+	private void saveSpecimen(Specimen s) throws XMLStreamException
+	{
 		out.writeStartElement("SPECIMEN");
-		
+
 		SharedController.getInstance().getProgressView().increase();
-		
+
 		if (s.getName() != null)
 			out.writeAttribute("name", s.getName());
 		if (s.getSurname() != null)
 			out.writeAttribute("surname", s.getSurname());
 		if (s.getPesel() != null)
 			out.writeAttribute("pesel", s.getPesel());
-		if (s.getBirth() != null) 
+		if (s.getBirth() != null)
 		{
 			Date date = s.getBirth();
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -120,53 +130,60 @@ public class PopSaver {
 			out.writeAttribute("hand", String.valueOf(s.getHand()));
 		if (s.getBrain() != null)
 			out.writeAttribute("brain", String.valueOf(s.getBrain()));
-		if (s.getOperationType() != null) 
+		if (s.getOperationType() != null)
 			out.writeAttribute("operation",
 					String.valueOf(s.getOperationType()));
-		if (s.getOperationTestNo() != null) 
+		if (s.getOperationTestNo() != null)
 			out.writeAttribute("firstoperationno",
 					String.valueOf(s.getOperationTestNo()));
-		
-		if (s.getAfter() != null) {
+
+		if (s.getAfter() != null)
+		{
 			out.writeAttribute("inputs_number", "2");
-		} else {
+		} else
+		{
 			out.writeAttribute("inputs_number", "1");
 		}
 
-		if (s.getBefore() != null) {
+		if (s.getBefore() != null)
+		{
 			saveDrawing((Drawing) s.getBefore(), "1");
 		}
 
-		if (s.getAfter() != null) {
+		if (s.getAfter() != null)
+		{
 			saveDrawing((Drawing) s.getAfter(), "2");
 		}
 
 		out.writeEndElement();
 	}
 
-	private void saveDrawing(Drawing drawing, String id) throws XMLStreamException {
+	private void saveDrawing(Drawing drawing, String id)
+			throws XMLStreamException
+	{
 		out.writeStartElement("INPUT");
-		
 
 		out.writeAttribute("id", id);
-		
+
 		out.writeAttribute("figures",
 				String.valueOf(drawing.getFigure().size()));
 		out.writeAttribute("pressure_avoid",
 				String.valueOf(drawing.getPressureAvoid()));
-		
+
 		out.writeAttribute("origin", drawing.getOrigin());
-		System.out.printf("-- %s\n",  drawing.getOrigin());
-		
-		out.writeAttribute("total_time",
-				String.valueOf(drawing.getTotalTime()));
+		System.out.printf("-- %s\n", drawing.getOrigin());
+
+		out.writeAttribute("total_time", String.valueOf(drawing.getTotalTime()));
 		out.writeAttribute("content", rectangleToString(drawing.getContent()));
 
 		out.writeStartElement("RAW_DATA");
-		out.writeAttribute("packets", Integer.toString(drawing.getPacket().size()));
-		
-		if (drawing.getPacket() != null) {
-			for (PacketData p : drawing.getPacket()) {
+		out.writeAttribute("packets",
+				Integer.toString(drawing.getPacket().size()));
+
+		if (drawing.getPacket() != null)
+		{
+			for (PacketData p : drawing.getPacket())
+			{
 				out.writeCharacters(p.getPkX() + " ");
 				out.writeCharacters(p.getPkY() + " ");
 				out.writeCharacters(p.getPkPressure() + " ");
@@ -178,8 +195,9 @@ public class PopSaver {
 		out.writeEndElement();
 
 		System.out.printf("ILE: %d\n", drawing.getFigure().size());
-		
-		for (Figure ch : drawing.getFigure()) {
+
+		for (Figure ch : drawing.getFigure())
+		{
 			System.out.printf("---\n");
 			saveFigure(ch);
 		}
@@ -188,9 +206,11 @@ public class PopSaver {
 
 	}
 
-	private String rectangleToString(Rectangle r) {
+	private String rectangleToString(Rectangle r)
+	{
 		String content = "";
-		if (r != null) {
+		if (r != null)
+		{
 			content += (int) r.getX();
 			content += " " + (int) r.getY();
 			content += " " + (int) r.getWidth();
@@ -199,34 +219,40 @@ public class PopSaver {
 		return content;
 	}
 
-	private void saveFigure(Figure fig) throws XMLStreamException {
+	private void saveFigure(Figure fig) throws XMLStreamException
+	{
 		out.writeStartElement("FIGURE");
 		out.writeAttribute("type", String.valueOf(fig.getType()));
 
-		if (fig.getSegment() != null) 
+		if (fig.getSegment() != null)
 			out.writeAttribute("segments",
 					String.valueOf(fig.getSegment().size()));
-		
+
 		out.writeAttribute("points", String.valueOf(fig.getTotalPoints()));
-		
+
 		if (fig.getBounds() != null)
 			out.writeAttribute("bounds", rectangleToString(fig.getBounds()));
-		else System.out.printf("UUUPSSS!! %s\n", String.valueOf(fig.getType()));
+		else
+			System.out.printf("UUUPSSS!! %s\n", String.valueOf(fig.getType()));
 
-		for (Segment s : fig.getSegment()) {
+		for (Segment s : fig.getSegment())
+		{
 			saveSegment(s);
 		}
 
 		out.writeEndElement();
 	}
 
-	private void saveSegment(Segment c) throws XMLStreamException {
+	private void saveSegment(Segment c) throws XMLStreamException
+	{
 		out.writeStartElement("SEGMENT");
-		if (c.getRange() != null) {
+		if (c.getRange() != null)
+		{
 			String range = c.getRange().getLeft() + " "
 					+ c.getRange().getRight();
 			out.writeAttribute("range", range);
-		} else {
+		} else
+		{
 			out.writeAttribute("range", "");
 		}
 

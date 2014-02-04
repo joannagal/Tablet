@@ -17,23 +17,27 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
-public class ReportManager {
+public class ReportManager
+{
 
 	JasperReport jasperReport = null;
 	JasperPrint jasperPrint = null;
 	JasperDesign jasperDesign = null;
 	JRBeanCollectionDataSource dataSource = null;
 
-	public ReportManager(Specimen specimen) throws JRException {
+	public ReportManager(Specimen specimen) throws JRException
+	{
 		initReport(specimen);
 	}
 
-	public void refreshReport(Specimen specimen) throws JRException {
+	public void refreshReport(Specimen specimen) throws JRException
+	{
 		initReport(specimen);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void initReport(Specimen specimen) throws JRException {
+	private void initReport(Specimen specimen) throws JRException
+	{
 		System.out.println("Init report");
 		long start = System.currentTimeMillis();
 		@SuppressWarnings("rawtypes")
@@ -44,35 +48,39 @@ public class ReportManager {
 		dataSource = new JRBeanCollectionDataSource(
 				FigureStatistic.getFigureStatistics(specimen));
 
-		//File file = new File("report3.jrxml");
-		//jasperDesign = JRXmlLoader.load(file);
-		//jasperReport = JasperCompileManager.compileReport(jasperDesign);
-		
+		// File file = new File("report3.jrxml");
+		// jasperDesign = JRXmlLoader.load(file);
+		// jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
 		File file = new File("report3.jasper");
 		jasperReport = (JasperReport) JRLoader.loadObject(file);
 		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
 				dataSource);
-		
-		
-		/*File file = new File("tymczasowy brak pliku");
-		jasperReport = (JasperReport) JRLoader.loadObject(file);
-		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
-				dataSource);
-				//dataSource.cloneDataSource());*/
-		
+
+		/*
+		 * File file = new File("tymczasowy brak pliku"); jasperReport =
+		 * (JasperReport) JRLoader.loadObject(file); jasperPrint =
+		 * JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+		 * //dataSource.cloneDataSource());
+		 */
+
 		long time = System.currentTimeMillis() - start;
 		System.out.println("Czas inicjowania raportu: " + time);
 
 	}
 
-	public void viewRaport() throws JRException {
+	public void viewRaport() throws JRException
+	{
 		JasperViewer.viewReport(jasperPrint, false);
 	}
 
-	public void saveRaportAsPdf(String path) throws JRException {
-		if (path == null || path == "") {
+	public void saveRaportAsPdf(String path) throws JRException
+	{
+		if (path == null || path == "")
+		{
 			path = "newReport.pdf";
-		} else if (!path.endsWith(".pdf")) {
+		} else if (!path.endsWith(".pdf"))
+		{
 			path += ".pdf";
 		}
 		JasperExportManager.exportReportToPdfFile(jasperPrint, path);
@@ -80,10 +88,13 @@ public class ReportManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void saveReportAsHtml(String path) throws JRException {
-		if (path == null || path == "") {
+	public void saveReportAsHtml(String path) throws JRException
+	{
+		if (path == null || path == "")
+		{
 			path = "newReport.html";
-		} else if (!path.endsWith(".html")) {
+		} else if (!path.endsWith(".html"))
+		{
 			path += ".html";
 		}
 		@SuppressWarnings("rawtypes")
@@ -95,8 +106,10 @@ public class ReportManager {
 		System.out.println("HTML ready");
 	}
 
-	public void comboReport() {
-		try {
+	public void comboReport()
+	{
+		try
+		{
 			// JasperReport jasperReport = null;
 			// JasperPrint jasperPrint = null;
 			// JasperDesign jasperDesign = null;
@@ -113,7 +126,8 @@ public class ReportManager {
 			// "FirstSpecimenReport.pdf");
 			// JasperViewer.viewReport(jasperPrint);
 			// System.out.println("Specimen report generated successfully");
-		} catch (Exception ex) {
+		} catch (Exception ex)
+		{
 			System.out.println("EXCEPTION: " + ex);
 		}
 	}
@@ -121,21 +135,19 @@ public class ReportManager {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		// TODO REMOVE
 
 		// http://sourceforge.net/projects/jasperreports/files/jasperreports/JasperReports%205.5.0/
 		// http://stackoverflow.com/questions/12178615/eclipse-jasper-report-not-compiling-java-lang-noclassdeffounderror-org-apach
 
-		/*try {
-			ReportManager rm = new ReportManager();
-			rm.viewRaport();
-			//rm.saveRaportAsPdf(null);
-			//rm.saveReportAsHtml(null);
-		} catch (JRException e) {
-			System.out.println("Report exception");
-			e.printStackTrace();
-		}*/
+		/*
+		 * try { ReportManager rm = new ReportManager(); rm.viewRaport();
+		 * //rm.saveRaportAsPdf(null); //rm.saveReportAsHtml(null); } catch
+		 * (JRException e) { System.out.println("Report exception");
+		 * e.printStackTrace(); }
+		 */
 
 	}
 
