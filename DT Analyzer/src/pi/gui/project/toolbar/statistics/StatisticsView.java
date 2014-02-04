@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -45,7 +46,11 @@ public class StatisticsView extends JFrame
 	private String elementStr = "Figure Standards";
 
 	private JButton closeButton = new JButton("Close");
-	private JButton saveButton = new JButton("Save");
+	
+	private JLabel reportLabel = new JLabel("Select report");
+	private JComboBox <String> reportCombo = new JComboBox<String>();
+	private JButton reportButton = new JButton("Display report");
+	private JButton saveButton = new JButton("Save report");
 
 	private Histogram histogram = new Histogram();
 
@@ -123,10 +128,21 @@ public class StatisticsView extends JFrame
 		this.closeButton.setBounds(15, 440, 140, 25);
 		this.add(this.closeButton);
 
+		this.reportLabel.setBounds(450, 440, 140, 25);
+		this.add(this.reportLabel);
+		
+		this.reportCombo.setBounds(530, 440, 160, 25);
+		this.add(this.reportCombo);
+		
 		this.saveButton.setActionCommand("SAVE");
 		this.saveButton.addActionListener(controller);
 		this.saveButton.setBounds(850, 440, 140, 25);
 		this.add(this.saveButton);
+		
+		this.reportButton.setActionCommand("DISPLAY");
+		this.reportButton.addActionListener(controller);
+		this.reportButton.setBounds(700, 440, 140, 25);
+		this.add(this.reportButton);
 
 		this.report.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.report.setCellSelectionEnabled(true);
@@ -284,6 +300,10 @@ public class StatisticsView extends JFrame
 				this.model.addRow(columns);
 
 			controller.set(figure, element);
+			
+			String [] names = {"First population"};
+			DefaultComboBoxModel <String> model = new DefaultComboBoxModel <String>( names );
+			this.reportCombo.setModel(model);
 
 		} else if (type == Project.POPULATION_PAIR)
 		{
@@ -304,6 +324,10 @@ public class StatisticsView extends JFrame
 				this.model.addRow(columns);
 
 			controller.set(figure, element);
+			
+			String [] names = {"First population", "Second population", "Differences"};
+			DefaultComboBoxModel <String> model = new DefaultComboBoxModel <String>( names );
+			this.reportCombo.setModel(model);
 		}
 
 		this.report.setModel(this.getModel());
