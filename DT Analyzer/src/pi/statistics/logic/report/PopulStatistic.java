@@ -1,7 +1,14 @@
 package pi.statistics.logic.report;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.Vector;
+
+import pi.project.Project;
+import pi.shared.SharedController;
+import pi.statistics.logic.ProjectResult;
+import pi.statistics.logic.StatMapper;
 
 public class PopulStatistic
 {
@@ -9,11 +16,11 @@ public class PopulStatistic
 	private int sampleSize;
 	private String firstSample;
 	private String secondSample;
-	
+
 	private String tableName;
 	private String figureName;
 	private String attributeName;
-	
+
 	private String statisticName;
 	private double firstVariance;
 	private double firstDeviation;
@@ -24,160 +31,240 @@ public class PopulStatistic
 	@SuppressWarnings("rawtypes")
 	public static Collection getPopulStatistics()
 	{
-		Vector<PopulStatistic> statistics = new Vector<PopulStatistic>();
+		ProjectResult projectResult = SharedController.getInstance()
+				.getProject().getResult();
+
+		Vector<PopulStatistic> statistics = new Vector<PopulStatistic>(3
+				* StatMapper.figureNames.length
+				* StatMapper.attributeNames.length
+				* StatMapper.statisticNames.length);
+
+		Map<String, Map<String, Map<String, Map<String, LinkedList<Double>>>>> map = projectResult
+				.getTestResult();
+
+		String[] names =
+		{ "P1AB", "P2AB", "dAB", "BB", "AA" };
+
+		for (int c = 0; c < 5; c++)
+		{
+			Map<String, Map<String, Map<String, LinkedList<Double>>>> columnEntry = map
+					.get(names[c]);
+			if (columnEntry == null)
+				continue;
+			
+			int s1 = SharedController.getInstance().getProject()
+					.getFirstPopulation().getSpecimen().size();
+			int max = s1;
+			
+			if (SharedController.getInstance().getProject()
+					.getSecondPopulation() != null)
+			{
+				int s2 = SharedController.getInstance().getProject()
+						.getSecondPopulation().getSpecimen().size();
+				if (s2 > max) max = s2;
+			}
+			
+			String firstName = SharedController.getInstance().getProject()
+					.getFirstPopulation().getName();
+			
+			String secondName = "";
+			if (SharedController.getInstance().getProject()
+					.getSecondPopulation() != null)
+			{
+				secondName = SharedController.getInstance().getProject()
+						.getSecondPopulation().getName();
+			}
+			
+
+			// dla kazdej figury...
+			for (int i = 0; i < StatMapper.figureNames.length; i++)
+			{
+				if (columnEntry.get(StatMapper.figureNames[i]) == null)
+					continue;
+
+				// wyciagamy kazdy atrybut...
+				for (int j = 0; j < StatMapper.attributeNames.length; j++)
+				{
+					// ... dla nie kadza state ...
+					for (int k = 0; k < StatMapper.statisticNames.length; k++)
+					{
+						if (columnEntry.get(StatMapper.figureNames[i]).get(
+								StatMapper.attributeNames[j]) == null)
+							continue;
+
+						LinkedList<Double> list = columnEntry
+								.get(StatMapper.figureNames[i])
+								.get(StatMapper.attributeNames[j])
+								.get(StatMapper.statisticNames[k]);
+
+						if (list == null)
+							continue;
+
+						if (list.size() < 1)
+							continue;
+
+						PopulStatistic ps = new PopulStatistic();
+						ps.setFirstSample(firstName);
+						ps.setSecondSample(secondName);
+						ps.setSampleSize(max);
+						
+						
+						String name = "";
+						if (names[c].equals("P1AB"))
+							name = SharedController.getInstance().getProject()
+									.getFirstPopulation().getName();
+						
+						else if (names[c].equals("P2AB"))
+							name = SharedController.getInstance().getProject()
+									.getSecondPopulation().getName();
+						else if (names[c].equals("dAB"))
+							name = "Differences between changes in populations";
+						else if (names[c].equals("AA"))
+							name = "Differences between populations (Before)";
+						else if (names[c].equals("BB"))
+							name = "Differences between populations (After)";
+
+						ps.setTableName(name);
+						ps.setFigureName(StatMapper.figureNames[i]);
+						ps.setAttributeName(StatMapper.attributeNames[j]);
+						ps.setStatisticName(StatMapper.statisticNames[k]);
+
+						ps.setFirstVariance(list.get(0));
+						ps.setFirstDeviation(list.get(1));
+						ps.setSecondVariance(list.get(2));
+						ps.setSecondDeviation(list.get(3));
+						ps.setP_value(list.get(6));
+						statistics.add(ps);
+
+					}
+				}
+			}
+
+		}
 
 
-		PopulStatistic ps = new PopulStatistic();
-		ps.setFirstSample("Próba 1");
-		ps.setSecondSample("Próba 2");
-		ps.setFirstVariance(0.3);
-		ps.setFirstDeviation(0.001);
-		ps.setTableName("Tabela 1");
-		ps.setFigureName("Zig-zag");
-		ps.setAttributeName("Attr 1");
-		statistics.add(ps);
-
-
-		PopulStatistic ps1 = new PopulStatistic();
-		ps1.setFirstSample("Próba 1");
-		ps1.setSecondSample("Próba 2");
-		ps1.setFirstVariance(0.3);
-		ps1.setFirstDeviation(0.0201);
-		ps1.setTableName("Tabela 1");
-		ps1.setFigureName("Zig-zag");
-		ps1.setAttributeName("Attr 1");
-		statistics.add(ps1);
-		
-
-		PopulStatistic ps2 = new PopulStatistic();
-		ps2.setFirstSample("Próba 1");
-		ps2.setSecondSample("Próba 2");
-		ps2.setFirstVariance(0.38);
-		ps2.setFirstDeviation(0.0031);
-		ps2.setTableName("Tabela 1");
-		ps2.setFigureName("Line");
-		ps2.setAttributeName("Attr 1");
-		statistics.add(ps2);
-		
-
-		PopulStatistic ps3 = new PopulStatistic();
-		ps3.setFirstSample("Próba 1");
-		ps3.setSecondSample("Próba 2");
-		ps3.setFirstVariance(0.3);
-		ps3.setFirstDeviation(0.301);
-		ps3.setTableName("Tabela 1");
-		ps3.setFigureName("Line");
-		ps3.setAttributeName("Attr 1");
-		statistics.add(ps3);
-		
-
-		PopulStatistic ps4 = new PopulStatistic();
-		ps4.setFirstSample("Próba 1");
-		ps4.setSecondSample("Próba 2");
-		ps4.setFirstVariance(0.13);
-		ps4.setFirstDeviation(0.011);
-		ps4.setTableName("Tabela 1");
-		ps4.setFigureName("Line");
-		ps4.setAttributeName("Attr 12");
-		statistics.add(ps4);
-		
 		return statistics;
 	}
 
-	public int getSampleSize() {
+
+
+	public int getSampleSize()
+	{
 		return sampleSize;
 	}
 
-	public void setSampleSize(int sampleSize) {
+	public void setSampleSize(int sampleSize)
+	{
 		this.sampleSize = sampleSize;
 	}
 
-	public String getFirstSample() {
+	public String getFirstSample()
+	{
 		return firstSample;
 	}
 
-	public void setFirstSample(String firstSample) {
+	public void setFirstSample(String firstSample)
+	{
 		this.firstSample = firstSample;
 	}
 
-	public String getSecondSample() {
+	public String getSecondSample()
+	{
 		return secondSample;
 	}
 
-	public void setSecondSample(String secondSample) {
+	public void setSecondSample(String secondSample)
+	{
 		this.secondSample = secondSample;
 	}
 
-	public String getTableName() {
+	public String getTableName()
+	{
 		return tableName;
 	}
 
-	public void setTableName(String tableName) {
+	public void setTableName(String tableName)
+	{
 		this.tableName = tableName;
 	}
 
-	public String getFigureName() {
+	public String getFigureName()
+	{
 		return figureName;
 	}
 
-	public void setFigureName(String figureName) {
+	public void setFigureName(String figureName)
+	{
 		this.figureName = figureName;
 	}
 
-	public String getAttributeName() {
+	public String getAttributeName()
+	{
 		return attributeName;
 	}
 
-	public void setAttributeName(String attributeName) {
+	public void setAttributeName(String attributeName)
+	{
 		this.attributeName = attributeName;
 	}
 
-	public String getStatisticName() {
+	public String getStatisticName()
+	{
 		return statisticName;
 	}
 
-	public void setStatisticName(String statisticName) {
+	public void setStatisticName(String statisticName)
+	{
 		this.statisticName = statisticName;
 	}
 
-	public double getFirstVariance() {
+	public double getFirstVariance()
+	{
 		return firstVariance;
 	}
 
-	public void setFirstVariance(double firstVariance) {
+	public void setFirstVariance(double firstVariance)
+	{
 		this.firstVariance = firstVariance;
 	}
 
-	public double getFirstDeviation() {
+	public double getFirstDeviation()
+	{
 		return firstDeviation;
 	}
 
-	public void setFirstDeviation(double firstDeviation) {
+	public void setFirstDeviation(double firstDeviation)
+	{
 		this.firstDeviation = firstDeviation;
 	}
 
-	public double getSecondVariance() {
+	public double getSecondVariance()
+	{
 		return secondVariance;
 	}
 
-	public void setSecondVariance(double secondVariance) {
+	public void setSecondVariance(double secondVariance)
+	{
 		this.secondVariance = secondVariance;
 	}
 
-	public double getSecondDeviation() {
+	public double getSecondDeviation()
+	{
 		return secondDeviation;
 	}
 
-	public void setSecondDeviation(double secondDeviation) {
+	public void setSecondDeviation(double secondDeviation)
+	{
 		this.secondDeviation = secondDeviation;
 	}
 
-	public double getP_value() {
+	public double getP_value()
+	{
 		return p_value;
 	}
 
-	public void setP_value(double p_value) {
+	public void setP_value(double p_value)
+	{
 		this.p_value = p_value;
 	}
 }
-

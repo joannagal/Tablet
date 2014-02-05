@@ -23,9 +23,9 @@ public class StatMapper
 			figureNames.length);
 
 	public static String[] statisticNames =
-	{ "Min", "Max", "Amplitude", "Average", "Median", "Variance",
-			"StandardDev", "Drawing time", "Drawing length", "Avg Speed",
-			"Breaks Amount", "FFT Freq" };
+	{ "Drawing time", "Drawing length", "Avg Speed",
+		"Breaks Amount" , "Min", "Max", "Amplitude", "Average", "Median", "Variance",
+			"StandardDev",  "FFT Freq" };
 
 	public static Map<String, Boolean> statisticAvaible = new HashMap<String, Boolean>(
 			figureNames.length);

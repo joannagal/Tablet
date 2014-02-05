@@ -23,10 +23,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import net.sf.jasperreports.engine.JRException;
+
 import pi.gui.histogram.Histogram;
 import pi.project.Project;
 import pi.shared.SharedController;
 import pi.statistics.logic.StatMapper;
+import pi.statistics.logic.report.PopulReportMngr;
+import pi.statistics.logic.report.SpecimenReportMngr;
 
 public class StatisticsView extends JFrame
 {
@@ -47,8 +51,6 @@ public class StatisticsView extends JFrame
 
 	private JButton closeButton = new JButton("Close");
 
-	private JLabel reportLabel = new JLabel("Select report");
-	private JComboBox<String> reportCombo = new JComboBox<String>();
 	private JButton reportButton = new JButton("Display report");
 	private JButton saveButton = new JButton("Save report");
 
@@ -127,12 +129,6 @@ public class StatisticsView extends JFrame
 		this.closeButton.addActionListener(controller);
 		this.closeButton.setBounds(15, 440, 140, 25);
 		this.add(this.closeButton);
-
-		this.reportLabel.setBounds(450, 440, 140, 25);
-		this.add(this.reportLabel);
-
-		this.reportCombo.setBounds(530, 440, 160, 25);
-		this.add(this.reportCombo);
 
 		this.saveButton.setActionCommand("SAVE");
 		this.saveButton.addActionListener(controller);
@@ -264,6 +260,16 @@ public class StatisticsView extends JFrame
 			view.prepare(view.getFigureStr(), view.getElementStr());
 			view.report.changeSelection(0, 1, false, false);
 
+			try
+			{
+				SharedController.getInstance().setPopulMgr(
+						new PopulReportMngr());
+			} catch (JRException e)
+			{
+				e.printStackTrace();
+			}
+
+			
 			SharedController.getInstance().getProgressView().close();
 			view.setVisible(true);
 
@@ -304,11 +310,6 @@ public class StatisticsView extends JFrame
 
 			controller.set(figure, element);
 
-			String[] names =
-			{ "First population" };
-			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(
-					names);
-			this.reportCombo.setModel(model);
 
 		} else if (type == Project.POPULATION_PAIR)
 		{
@@ -329,12 +330,6 @@ public class StatisticsView extends JFrame
 				this.model.addRow(columns);
 
 			controller.set(figure, element);
-
-			String[] names =
-			{ "First population", "Second population", "Differences" };
-			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(
-					names);
-			this.reportCombo.setModel(model);
 		}
 
 		this.report.setModel(this.getModel());

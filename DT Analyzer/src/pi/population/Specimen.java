@@ -64,7 +64,7 @@ public class Specimen
 
 	public String getNamedOperationType()
 	{
-		if (this.operationType == true)
+		if (this.operationType == null)
 			return "";
 		if (this.operationType == true)
 			return "P";

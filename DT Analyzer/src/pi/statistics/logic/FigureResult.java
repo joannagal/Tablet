@@ -44,7 +44,8 @@ public class FigureResult
 		if (this.figure.getTotalPoints() < 5)
 			return;
 
-		if (StatMapper.attributeAvaible.get("Pressure"))
+		
+		if ((projectLevel == false) || (StatMapper.attributeAvaible.get("Pressure")))
 		{
 			PressureResult pressure = new PressureResult(this.figure
 					.getParent().getPacket(), this.figure.getSegment());
@@ -55,14 +56,14 @@ public class FigureResult
 		MSpeedResult mSpeed = new MSpeedResult(this.figure.getParent()
 				.getPacket(), this.figure.getSegment());
 
-		if (StatMapper.attributeAvaible.get("Momentary Speed"))
+		if ((projectLevel == false) || (StatMapper.attributeAvaible.get("Momentary Speed")))
 		{
 			mSpeed.calculateResult(projectLevel);
 			this.value.put("Momentary Speed", mSpeed);
 		}
 
-		if ((StatMapper.attributeAvaible.get("Momentary Speed"))
-				&& (StatMapper.attributeAvaible.get("Acceleration")))
+		if ((projectLevel == false) || ((StatMapper.attributeAvaible.get("Momentary Speed"))
+				&& (StatMapper.attributeAvaible.get("Acceleration"))))
 		{
 			AccelerationResult acceleration = new AccelerationResult(
 					mSpeed.getForAcceleration(), mSpeed.getFreq());
@@ -70,7 +71,7 @@ public class FigureResult
 			this.value.put("Acceleration", acceleration);
 		}
 
-		if (StatMapper.attributeAvaible.get("Figure Standards"))
+		if ((projectLevel == false) || (StatMapper.attributeAvaible.get("Figure Standards")))
 		{
 			FigureStandardsResult standards = new FigureStandardsResult(
 					this.figure.getParent().getPacket(),
@@ -79,7 +80,7 @@ public class FigureResult
 			this.value.put("Figure Standards", standards);
 		}
 
-		if (StatMapper.attributeAvaible.get("Direction Change (f'')"))
+		if ((projectLevel == false) || (StatMapper.attributeAvaible.get("Direction Change (f'')")))
 		{
 			ChangeDirectionResult direction = new ChangeDirectionResult(
 					this.figure.getParent().getPacket(),
@@ -88,7 +89,7 @@ public class FigureResult
 			this.value.put("Direction Change (f'')", direction);
 		}
 
-		if (StatMapper.attributeAvaible.get("Azimuth"))
+		if ((projectLevel == false) || (StatMapper.attributeAvaible.get("Azimuth")))
 		{
 			AzimuthResult azimuth = new AzimuthResult(this.figure.getParent()
 					.getPacket(), this.figure.getSegment());
@@ -96,7 +97,7 @@ public class FigureResult
 			this.value.put("Azimuth", azimuth);
 		}
 
-		if (StatMapper.attributeAvaible.get("Altitude"))
+		if ((projectLevel == false) || (StatMapper.attributeAvaible.get("Altitude")))
 		{
 			AltitudeResult altitude = new AltitudeResult(this.figure
 					.getParent().getPacket(), this.figure.getSegment());
@@ -104,7 +105,7 @@ public class FigureResult
 			this.value.put("Altitude", altitude);
 		}
 
-		if (StatMapper.attributeAvaible.get("Dev. from Average"))
+		if ((projectLevel == false) || (StatMapper.attributeAvaible.get("Dev. from Average")))
 		{
 			DFAverage dfaverage = new DFAverage(this.figure.getParent()
 					.getPacket(), this.figure.getSegment());

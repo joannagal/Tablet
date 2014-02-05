@@ -60,6 +60,35 @@ public class ChooserController implements ActionListener
 			{
 				boolean sel = view.getStatisticsCombo()[i].isSelected();
 
+				if ((i == 6) && (sel == true))
+				{
+					view.getStatisticsCombo()[4].setSelected(true);
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[4], sel);
+
+					view.getStatisticsCombo()[5].setSelected(true);
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[5], sel);
+				}
+
+				if ((i == 9) && (sel == true))
+				{
+					view.getStatisticsCombo()[7].setSelected(true);
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[7], sel);
+				}
+
+				if ((i == 10) && (sel == true))
+				{
+					view.getStatisticsCombo()[7].setSelected(true);
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[7], sel);
+
+					view.getStatisticsCombo()[9].setSelected(true);
+					StatMapper.statisticAvaible.put(
+							StatMapper.statisticNames[9], sel);
+				}
+
 				if ((i == 2) && (sel == true))
 				{
 					view.getStatisticsCombo()[0].setSelected(true);
@@ -69,35 +98,6 @@ public class ChooserController implements ActionListener
 					view.getStatisticsCombo()[1].setSelected(true);
 					StatMapper.statisticAvaible.put(
 							StatMapper.statisticNames[1], sel);
-				}
-
-				if ((i == 5) && (sel == true))
-				{
-					view.getStatisticsCombo()[3].setSelected(true);
-					StatMapper.statisticAvaible.put(
-							StatMapper.statisticNames[3], sel);
-				}
-
-				if ((i == 6) && (sel == true))
-				{
-					view.getStatisticsCombo()[3].setSelected(true);
-					StatMapper.statisticAvaible.put(
-							StatMapper.statisticNames[3], sel);
-
-					view.getStatisticsCombo()[5].setSelected(true);
-					StatMapper.statisticAvaible.put(
-							StatMapper.statisticNames[5], sel);
-				}
-
-				if ((i == 9) && (sel == true))
-				{
-					view.getStatisticsCombo()[8].setSelected(true);
-					StatMapper.statisticAvaible.put(
-							StatMapper.statisticNames[8], sel);
-
-					view.getStatisticsCombo()[7].setSelected(true);
-					StatMapper.statisticAvaible.put(
-							StatMapper.statisticNames[7], sel);
 				}
 
 				StatMapper.statisticAvaible.put(StatMapper.statisticNames[i],

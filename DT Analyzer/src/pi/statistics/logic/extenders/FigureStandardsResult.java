@@ -57,10 +57,10 @@ public class FigureStandardsResult extends AttributeResult
 		Segment seg;
 		double dist;
 
-		if ((!avaible[7]) && (!avaible[8]) && (!avaible[10]))
+		if ((!avaible[0]) && (!avaible[1]) && (!avaible[2]))
 			return;
 
-		if (avaible[7])
+		if (avaible[0])
 		{
 			seg = this.segment.getFirst();
 			if (seg != null)
@@ -79,7 +79,7 @@ public class FigureStandardsResult extends AttributeResult
 		{
 			seg = it.next();
 
-			if (avaible[8])
+			if (avaible[1])
 				for (int i = seg.getRange().getLeft() + 1; i <= seg.getRange()
 						.getRight(); i++)
 				{
@@ -110,13 +110,13 @@ public class FigureStandardsResult extends AttributeResult
 		result.add(breaks);
 		breaksResult.setValue(result);
 
-		if (avaible[7])
+		if (avaible[0])
 			this.value.put("Drawing time", timeResult);
-		if (avaible[8])
+		if (avaible[1])
 			this.value.put("Drawing length", lengthResult);
-		if (avaible[9])
+		if (avaible[2])
 			this.value.put("Avg Speed", avgSpeedResult);
-		if (avaible[10])
+		if (avaible[3])
 			this.value.put("Breaks Amount", breaksResult);
 	}
 

@@ -59,13 +59,13 @@ public class AccelerationResult extends AttributeResult
 		StatisticResult varianceResult = new StatisticResult();
 		StatisticResult standardDevResult = new StatisticResult();
 
-		if (avaible[0])
+		if (avaible[4])
 			Min.init(minResult);
-		if (avaible[1])
+		if (avaible[5])
 			Max.init(maxResult);
-		if (avaible[2])
+		if (avaible[6])
 			Amplitude.init(amplitudeResult);
-		if (avaible[3])
+		if (avaible[7])
 			Average.init(avgResult);
 
 		int size = 0;
@@ -79,11 +79,11 @@ public class AccelerationResult extends AttributeResult
 				dt = data.get(j) - data.get(j - 2);
 				dv = data.get(j + 1) - data.get(j - 1);
 				a = dv / dt;
-				if (avaible[0])
+				if (avaible[4])
 					Min.iterate(a);
-				if (avaible[1])
+				if (avaible[5])
 					Max.iterate(a);
-				if (avaible[3])
+				if (avaible[7])
 					Average.iterate(a);
 				size++;
 			}
@@ -92,14 +92,14 @@ public class AccelerationResult extends AttributeResult
 		if (size == 0)
 			return;
 
-		if (avaible[2])
+		if (avaible[4])
 			Amplitude.finish(minResult.getValue().get(0), maxResult.getValue()
 					.get(0));
-		if (avaible[3])
-			Average.finish();
-		if (avaible[4])
-			Median.init(median, size);
 		if (avaible[5])
+			Average.finish();
+		if (avaible[6])
+			Median.init(median, size);
+		if (avaible[7])
 			Variance.init(varianceResult, avgResult.getValue().get(0));
 
 		if (avaible[11])
@@ -128,18 +128,18 @@ public class AccelerationResult extends AttributeResult
 				if (!projectLevel)
 					DependencyCollector.iterate(data.get(j), a);
 
-				if (avaible[4])
+				if (avaible[8])
 					Median.iterate(a);
-				if (avaible[5])
+				if (avaible[9])
 					Variance.iterate(a);
 			}
 		}
 
-		if (avaible[4])
+		if (avaible[8])
 			Median.finish();
-		if (avaible[5])
+		if (avaible[9])
 			Variance.finish();
-		if (avaible[6])
+		if (avaible[10])
 			StandardDev.init(standardDevResult, varianceResult.getValue()
 					.get(0));
 
@@ -153,19 +153,19 @@ public class AccelerationResult extends AttributeResult
 		if (!projectLevel)
 			this.value.put("Dependency Collector", dependencyResult);
 
-		if (avaible[0])
-			this.value.put("Min", minResult);
-		if (avaible[1])
-			this.value.put("Max", maxResult);
-		if (avaible[2])
-			this.value.put("Amplitude", amplitudeResult);
-		if (avaible[3])
-			this.value.put("Average", avgResult);
 		if (avaible[4])
-			this.value.put("Median", median);
+			this.value.put("Min", minResult);
 		if (avaible[5])
-			this.value.put("Variance", varianceResult);
+			this.value.put("Max", maxResult);
 		if (avaible[6])
+			this.value.put("Amplitude", amplitudeResult);
+		if (avaible[7])
+			this.value.put("Average", avgResult);
+		if (avaible[8])
+			this.value.put("Median", median);
+		if (avaible[9])
+			this.value.put("Variance", varianceResult);
+		if (avaible[10])
 			this.value.put("StandardDev", standardDevResult);
 		if (avaible[11])
 			this.value.put("FFT", fft);

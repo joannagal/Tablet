@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import net.sf.jasperreports.engine.JRException;
@@ -192,7 +193,29 @@ public class StatisticsComparatorController implements ActionListener
 
 		else if (action.equals("SAVE"))
 		{
+			try {
+				Object[] obj = { ".pdf", ".html" };
+				int type = JOptionPane.showOptionDialog(view,
+						"I want to save report as:", "Save report",
+						JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
+				JFileChooser fc = new JFileChooser();
+				int response = fc.showSaveDialog(view);
 
+				if (response == JFileChooser.APPROVE_OPTION) {
+					String path = fc.getSelectedFile().getPath();
+					if (type == 0)
+						SharedController.getInstance().getReportMgr()
+								.saveRaportAsPdf(path);
+					else if (type == 1)
+						SharedController.getInstance().getReportMgr()
+								.saveReportAsHtml(path);
+				}
+			} catch (JRException ex) {
+				
+				JOptionPane.showMessageDialog(null, "Something goes wrong!");
+				ex.printStackTrace();
+			}
 		}
 	}
 

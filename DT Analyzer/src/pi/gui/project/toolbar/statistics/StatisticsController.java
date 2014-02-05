@@ -7,6 +7,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+import net.sf.jasperreports.engine.JRException;
+
 import pi.project.Project;
 import pi.shared.SharedController;
 import pi.statistics.logic.ProjectResult;
@@ -55,8 +60,6 @@ public class StatisticsController implements ActionListener
 		{
 			Map<String, Map<String, Map<String, LinkedList<Double>>>> map = pResult
 					.getTestResult().get(columnName);
-
-			System.out.printf("Column Name %s", columnName);
 
 			if (map != null)
 			{
@@ -223,10 +226,44 @@ public class StatisticsController implements ActionListener
 
 		if (com.equals("SAVE"))
 		{
+			try {
+				Object[] obj = { ".pdf", ".html" };
+				int type = JOptionPane.showOptionDialog(view,
+						"I want to save report as:", "Save report",
+						JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, obj, obj[0]);
+				JFileChooser fc = new JFileChooser();
+				int response = fc.showSaveDialog(view);
 
+				if (response == JFileChooser.APPROVE_OPTION) {
+					String path = fc.getSelectedFile().getPath();
+					if (type == 0)
+						SharedController.getInstance().getPopulMgr()
+								.saveRaportAsPdf(path);
+					else if (type == 1)
+						SharedController.getInstance().getPopulMgr()
+								.saveReportAsHtml(path);
+				}
+			} catch (JRException ex) {
+				
+				JOptionPane.showMessageDialog(null, "Something goes wrong!");
+				ex.printStackTrace();
+			}
 		}
 
-		if (com.equals("CHANGE_FIGURE"))
+		else if (com.equals("DISPLAY"))
+		{
+			try
+			{
+				SharedController.getInstance().getPopulMgr().viewRaport();
+			} catch (JRException ex)
+			{
+				System.out.println("Report exception");
+				ex.printStackTrace();
+			}
+		}
+		
+		else if (com.equals("CHANGE_FIGURE"))
 		{
 			view.prepare(view.getFigureCombo().getSelectedItem().toString(),
 					view.getElementStr());
@@ -236,7 +273,7 @@ public class StatisticsController implements ActionListener
 			view.changeSelection();
 		}
 
-		if (com.equals("CLOSE"))
+		else if (com.equals("CLOSE"))
 		{
 			view.setVisible(false);
 		}

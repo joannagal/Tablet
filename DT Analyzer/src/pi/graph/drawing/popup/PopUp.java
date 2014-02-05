@@ -27,8 +27,8 @@ public class PopUp extends JPopupMenu
 
 	private JMenu changeType = new JMenu("Change Type");
 	private JMenuItem zigzag = new JMenuItem("ZigZag");
-	private JMenuItem circleLeft = new JMenuItem("Circle-Left");
-	private JMenuItem circleRight = new JMenuItem("Circle-Right");
+	private JMenuItem circleLeft = new JMenuItem("Circle-Up");
+	private JMenuItem circleRight = new JMenuItem("Circle-Down");
 	private JMenuItem firstLine = new JMenuItem("First Line");
 	private JMenuItem secondLine = new JMenuItem("Second Line");
 	private JMenuItem brokenLine = new JMenuItem("Broken Line");

@@ -4,9 +4,11 @@ import java.awt.Color;
 
 import pi.gui.OurFrame;
 import pi.gui.project.ProjectView;
+import pi.population.Specimen;
 import pi.project.Project;
 import pi.shared.schemes.Scheme;
 import pi.shared.schemes.drawing.DrawingScheme;
+import pi.statistics.logic.report.PopulReportMngr;
 import pi.statistics.logic.report.SpecimenReportMngr;
 
 
@@ -23,9 +25,12 @@ public class SharedController
 	private OurFrame frame = null;
 
 	private ProgressView progressView = new ProgressView();
+	
+	private Specimen currentSpecimen;
 
 	private SpecimenReportMngr reportMgr;
-
+	private PopulReportMngr populMgr;
+	
 	private SharedController()
 	{
 		this.createWhiteScheme();
@@ -133,5 +138,25 @@ public class SharedController
 	public void setReportMgr(SpecimenReportMngr reportMgr)
 	{
 		this.reportMgr = reportMgr;
+	}
+
+	public Specimen getCurrentSpecimen()
+	{
+		return currentSpecimen;
+	}
+
+	public void setCurrentSpecimen(Specimen currentSpecimen)
+	{
+		this.currentSpecimen = currentSpecimen;
+	}
+
+	public PopulReportMngr getPopulMgr()
+	{
+		return populMgr;
+	}
+
+	public void setPopulMgr(PopulReportMngr populMgr)
+	{
+		this.populMgr = populMgr;
 	}
 }

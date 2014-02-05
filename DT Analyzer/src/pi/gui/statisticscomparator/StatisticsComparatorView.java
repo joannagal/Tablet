@@ -181,7 +181,6 @@ public class StatisticsComparatorView extends JFrame
 			{
 				SharedController.getInstance().setReportMgr(
 						new SpecimenReportMngr());
-						//new ReportManager(first));
 			} catch (JRException e)
 			{
 				e.printStackTrace();
@@ -195,8 +194,11 @@ public class StatisticsComparatorView extends JFrame
 
 	public void showWithData(Specimen first, Specimen second)
 	{
+		SharedController.getInstance().setCurrentSpecimen(first);
+		
 		ShowThread runnable = new ShowThread(this, first, second);
 		Thread thread = new Thread(runnable);
+		
 		thread.start();
 
 	}
