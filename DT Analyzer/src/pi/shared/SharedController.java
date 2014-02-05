@@ -7,7 +7,7 @@ import pi.gui.project.ProjectView;
 import pi.project.Project;
 import pi.shared.schemes.Scheme;
 import pi.shared.schemes.drawing.DrawingScheme;
-import pi.statistics.logic.report.ReportManager;
+import pi.statistics.logic.report.SpecimenReportMngr;
 
 
 public class SharedController
@@ -24,7 +24,7 @@ public class SharedController
 
 	private ProgressView progressView = new ProgressView();
 
-	private ReportManager reportMgr;
+	private SpecimenReportMngr reportMgr;
 
 	private SharedController()
 	{
@@ -125,12 +125,12 @@ public class SharedController
 		this.progressView = progressView;
 	}
 
-	public ReportManager getReportMgr()
+	public SpecimenReportMngr getReportMgr()
 	{
 		return reportMgr;
 	}
 
-	public void setReportMgr(ReportManager reportMgr)
+	public void setReportMgr(SpecimenReportMngr reportMgr)
 	{
 		this.reportMgr = reportMgr;
 	}

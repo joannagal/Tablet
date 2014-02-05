@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="40e9b298-1a48-4734-aecf-48d0b693f5d6">
 	<property name="ireport.zoom" value="1.7715610000000048"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="269"/>
+	<property name="ireport.x" value="37"/>
+	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.pdf.compressed" value="true"/>
 	<style name="table">
 		<box>
@@ -182,14 +182,17 @@
 				</staticText>
 				<textField>
 					<reportElement x="114" y="0" width="318" height="20" uuid="9bf2bd83-c761-4ce8-88ad-acf03794416c"/>
+					<textElement verticalAlignment="Bottom"/>
 					<textFieldExpression><![CDATA[$F{firstSample}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="114" y="20" width="318" height="20" uuid="e804c3c4-7b87-4955-ad46-1ef5490092f8"/>
+					<textElement verticalAlignment="Bottom"/>
 					<textFieldExpression><![CDATA[$F{secondSample}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="114" y="40" width="318" height="20" uuid="57d7d8a4-f06f-4a5e-b88d-ed8f58d72c0d"/>
+					<textElement verticalAlignment="Bottom"/>
 					<textFieldExpression><![CDATA[$F{sampleSize}]]></textFieldExpression>
 				</textField>
 			</frame>
@@ -319,11 +322,11 @@
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Opaque" x="0" y="0" width="102" height="20" forecolor="#FFFFFF" backcolor="#FF0000" uuid="ae6352a6-3670-4a18-8d97-1279f6f5a535"/>
 				<box>
-					<pen lineColor="#000000"/>
-					<topPen lineWidth="0.5" lineColor="#000000"/>
-					<leftPen lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineColor="#000000"/>
-					<rightPen lineColor="#000000"/>
+					<pen lineWidth="1.0" lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>

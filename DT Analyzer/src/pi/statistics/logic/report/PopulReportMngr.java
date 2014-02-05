@@ -16,14 +16,14 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import pi.population.Specimen;
 
-public class ReportManager {
+public class PopulReportMngr {
 
 	JasperReport jasperReport = null;
 	JasperPrint jasperPrint = null;
 	JasperDesign jasperDesign = null;
 	JRBeanCollectionDataSource dataSource = null;
 
-	public ReportManager() throws JRException {
+	public PopulReportMngr() throws JRException {
 		initReport();
 	}
 
@@ -41,23 +41,11 @@ public class ReportManager {
 		// TODO Sprawdziæ czy klonowanie dataSource jest wydajniejsze od
 		// generowania go na nowo za ka¿dym razem
 		dataSource = new JRBeanCollectionDataSource(
-				FigureStatistic.getFigureStatistics());
-
-		// File file = new File("report3.jrxml");
-		// jasperDesign = JRXmlLoader.load(file);
-		// jasperReport = JasperCompileManager.compileReport(jasperDesign);
-
-		File file = new File("report3.jasper");
+				PopulStatistic.getPopulStatistics());
+		File file = new File("report4.jasper");
 		jasperReport = (JasperReport) JRLoader.loadObject(file);
 		jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
 				dataSource);
-
-		/*
-		 * File file = new File("tymczasowy brak pliku"); jasperReport =
-		 * (JasperReport) JRLoader.loadObject(file); jasperPrint =
-		 * JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-		 * //dataSource.cloneDataSource());
-		 */
 
 		long time = System.currentTimeMillis() - start;
 		System.out.println("Czas inicjowania raportu: " + time);
@@ -127,7 +115,7 @@ public class ReportManager {
 		// http://stackoverflow.com/questions/12178615/eclipse-jasper-report-not-compiling-java-lang-noclassdeffounderror-org-apach
 
 		try {
-			ReportManager rm = new ReportManager();
+			PopulReportMngr rm = new PopulReportMngr();
 			rm.viewRaport();
 
 			// rm.saveRaportAsPdf(null);

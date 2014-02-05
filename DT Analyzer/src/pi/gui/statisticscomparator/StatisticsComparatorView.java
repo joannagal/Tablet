@@ -25,7 +25,7 @@ import pi.gui.histogram.Histogram;
 import pi.population.Specimen;
 import pi.shared.SharedController;
 import pi.statistics.logic.StatMapper;
-import pi.statistics.logic.report.ReportManager;
+import pi.statistics.logic.report.SpecimenReportMngr;
 
 public class StatisticsComparatorView extends JFrame
 {
@@ -180,7 +180,7 @@ public class StatisticsComparatorView extends JFrame
 			try
 			{
 				SharedController.getInstance().setReportMgr(
-						new ReportManager());
+						new SpecimenReportMngr());
 						//new ReportManager(first));
 			} catch (JRException e)
 			{
