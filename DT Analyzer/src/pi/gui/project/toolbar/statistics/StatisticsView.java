@@ -76,15 +76,11 @@ public class StatisticsView extends JFrame
 	private JLabel hypoRightStatLabel = new JLabel("P2 Avg+-SD");
 	private JLabel hypoTestLabel = new JLabel("Test performed");
 	private JLabel hypoEqualLabel = new JLabel("P-Value");
-	private JLabel hypoRightLabel = new JLabel("Right sided test");
-	private JLabel hypoLeftLabel = new JLabel("Left sided test");
 
 	private JTextField hypoLeftStatEdit = new JTextField();
 	private JTextField hypoRightStatEdit = new JTextField();
 	private JTextField hypoTestEdit = new JTextField();
 	private JTextField hypoEqualEdit = new JTextField();
-	private JTextField hypoRightEdit = new JTextField();
-	private JTextField hypoLeftEdit = new JTextField();
 
 	public StatisticsView()
 	{
@@ -150,7 +146,7 @@ public class StatisticsView extends JFrame
 			}
 		});
 
-		this.detailPanel.setBounds(165, 18, 820, 100);
+		this.detailPanel.setBounds(165, 18, 820, 80);
 		this.add(this.detailPanel);
 
 		this.detailPanel.setLayout(null);
@@ -161,39 +157,30 @@ public class StatisticsView extends JFrame
 		this.hypoTestEdit.setBounds(110, 23, 290, 20);
 		this.detailPanel.add(this.hypoTestEdit);
 
-		this.hypoLeftStatLabel.setBounds(10, 50, 90, 15);
+		this.hypoEqualLabel.setBounds(10, 50, 90, 15);
+		this.detailPanel.add(this.hypoEqualLabel);
+		this.hypoEqualEdit.setBounds(110, 48, 290, 20);
+		this.detailPanel.add(this.hypoEqualEdit);
+		
+		this.hypoLeftStatLabel.setBounds(410, 25, 110, 15);
 		this.detailPanel.add(this.hypoLeftStatLabel);
-		this.hypoLeftStatEdit.setBounds(110, 48, 290, 20);
+		this.hypoLeftStatEdit.setBounds(520, 23, 290, 20);
 		this.detailPanel.add(this.hypoLeftStatEdit);
 
-		this.hypoRightStatLabel.setBounds(10, 75, 90, 15);
+		this.hypoRightStatLabel.setBounds(410, 50, 110, 15);
 		this.detailPanel.add(this.hypoRightStatLabel);
-		this.hypoRightStatEdit.setBounds(110, 73, 290, 20);
+		this.hypoRightStatEdit.setBounds(520, 48, 290, 20);
 		this.detailPanel.add(this.hypoRightStatEdit);
 
-		this.hypoEqualLabel.setBounds(410, 25, 110, 15);
-		this.detailPanel.add(this.hypoEqualLabel);
-		this.hypoEqualEdit.setBounds(520, 23, 290, 20);
-		this.detailPanel.add(this.hypoEqualEdit);
 
-		this.hypoRightLabel.setBounds(410, 50, 110, 15);
-		this.detailPanel.add(this.hypoRightLabel);
-		this.hypoRightEdit.setBounds(520, 48, 290, 20);
-		this.detailPanel.add(this.hypoRightEdit);
-
-		this.hypoLeftLabel.setBounds(410, 75, 110, 15);
-		this.detailPanel.add(this.hypoLeftLabel);
-		this.hypoLeftEdit.setBounds(520, 73, 290, 20);
-		this.detailPanel.add(this.hypoLeftEdit);
-
-		this.reportPane.setBounds(165, 120, 820, 317);
+		this.reportPane.setBounds(165, 100, 820, 335);
 		this.report.getTableHeader().setReorderingAllowed(false);
 
-		this.histogram.setBounds(165, 120, 820, 317);
+		this.histogram.setBounds(165, 100, 820, 335);
 		this.histogram.recalculate();
 		this.histogram.draw();
 
-		this.tabbedPane.setBounds(165, 120, 820, 317);
+		this.tabbedPane.setBounds(165, 100, 820, 335);
 		this.tabbedPane.add("Results", this.reportPane);
 		this.tabbedPane.add("Histogram", this.histogram);
 		this.add(this.tabbedPane);
@@ -422,25 +409,6 @@ public class StatisticsView extends JFrame
 		this.hypoEqualEdit = hypoEqualEdit;
 	}
 
-	public JTextField getHypoRightEdit()
-	{
-		return hypoRightEdit;
-	}
-
-	public void setHypoRightEdit(JTextField hypoRightEdit)
-	{
-		this.hypoRightEdit = hypoRightEdit;
-	}
-
-	public JTextField getHypoLeftEdit()
-	{
-		return hypoLeftEdit;
-	}
-
-	public void setHypoLeftEdit(JTextField hypoLeftEdit)
-	{
-		this.hypoLeftEdit = hypoLeftEdit;
-	}
 
 	public JTextField getHypoLeftStatEdit()
 	{

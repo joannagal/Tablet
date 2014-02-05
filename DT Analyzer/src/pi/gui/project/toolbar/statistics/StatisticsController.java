@@ -31,8 +31,6 @@ public class StatisticsController implements ActionListener
 	{
 		view.getHypoTestEdit().setText("");
 		view.getHypoEqualEdit().setText("");
-		view.getHypoLeftEdit().setText("");
-		view.getHypoRightEdit().setText("");
 		view.getHypoLeftStatEdit().setText("");
 		view.getHypoRightStatEdit().setText("");
 
@@ -88,7 +86,7 @@ public class StatisticsController implements ActionListener
 							view.getHypoTestEdit().setText("Wilcoxon Test");
 						else
 							view.getHypoTestEdit().setText(
-									"U Mann�Whitney Test");
+									"U Mann-Whitney Test");
 					}
 
 					view.getHypoEqualEdit().setText(
