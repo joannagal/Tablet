@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="40e9b298-1a48-4734-aecf-48d0b693f5d6">
-	<property name="ireport.zoom" value="1.7715610000000048"/>
-	<property name="ireport.x" value="37"/>
+	<property name="ireport.zoom" value="1.1000000000000028"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.pdf.compressed" value="true"/>
 	<style name="table">
@@ -88,7 +88,7 @@
 		<groupExpression><![CDATA[$F{tableName}]]></groupExpression>
 		<groupHeader>
 			<band height="37">
-				<textField>
+				<textField isBlankWhenNull="false">
 					<reportElement isPrintRepeatedValues="false" mode="Opaque" x="0" y="0" width="555" height="37" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#FF0000" uuid="8a3872f2-8c2b-432a-b24d-4642f1cb4644"/>
 					<box>
 						<pen lineWidth="1.0"/>
@@ -168,12 +168,12 @@
 				<staticText>
 					<reportElement x="0" y="0" width="101" height="20" uuid="a2ffae5e-d4a8-4ecd-b2d2-b114bb43c456"/>
 					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
-					<text><![CDATA[First sample:]]></text>
+					<text><![CDATA[First population:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="0" y="20" width="101" height="20" uuid="6f44142f-7ae3-4cd0-b641-6256f68b011f"/>
 					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
-					<text><![CDATA[Second sample:]]></text>
+					<text><![CDATA[Second population:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="0" y="40" width="101" height="20" uuid="c654d401-4fc0-414f-890d-1326b831f749"/>
