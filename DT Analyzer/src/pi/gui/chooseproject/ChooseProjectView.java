@@ -9,8 +9,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -58,6 +60,10 @@ public class ChooseProjectView extends JDialog
 		projectLabel = new JLabel("New project");
 		projectLabel.setFont(new Font("Arial", Font.BOLD, 24));
 		panel.add(projectLabel);
+		
+		URL iconURL = getClass().getResource("../images/Logo.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		this.setIconImage(icon.getImage());
 
 		oneSignalButton = new JRadioButton("Single singal");
 		oneSignalButton.setSelected(true);

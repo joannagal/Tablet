@@ -5,15 +5,15 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import pi.gui.menu.MenuController;
 import pi.gui.menu.MenuView;
 import pi.gui.project.ProjectView;
 import pi.project.Project;
-//import pi.gui.menu.MenuController;
-//import pi.gui.menu.MenuView;
 import pi.shared.SharedController;
 
 public class OurFrame extends JFrame
@@ -38,6 +38,10 @@ public class OurFrame extends JFrame
 		this.constraints.weighty = 1.0d;
 
 		this.setTitle("DT Analyzer");
+		
+		URL iconURL = getClass().getResource("images/Logo.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		this.setIconImage(icon.getImage());
 
 		SharedController.getInstance().setFrame(this);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

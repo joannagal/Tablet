@@ -2,10 +2,12 @@ package pi.gui.project.population.specimen.toolbar.informations;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -69,7 +71,7 @@ public class InformationsView extends JFrame
 	public InformationsView(SpecimenView specimenView)
 	{
 		this.specimenView = specimenView;
-
+		
 		this.setTitle("Informations");
 		this.setLayout(null);
 		this.setSize(new Dimension(275, 410));
@@ -157,6 +159,10 @@ public class InformationsView extends JFrame
 		this.okButton.setActionCommand("OK");
 		this.okButton.addActionListener(controller);
 
+		URL iconURL = getClass().getResource("../../../../../images/Logo.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		this.setIconImage(icon.getImage());
+		
 	}
 
 	public void showWithData()

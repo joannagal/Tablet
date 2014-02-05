@@ -2,7 +2,9 @@ package pi.gui.project.population.populationlist.importer;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -45,6 +47,10 @@ public class PopulationSingleView extends JFrame
 		int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
 		int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
 
+		URL iconURL = getClass().getResource("../../../../images/Logo.png");
+		ImageIcon icon = new ImageIcon(iconURL);
+		this.setIconImage(icon.getImage());
+		
 		this.setLocation(x, y);
 		this.setResizable(false);
 		this.setLayout(null);
