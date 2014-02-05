@@ -7,14 +7,17 @@ public class PopulStatistic
 {
 
 	private int sampleSize;
-	private String firstPopul;
-	private String secondPopul;
-	private String channelName;
-	private String waveName;
+	private String firstSample;
+	private String secondSample;
+	
+	private String tableName;
+	private String figureName;
+	private String attributeName;
+	
 	private String statisticName;
-	private double firstAverage;
+	private double firstVariance;
 	private double firstDeviation;
-	private double secondAverage;
+	private double secondVariance;
 	private double secondDeviation;
 	private double p_value;
 
@@ -23,134 +26,158 @@ public class PopulStatistic
 	{
 		Vector<PopulStatistic> statistics = new Vector<PopulStatistic>();
 
-		// TODO
+
+		PopulStatistic ps = new PopulStatistic();
+		ps.setFirstSample("Próba 1");
+		ps.setSecondSample("Próba 2");
+		ps.setFirstVariance(0.3);
+		ps.setFirstDeviation(0.001);
+		ps.setTableName("Tabela 1");
+		ps.setFigureName("Zig-zag");
+		ps.setAttributeName("Attr 1");
+		statistics.add(ps);
+
+
 		PopulStatistic ps1 = new PopulStatistic();
-		ps1.channelName = "channel 1";
-		ps1.statisticName = "Average";
-		ps1.waveName = "P-wave";
-		ps1.firstAverage = 0.4;
-		ps1.secondAverage = 0.5;
+		ps1.setFirstSample("Próba 1");
+		ps1.setSecondSample("Próba 2");
+		ps1.setFirstVariance(0.3);
+		ps1.setFirstDeviation(0.0201);
+		ps1.setTableName("Tabela 1");
+		ps1.setFigureName("Zig-zag");
+		ps1.setAttributeName("Attr 1");
+		statistics.add(ps1);
+		
 
 		PopulStatistic ps2 = new PopulStatistic();
-		ps2.channelName = "channel 1";
-		ps2.statisticName = "Wariance";
-		ps2.waveName = "P-wave";
-		ps2.firstAverage = 0.9;
-		ps2.secondAverage = 0.7;
-
-		statistics.add(ps1);
+		ps2.setFirstSample("Próba 1");
+		ps2.setSecondSample("Próba 2");
+		ps2.setFirstVariance(0.38);
+		ps2.setFirstDeviation(0.0031);
+		ps2.setTableName("Tabela 1");
+		ps2.setFigureName("Line");
+		ps2.setAttributeName("Attr 1");
 		statistics.add(ps2);
+		
 
+		PopulStatistic ps3 = new PopulStatistic();
+		ps3.setFirstSample("Próba 1");
+		ps3.setSecondSample("Próba 2");
+		ps3.setFirstVariance(0.3);
+		ps3.setFirstDeviation(0.301);
+		ps3.setTableName("Tabela 1");
+		ps3.setFigureName("Line");
+		ps3.setAttributeName("Attr 1");
+		statistics.add(ps3);
+		
+
+		PopulStatistic ps4 = new PopulStatistic();
+		ps4.setFirstSample("Próba 1");
+		ps4.setSecondSample("Próba 2");
+		ps4.setFirstVariance(0.13);
+		ps4.setFirstDeviation(0.011);
+		ps4.setTableName("Tabela 1");
+		ps4.setFigureName("Line");
+		ps4.setAttributeName("Attr 12");
+		statistics.add(ps4);
+		
 		return statistics;
 	}
 
-	public int getSampleSize()
-	{
+	public int getSampleSize() {
 		return sampleSize;
 	}
 
-	public void setSampleSize(int sampleSize)
-	{
+	public void setSampleSize(int sampleSize) {
 		this.sampleSize = sampleSize;
 	}
 
-	public String getFirstPopul()
-	{
-		return firstPopul;
+	public String getFirstSample() {
+		return firstSample;
 	}
 
-	public void setFirstPopul(String firstPopul)
-	{
-		this.firstPopul = firstPopul;
+	public void setFirstSample(String firstSample) {
+		this.firstSample = firstSample;
 	}
 
-	public String getSecondPopul()
-	{
-		return secondPopul;
+	public String getSecondSample() {
+		return secondSample;
 	}
 
-	public void setSecondPopul(String secondPopul)
-	{
-		this.secondPopul = secondPopul;
+	public void setSecondSample(String secondSample) {
+		this.secondSample = secondSample;
 	}
 
-	public String getChannelName()
-	{
-		return channelName;
+	public String getTableName() {
+		return tableName;
 	}
 
-	public void setChannelName(String channelName)
-	{
-		this.channelName = channelName;
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 
-	public String getWaveName()
-	{
-		return waveName;
+	public String getFigureName() {
+		return figureName;
 	}
 
-	public void setWaveName(String waveName)
-	{
-		this.waveName = waveName;
+	public void setFigureName(String figureName) {
+		this.figureName = figureName;
 	}
 
-	public String getStatisticName()
-	{
+	public String getAttributeName() {
+		return attributeName;
+	}
+
+	public void setAttributeName(String attributeName) {
+		this.attributeName = attributeName;
+	}
+
+	public String getStatisticName() {
 		return statisticName;
 	}
 
-	public void setStatisticName(String statisticName)
-	{
+	public void setStatisticName(String statisticName) {
 		this.statisticName = statisticName;
 	}
 
-	public double getFirstAverage()
-	{
-		return firstAverage;
+	public double getFirstVariance() {
+		return firstVariance;
 	}
 
-	public void setFirstAverage(double firstAverage)
-	{
-		this.firstAverage = firstAverage;
+	public void setFirstVariance(double firstVariance) {
+		this.firstVariance = firstVariance;
 	}
 
-	public double getFirstDeviation()
-	{
+	public double getFirstDeviation() {
 		return firstDeviation;
 	}
 
-	public void setFirstDeviation(double firstDeviation)
-	{
+	public void setFirstDeviation(double firstDeviation) {
 		this.firstDeviation = firstDeviation;
 	}
 
-	public double getSecondAverage()
-	{
-		return secondAverage;
+	public double getSecondVariance() {
+		return secondVariance;
 	}
 
-	public void setSecondAverage(double secondAverage)
-	{
-		this.secondAverage = secondAverage;
+	public void setSecondVariance(double secondVariance) {
+		this.secondVariance = secondVariance;
 	}
 
-	public double getSecondDeviation()
-	{
+	public double getSecondDeviation() {
 		return secondDeviation;
 	}
 
-	public void setSecondDeviation(double secondDeviation)
-	{
+	public void setSecondDeviation(double secondDeviation) {
 		this.secondDeviation = secondDeviation;
 	}
 
-	public double getP_value()
-	{
+	public double getP_value() {
 		return p_value;
 	}
 
-	public void setP_value(double p_value)
-	{
+	public void setP_value(double p_value) {
 		this.p_value = p_value;
 	}
 }
+
