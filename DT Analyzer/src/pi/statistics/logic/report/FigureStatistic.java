@@ -40,12 +40,46 @@ public class FigureStatistic
 	private String examination;
 	private String figure;
 
+	
 	public static Double getValue(StatisticResult result)
 	{
 		if (result == null)
 			return null;
 		else
 			return result.getValue().get(0);
+	}
+	
+	
+	public static Collection getFigureStatistics()
+	{
+		//TODO Usun¹æ metodê - tymczasowa z danymi na sztywno
+		Vector<FigureStatistic> statistics = new Vector<FigureStatistic>();
+		
+		FigureStatistic fs = new FigureStatistic();
+		fs.setName("Stefania");
+		fs.setSex("female");
+		fs.setSurname("Podwodna");
+		fs.setStatistic("dev");
+		fs.setDev(0.04);
+		fs.setPressure(0.77);
+		fs.setExamination("Before");
+		fs.setFigure("Zig-zag");
+		
+		statistics.add(fs);
+		
+		FigureStatistic fs1 = new FigureStatistic();
+		fs1.setName("Adam");
+		fs1.setSex("male");
+		fs1.setSurname("Ko³owrotek");
+		fs1.setStatistic("average");
+		fs1.setDev(0.23);
+		fs1.setAltitude(0.1);
+		fs1.setExamination("Before");
+		fs1.setFigure("Zig-zag");
+		
+		statistics.add(fs1);
+		
+		return statistics;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -121,6 +155,7 @@ public class FigureStatistic
 
 		return statistics;
 	}
+	
 
 	public String getName()
 	{

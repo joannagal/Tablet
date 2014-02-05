@@ -180,7 +180,8 @@ public class StatisticsComparatorView extends JFrame
 			try
 			{
 				SharedController.getInstance().setReportMgr(
-						new ReportManager(first));
+						new ReportManager());
+						//new ReportManager(first));
 			} catch (JRException e)
 			{
 				e.printStackTrace();
