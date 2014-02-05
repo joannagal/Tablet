@@ -6,13 +6,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -30,7 +28,6 @@ import pi.project.Project;
 import pi.shared.SharedController;
 import pi.statistics.logic.StatMapper;
 import pi.statistics.logic.report.PopulReportMngr;
-import pi.statistics.logic.report.SpecimenReportMngr;
 
 public class StatisticsView extends JFrame
 {

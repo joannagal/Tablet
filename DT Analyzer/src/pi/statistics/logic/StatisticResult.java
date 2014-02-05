@@ -1,7 +1,6 @@
 package pi.statistics.logic;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class StatisticResult
 {

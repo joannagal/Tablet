@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Vector;
 
-import pi.project.Project;
 import pi.shared.SharedController;
 import pi.statistics.logic.ProjectResult;
 import pi.statistics.logic.StatMapper;

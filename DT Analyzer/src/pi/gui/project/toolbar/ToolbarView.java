@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import pi.gui.project.toolbar.statistics.ChooserView;
-import pi.gui.project.toolbar.statistics.StatisticsView;
 import pi.project.Project;
 
 public class ToolbarView extends JPanel
