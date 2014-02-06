@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="40e9b298-1a48-4734-aecf-48d0b693f5d6">
-	<property name="ireport.zoom" value="1.1000000000000028"/>
+	<property name="ireport.zoom" value="1.6105100000000045"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="170"/>
 	<property name="net.sf.jasperreports.export.pdf.compressed" value="true"/>
 	<style name="table">
 		<box>
@@ -204,7 +204,7 @@
 	<columnHeader>
 		<band height="41">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="92" height="40" forecolor="#FFFFFF" backcolor="#000000" uuid="bb15ccf6-615d-4e67-840a-0947262c1814"/>
+				<reportElement mode="Opaque" x="0" y="0" width="102" height="40" forecolor="#FFFFFF" backcolor="#000000" uuid="bb15ccf6-615d-4e67-840a-0947262c1814"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -218,7 +218,7 @@
 				<text><![CDATA[Statistic name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="92" y="0" width="184" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="d6f266f7-ed51-4a35-9b37-f74d0f682a93"/>
+				<reportElement mode="Opaque" x="102" y="0" width="174" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="d6f266f7-ed51-4a35-9b37-f74d0f682a93"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -288,7 +288,7 @@
 				<text><![CDATA[P-value]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="92" y="20" width="85" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="ad33bd68-2306-43b0-aea0-2b5071bd5340"/>
+				<reportElement mode="Opaque" x="102" y="20" width="75" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="ad33bd68-2306-43b0-aea0-2b5071bd5340"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -320,7 +320,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="0" y="0" width="102" height="20" forecolor="#FFFFFF" backcolor="#FF0000" uuid="ae6352a6-3670-4a18-8d97-1279f6f5a535"/>
+				<reportElement mode="Opaque" x="0" y="0" width="109" height="20" forecolor="#FFFFFF" backcolor="#FF0000" uuid="ae6352a6-3670-4a18-8d97-1279f6f5a535"/>
 				<box>
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -334,7 +334,7 @@
 				<textFieldExpression><![CDATA[$F{statisticName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="102" y="0" width="82" height="20" uuid="35048793-4cb7-430d-aeb7-b5590d382123"/>
+				<reportElement x="109" y="0" width="84" height="20" uuid="35048793-4cb7-430d-aeb7-b5590d382123"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -346,7 +346,7 @@
 				<textFieldExpression><![CDATA[$F{firstVariance}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="184" y="0" width="92" height="20" uuid="084f5be4-4ad2-4747-9845-cf90b39df9e0"/>
+				<reportElement x="193" y="0" width="90" height="20" uuid="084f5be4-4ad2-4747-9845-cf90b39df9e0"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -358,7 +358,7 @@
 				<textFieldExpression><![CDATA[$F{firstDeviation}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="276" y="0" width="92" height="20" uuid="046cadb8-16cf-4104-a74d-e42e53e46c10"/>
+				<reportElement x="283" y="0" width="90" height="20" uuid="046cadb8-16cf-4104-a74d-e42e53e46c10"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -370,7 +370,7 @@
 				<textFieldExpression><![CDATA[$F{secondVariance}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="368" y="0" width="92" height="20" uuid="ed8e8f24-8fcb-407a-8549-6fbb1f326b8c"/>
+				<reportElement x="373" y="0" width="90" height="20" uuid="ed8e8f24-8fcb-407a-8549-6fbb1f326b8c"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -384,7 +384,7 @@
 				<textFieldExpression><![CDATA[$F{secondDeviation}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="460" y="0" width="95" height="20" uuid="721e8593-77a5-4b4e-84d3-c36f1de78ea3"/>
+				<reportElement x="463" y="0" width="92" height="20" uuid="721e8593-77a5-4b4e-84d3-c36f1de78ea3"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
