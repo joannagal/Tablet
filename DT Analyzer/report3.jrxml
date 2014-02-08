@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="40e9b298-1a48-4734-aecf-48d0b693f5d6">
-	<property name="ireport.zoom" value="2.3579476910000063"/>
-	<property name="ireport.x" value="77"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.143588810000006"/>
+	<property name="ireport.x" value="39"/>
+	<property name="ireport.y" value="96"/>
 	<property name="net.sf.jasperreports.export.pdf.compressed" value="true"/>
 	<style name="table">
 		<box>
@@ -286,7 +286,7 @@
 	<columnHeader>
 		<band height="33">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="66" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="bb15ccf6-615d-4e67-840a-0947262c1814"/>
+				<reportElement mode="Opaque" x="0" y="0" width="75" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="bb15ccf6-615d-4e67-840a-0947262c1814"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -300,7 +300,7 @@
 				<text><![CDATA[Statistic name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="65" y="0" width="61" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="0399a1d8-79e1-49fa-b8a4-9898a482ddce"/>
+				<reportElement mode="Opaque" x="75" y="0" width="61" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="0399a1d8-79e1-49fa-b8a4-9898a482ddce"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -314,7 +314,7 @@
 				<text><![CDATA[Figure Standards]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="126" y="0" width="56" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="630aaeb8-0096-499b-9de4-26254c99a9ba"/>
+				<reportElement mode="Opaque" x="136" y="0" width="56" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="630aaeb8-0096-499b-9de4-26254c99a9ba"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -328,7 +328,7 @@
 				<text><![CDATA[Pressure]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="182" y="0" width="67" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="2461f015-41a4-4be3-a942-749972ae9480"/>
+				<reportElement mode="Opaque" x="192" y="0" width="67" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="2461f015-41a4-4be3-a942-749972ae9480"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -342,7 +342,7 @@
 				<text><![CDATA[Momentary Speed]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="248" y="0" width="72" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="ef7a3c6b-41ae-4a8f-a332-8ef8159b78b1"/>
+				<reportElement mode="Opaque" x="259" y="0" width="72" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="ef7a3c6b-41ae-4a8f-a332-8ef8159b78b1"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -356,7 +356,7 @@
 				<text><![CDATA[Acceleration]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="320" y="0" width="59" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="90f7149a-1ce1-4dd2-b1ac-875c91a49b1a"/>
+				<reportElement mode="Opaque" x="331" y="0" width="59" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="90f7149a-1ce1-4dd2-b1ac-875c91a49b1a"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -370,7 +370,7 @@
 				<text><![CDATA[Direction Change]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="379" y="0" width="57" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="d97a04f4-887c-4dde-9e87-5428d890681c"/>
+				<reportElement mode="Opaque" x="390" y="0" width="55" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="d97a04f4-887c-4dde-9e87-5428d890681c"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -384,7 +384,7 @@
 				<text><![CDATA[Azimuth]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="436" y="0" width="59" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="7da81bf3-b672-4951-aff9-03ca89b0f967"/>
+				<reportElement mode="Opaque" x="441" y="0" width="55" height="33" forecolor="#FFFFFF" backcolor="#000000" uuid="7da81bf3-b672-4951-aff9-03ca89b0f967"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0" lineColor="#000000"/>
 					<topPen lineWidth="1.0" lineColor="#000000"/>
@@ -416,7 +416,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="0" y="0" width="76" height="20" forecolor="#FFFFFF" backcolor="#FF0000" uuid="25358a33-c7ea-464d-80c3-6e7cdae56c5d"/>
+				<reportElement mode="Opaque" x="0" y="0" width="83" height="20" forecolor="#FFFFFF" backcolor="#FF0000" uuid="25358a33-c7ea-464d-80c3-6e7cdae56c5d"/>
 				<box>
 					<pen lineWidth="0.5" lineColor="#000000"/>
 					<topPen lineWidth="0.5" lineColor="#000000"/>
@@ -430,7 +430,7 @@
 				<textFieldExpression><![CDATA[$F{statistic}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="76" y="0" width="60" height="20" uuid="a2260780-3e98-4563-ade8-0413d3f14278"/>
+				<reportElement x="83" y="0" width="59" height="20" uuid="a2260780-3e98-4563-ade8-0413d3f14278"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -442,7 +442,7 @@
 				<textFieldExpression><![CDATA[$F{standards}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="136" y="0" width="60" height="20" uuid="6fe6cca1-06db-41b4-ba2c-12ab5b2ee93a"/>
+				<reportElement x="142" y="0" width="59" height="20" uuid="6fe6cca1-06db-41b4-ba2c-12ab5b2ee93a"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -454,7 +454,7 @@
 				<textFieldExpression><![CDATA[$F{pressure}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="196" y="0" width="60" height="20" uuid="63f5265f-f791-4be8-a1f8-6626800c8c1e"/>
+				<reportElement x="201" y="0" width="59" height="20" uuid="63f5265f-f791-4be8-a1f8-6626800c8c1e"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -466,7 +466,7 @@
 				<textFieldExpression><![CDATA[$F{speed}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="256" y="0" width="60" height="20" uuid="bc27fc4a-60b1-454a-bacb-7435d4c3fc8a"/>
+				<reportElement x="260" y="0" width="59" height="20" uuid="bc27fc4a-60b1-454a-bacb-7435d4c3fc8a"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -478,7 +478,7 @@
 				<textFieldExpression><![CDATA[$F{acceleration}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="316" y="0" width="60" height="20" uuid="e329af82-1855-4b29-8925-935a8a9eccaf"/>
+				<reportElement x="319" y="0" width="59" height="20" uuid="e329af82-1855-4b29-8925-935a8a9eccaf"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -490,7 +490,7 @@
 				<textFieldExpression><![CDATA[$F{change}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="376" y="0" width="60" height="20" uuid="b586f050-2c68-4192-8643-d809b50d8056"/>
+				<reportElement x="378" y="0" width="59" height="20" uuid="b586f050-2c68-4192-8643-d809b50d8056"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -502,7 +502,7 @@
 				<textFieldExpression><![CDATA[$F{azimuth}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="436" y="0" width="60" height="20" uuid="6ccfcea0-cf12-4da5-bde3-b115b03679f7"/>
+				<reportElement x="437" y="0" width="59" height="20" uuid="6ccfcea0-cf12-4da5-bde3-b115b03679f7"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -514,7 +514,7 @@
 				<textFieldExpression><![CDATA[$F{altitude}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="496" y="0" width="60" height="20" uuid="9be3b32a-e495-45fa-8459-fa589899b7c1"/>
+				<reportElement x="496" y="0" width="59" height="20" uuid="9be3b32a-e495-45fa-8459-fa589899b7c1"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
