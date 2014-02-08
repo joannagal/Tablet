@@ -51,12 +51,12 @@ public class PopSaver
 			out.writeAttribute("name", project.getName());
 		if (project.getPath() != null)
 			out.writeAttribute("path", project.getPath());
+		
+		
 		int specimens = project.getFirstPopulation().getSpecimen().size();
 		if (project.getSecondPopulation() != null)
 			specimens += project.getSecondPopulation().getSpecimen().size();
-
 		out.writeAttribute("specimens", Integer.toString(specimens));
-
 		SharedController.getInstance().getProgressView().init(specimens);
 
 		if (project.getDate() != null)

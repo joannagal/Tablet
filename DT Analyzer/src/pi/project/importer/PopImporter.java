@@ -133,7 +133,9 @@ public class PopImporter extends DefaultHandler
 		project.setName(attributes.getValue("name"));
 		project.setPath(attributes.getValue("path"));
 
-		int specimens = Integer.parseInt(attributes.getValue("specimens"));
+		String s = attributes.getValue("specimens");
+		int specimens = 0;
+		if (s != null) specimens = Integer.parseInt(attributes.getValue("specimens"));
 		SharedController.getInstance().getProgressView().init(specimens);
 
 		String type = attributes.getValue("type");

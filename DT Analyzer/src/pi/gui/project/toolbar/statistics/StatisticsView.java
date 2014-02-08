@@ -235,10 +235,10 @@ public class StatisticsView extends JFrame
 
 			int figures = StatMapper.getFigureAvaibles();
 			int attributes = StatMapper.getAttributeAvaibles();
-			int total = figures * attributes * columns;
+			//int total = figures * attributes * columns;
 
 			SharedController.getInstance().getProgressView()
-					.init(specimens + total);
+					.init(specimens + 1);
 			project.calculateStatistic();
 
 			view.prepare(view.getFigureStr(), view.getElementStr());
@@ -252,7 +252,7 @@ public class StatisticsView extends JFrame
 			{
 				e.printStackTrace();
 			}
-
+			SharedController.getInstance().getProgressView().increase();
 			
 			SharedController.getInstance().getProgressView().close();
 			view.setVisible(true);

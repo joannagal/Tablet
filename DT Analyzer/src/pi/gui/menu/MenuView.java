@@ -38,6 +38,7 @@ public class MenuView extends JMenuBar
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"XML files (*.xml)", "xml");
 		fc.setFileFilter(filter);
+	
 
 		this.parent = frame;
 		mainMenu = new JMenu("Application");

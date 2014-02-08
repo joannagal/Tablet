@@ -64,9 +64,13 @@ public class MenuController implements ActionListener
 
 			} catch (SAXException e)
 			{
+				JOptionPane.showMessageDialog(null, "Ups! Something goes wrong!\n");
+				
 				e.printStackTrace();
 			} catch (IOException e)
 			{
+				JOptionPane.showMessageDialog(null, "Ups! Something goes wrong!\n");
+				
 				e.printStackTrace();
 			}
 		}
@@ -91,7 +95,12 @@ public class MenuController implements ActionListener
 
 		if (action.equals("ABOUT"))
 		{
-
+			JOptionPane.showMessageDialog(null, "This program was made for bachelor thesis (2014) \n"
+					+ "Authors:\n"
+					+ "- Natalia Adamkiewicz\n"
+					+ "- Joanna Galewska\n"
+					+ "- Magdalena Jaskiewicz\n"
+					+ "- Michal Tomczyk");
 		}
 
 		if (action.equals("CREATE_PROJECT"))
@@ -115,6 +124,8 @@ public class MenuController implements ActionListener
 				OpenThread runnable = new OpenThread(file, this.menuView);
 				Thread thread = new Thread(runnable);
 				thread.start();
+			
+			
 			}
 		}
 		if (action.equals("SAVE_PROJECT"))
@@ -128,8 +139,12 @@ public class MenuController implements ActionListener
 				if (returnVal == JFileChooser.APPROVE_OPTION)
 				{
 					File file = this.menuView.getFc().getSelectedFile();
+					
+					String path = file.getAbsolutePath();
+					if (!path.endsWith("xml")) path += ".xml";
+					
 					SharedController.getInstance().getProject()
-							.save(file.getAbsolutePath());
+							.save(path);
 				}
 			} else
 			{
@@ -146,8 +161,12 @@ public class MenuController implements ActionListener
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				File file = this.menuView.getFc().getSelectedFile();
+				
+				String path = file.getAbsolutePath();
+				if (!path.endsWith("xml")) path += ".xml";
+				
 				SharedController.getInstance().getProject()
-						.save(file.getAbsolutePath());
+						.save(path);
 			}
 
 		}
