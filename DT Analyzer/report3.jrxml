@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="40e9b298-1a48-4734-aecf-48d0b693f5d6">
 	<property name="ireport.zoom" value="2.3579476910000063"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="322"/>
+	<property name="ireport.x" value="77"/>
+	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.pdf.compressed" value="true"/>
 	<style name="table">
 		<box>
@@ -158,7 +158,7 @@
 		<band height="104" splitType="Stretch">
 			<image isUsingCache="true">
 				<reportElement x="0" y="0" width="102" height="104" uuid="489b9cde-a6d5-44eb-8527-86aaa4c2e948"/>
-				<imageExpression><![CDATA["img\\Logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["Logo.png"]]></imageExpression>
 			</image>
 			<frame>
 				<reportElement x="102" y="0" width="454" height="104" uuid="7008f3a0-a081-428a-95ad-a6793f4aadc7"/>
