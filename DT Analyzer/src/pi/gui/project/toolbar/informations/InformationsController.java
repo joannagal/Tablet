@@ -43,6 +43,8 @@ public class InformationsController implements ActionListener
 			}
 
 			SharedController.getInstance().getProjectView().updateLabels();
+			
+			SharedController.getInstance().getFrame().setFrameTitle(name);
 
 			this.view.setVisible(false);
 		} else if (action.equals("CANCEL"))

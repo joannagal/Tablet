@@ -61,6 +61,8 @@ public class MenuController implements ActionListener
 				project.setPath(file.getAbsolutePath());
 				SharedController.getInstance().getFrame()
 						.initProjectView(project);
+				
+				SharedController.getInstance().getFrame().setFrameTitle(project.getName());
 
 			} catch (SAXException e)
 			{
@@ -125,7 +127,7 @@ public class MenuController implements ActionListener
 				Thread thread = new Thread(runnable);
 				thread.start();
 			
-			
+				
 			}
 		}
 		if (action.equals("SAVE_PROJECT"))

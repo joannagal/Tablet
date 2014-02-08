@@ -25,6 +25,12 @@ public class OurFrame extends JFrame
 
 	private ProjectView projectView;
 
+	public void setFrameTitle(String value)
+	{
+		if (value == null) this.setTitle("DT Analyzer");
+		else this.setTitle("DT Analyzer - " + value);
+	}
+	
 	public OurFrame()
 	{
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -37,7 +43,7 @@ public class OurFrame extends JFrame
 		this.constraints.weightx = 1.0d;
 		this.constraints.weighty = 1.0d;
 
-		this.setTitle("DT Analyzer");
+		this.setFrameTitle(null);
 		
 		URL iconURL = getClass().getResource("images/Logo.png");
 		ImageIcon icon = new ImageIcon(iconURL);
