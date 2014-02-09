@@ -89,7 +89,7 @@ public class FigureStatistic
 					figureStatistic.hand = specimen.getNamedHand();
 					figureStatistic.brain = specimen.getNamedBrain();
 					figureStatistic.type = specimen.getNamedOperationType();
-					figureStatistic.number = specimen.getOperationTestNo();
+					figureStatistic.number = specimen.getNamedOperationNo();
 
 					// ... kazdy atrybut ...
 					for (Map.Entry<String, AttributeResult> attributeEntry : figure.getValue().entrySet())

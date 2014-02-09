@@ -71,6 +71,14 @@ public class Specimen
 		else
 			return "T";
 	}
+	
+	public int getNamedOperationNo()
+	{
+		if (this.operationTestNo == null)
+			return 0;
+		
+		return this.operationTestNo;
+	}
 
 	public void clearMemory()
 	{
