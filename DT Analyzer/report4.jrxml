@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report3" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="40e9b298-1a48-4734-aecf-48d0b693f5d6">
 	<property name="ireport.zoom" value="1.6105100000000045"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="334"/>
 	<property name="net.sf.jasperreports.export.pdf.compressed" value="true"/>
 	<style name="table">
 		<box>
@@ -333,7 +333,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{statisticName}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="109" y="0" width="84" height="20" uuid="35048793-4cb7-430d-aeb7-b5590d382123"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -345,7 +345,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{firstVariance}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="193" y="0" width="90" height="20" uuid="084f5be4-4ad2-4747-9845-cf90b39df9e0"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -357,7 +357,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{firstDeviation}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="283" y="0" width="90" height="20" uuid="046cadb8-16cf-4104-a74d-e42e53e46c10"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -369,7 +369,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{secondVariance}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="373" y="0" width="90" height="20" uuid="ed8e8f24-8fcb-407a-8549-6fbb1f326b8c"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -383,7 +383,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{secondDeviation}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="463" y="0" width="92" height="20" uuid="721e8593-77a5-4b4e-84d3-c36f1de78ea3"/>
 				<box>
 					<pen lineWidth="0.5"/>

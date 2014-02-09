@@ -429,7 +429,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{statistic}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="83" y="0" width="59" height="20" uuid="a2260780-3e98-4563-ade8-0413d3f14278"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -441,7 +441,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{standards}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="142" y="0" width="59" height="20" uuid="6fe6cca1-06db-41b4-ba2c-12ab5b2ee93a"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -453,7 +453,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{pressure}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="201" y="0" width="59" height="20" uuid="63f5265f-f791-4be8-a1f8-6626800c8c1e"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -465,7 +465,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{speed}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="260" y="0" width="59" height="20" uuid="bc27fc4a-60b1-454a-bacb-7435d4c3fc8a"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -477,7 +477,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{acceleration}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="319" y="0" width="59" height="20" uuid="e329af82-1855-4b29-8925-935a8a9eccaf"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -489,7 +489,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{change}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="378" y="0" width="59" height="20" uuid="b586f050-2c68-4192-8643-d809b50d8056"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -501,7 +501,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{azimuth}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="437" y="0" width="59" height="20" uuid="6ccfcea0-cf12-4da5-bde3-b115b03679f7"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -513,7 +513,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{altitude}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="###0.00000" isBlankWhenNull="true">
 				<reportElement x="496" y="0" width="59" height="20" uuid="9be3b32a-e495-45fa-8459-fa589899b7c1"/>
 				<box>
 					<pen lineWidth="0.5"/>
